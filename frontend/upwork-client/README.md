@@ -1,27 +1,21 @@
 # UpworkClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.2.
+## Installation
+
+1. Install [node](https://nodejs.org/en) version _^18.15.x_. Consider using [nvm](https://github.com/nvm-sh/nvm).
+2. Install [angular](https://angular.io/guide/setup-local) version _^15_.
+3. Inside project folder open terminal and run `npm i `.
+
+---
+
+## Bootstrap scss classes docs
+
+[doc](https://getbootstrap.com/docs/4.0/getting-started/introduction/)
+
+---
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `npm run electron` to open application as electron app. The application will _not_ automatically reload if you change any of the source files.
