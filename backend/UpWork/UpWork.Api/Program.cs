@@ -1,6 +1,11 @@
+using UpWork.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCustomServices();
+builder.Services.AddCustomAuthentication();
+builder.Services.AddCustomDbContext();
+builder.Services.AddCustomCors();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
