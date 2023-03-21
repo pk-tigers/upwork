@@ -29,7 +29,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.invalid) return;
-    var credentials: LoginModel = {
+    const credentials: LoginModel = {
       username: this.loginForm.controls['username'].value,
       password: this.loginForm.controls['password'].value,
     };

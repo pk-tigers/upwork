@@ -5,9 +5,7 @@ import { AuthenticatedResponse } from '../models/authenticated-response.model';
   providedIn: 'root',
 })
 export class TokenService {
-  private static tokenFieldName: string = 'jwt';
-
-  constructor() {}
+  private static tokenFieldName = 'jwt';
 
   public setToken(authResponse: AuthenticatedResponse): void {
     localStorage.setItem(TokenService.tokenFieldName, authResponse.token);

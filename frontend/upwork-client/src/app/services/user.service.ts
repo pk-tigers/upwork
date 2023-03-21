@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
   private user = new BehaviorSubject<User | null>(null);
   public user$ = this.user.asObservable();
-  private controllerUrl: string = `${environment.apiUrl}/user`;
+  private controllerUrl = `${environment.apiUrl}/user`;
 
   constructor(
     private http: HttpClient,
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   public get isUserAuthenticated(): boolean {
-    var token = this.tokenService.getToken();
+    const token = this.tokenService.getToken();
     if (!!token && !this.jwtHelper.isTokenExpired(token)) return true;
     return false;
   }
@@ -50,9 +50,9 @@ export class UserService {
   }
 
   private setUser(auth: AuthenticatedResponse | null): void {
-    if (!!!auth) return;
+    if (!auth) return;
     const roles = this.getUserClams(auth);
-    var user = {
+    const user = {
       token: auth.token,
       roles: roles,
     } as User;
@@ -60,7 +60,7 @@ export class UserService {
   }
 
   private getUserClams(auth: AuthenticatedResponse): string {
-    let token: any = this.jwtHelper.decodeToken(auth.token);
+    const token: any = this.jwtHelper.decodeToken(auth.token);
     return token[
       'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
     ];
