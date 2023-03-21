@@ -18,7 +18,7 @@ export class LoginComponent {
     private userService: UserService,
     private tokenService: TokenService
   ) {
-    if (this.userService.isUserAuthenticated){
+    if (this.userService.isUserAuthenticated) {
       // TODO: navigate to home page. No need to log again
     }
     this.loginForm = this.formBuilder.group({
@@ -34,7 +34,7 @@ export class LoginComponent {
       password: this.loginForm.controls['password'].value,
     };
     this.userService.login(credentials).subscribe({
-      next: (res) => {
+      next: res => {
         this.tokenService.setToken(res);
         // TODO: navigate to correct page
       },
