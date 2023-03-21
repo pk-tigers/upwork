@@ -19,3 +19,9 @@
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 Run `npm run electron` to open application as electron app. The application will _not_ automatically reload if you change any of the source files.
+
+## Before commit
+
+Run `npm run lint` to detect bad code. Try to eliminate errors and avoid warnings.
+
+Run `npm run list --fix` to fix bad code. Not everything can be fix with it. Sometime manual work needs to be done.
