@@ -114,13 +114,60 @@
               "src/**/*.html"
             ]
           }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "upwork-client:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "upwork-client:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "upwork-client:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "upwork-client:serve:development"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "upwork-client:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "upwork-client:serve:production"
+            }
+          }
         }
       }
     }
   },
   "cli": {
     "schematicCollections": [
-      "@angular-eslint/schematics"
+      "@cypress/schematic",
+      "@angular-eslint/schematics",
+      "@schematics/angular"
     ]
   }
 }
