@@ -36,3 +36,9 @@ Run `npm run list --fix` to fix bad code. Not everything can be fix with it. Som
 Run `npm run cypress:open` to configure tests.
 
 Run `npm run cypress:run` to run tests.
+
+---
+
+## Trouble shooting
+
+If you've got error with CRLF, run `git config core.autocrlf false` then `git rm --cached -r .` and finally `git reset --hard`
