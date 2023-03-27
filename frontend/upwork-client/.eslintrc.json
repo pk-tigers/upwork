@@ -27,6 +27,13 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "linebreak-style": ["error", "unix"],
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto"
+          }
         ]
       }
     },
