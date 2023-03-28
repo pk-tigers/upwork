@@ -39,11 +39,7 @@ export class LoginComponent {
         // TODO: navigate to correct page
       },
       error: (error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          // TODO: handle unauthorized request
-        } else {
-          // TODO: handle error
-        }
+        //TODO handle error
       },
     });
   }
