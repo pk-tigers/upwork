@@ -27,9 +27,10 @@ namespace UpWork.Api.Extensions
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("EnableCORS", builder =>
+                options.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder
+                    .WithOrigins("http://localhost:4200")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });
