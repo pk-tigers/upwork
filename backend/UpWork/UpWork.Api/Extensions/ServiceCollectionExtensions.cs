@@ -7,7 +7,7 @@ namespace UpWork.Api.Extensions
     {
         public static void AddCustomAuthentication(this IServiceCollection services)
         {
-
+            //TODO
         }
 
         public static void AddCustomDbContext(this IServiceCollection services)
@@ -20,7 +20,7 @@ namespace UpWork.Api.Extensions
 
         public static void AddCustomServices(this IServiceCollection services)
         {
-
+            //TODO
         }
 
         public static void AddCustomCors(this IServiceCollection services)
