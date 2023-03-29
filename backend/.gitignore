@@ -475,3 +475,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+
+# SQLite database
+UpWork/UpWork.Api/appliaction.db
+UpWork/UpWork.Api/appliaction.db-shm
+UpWork/UpWork.Api/appliaction.db-wal
