@@ -6,14 +6,13 @@ namespace UpWork.Database
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<UserModel>()
+            modelBuilder.Entity<UserModel>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            builder.Entity<UserModel>()
+            modelBuilder.Entity<UserModel>()
                 .HasMany(x => x.SupervisedEmployees)
                 .WithOne(x => x.TimeOffSupervisor)
                 .HasForeignKey(x => x.TimeOffSupervisorId);

@@ -1,6 +1,6 @@
 ﻿namespace UpWork.Common.Enums
 {
-    public enum ApprovalStateEnum
+    public enum ApprovalState
     {
         Pending,
         Approved,
