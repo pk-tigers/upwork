@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using UpWork.Api.Extensions;
+using UpWork.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+Configure(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -26,4 +30,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors();
+
 app.Run();
+
+
+static void Configure(IApplicationBuilder app)
+{
+    using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+    var dbServ = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+    dbServ?.Database.Migrate();
+}
