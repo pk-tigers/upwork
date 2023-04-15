@@ -13,8 +13,8 @@ namespace UpWork.Common.Models.DatabaseModels
         public bool IsActive { get; set; }
         public Guid OrganizationId { get; set; }
         public virtual OrganizationModel Organization { get; set; }
-        public Guid? TimeOffSupervisorId { get; set; }
-        public virtual UserModel TimeOffSupervisor { get; set; }
+        public Guid? CurrentTimeOffSupervisorId { get; set; }
+        public virtual UserModel CurrentTimeOffSupervisor { get; set; }
         public virtual ICollection<UserModel> SupervisedEmployees { get; set; }
     }
 }

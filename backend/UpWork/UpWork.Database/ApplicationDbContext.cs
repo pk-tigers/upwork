@@ -14,8 +14,8 @@ namespace UpWork.Database
 
             modelBuilder.Entity<UserModel>()
                 .HasMany(x => x.SupervisedEmployees)
-                .WithOne(x => x.TimeOffSupervisor)
-                .HasForeignKey(x => x.TimeOffSupervisorId);
+                .WithOne(x => x.CurrentTimeOffSupervisor)
+                .HasForeignKey(x => x.CurrentTimeOffSupervisorId);
         }
 
         public DbSet<UserModel> Users { get; set; }
