@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UpWork.Common.Enums;
 using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Database
@@ -9,10 +10,6 @@ namespace UpWork.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
-            modelBuilder.Entity<UserModel>()
                 .HasMany(x => x.SupervisedEmployees)
                 .WithOne(x => x.CurrentTimeOffSupervisor)
                 .HasForeignKey(x => x.CurrentTimeOffSupervisorId);
@@ -20,5 +17,6 @@ namespace UpWork.Database
 
         public DbSet<UserModel> Users { get; set; }
         public DbSet<OrganizationModel> Organizations { get; set; }
+        public DbSet<PermissionModel> Permissions { get; set; }
     }
 }

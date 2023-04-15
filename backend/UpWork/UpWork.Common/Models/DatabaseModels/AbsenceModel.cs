@@ -11,7 +11,7 @@ namespace UpWork.Common.Models.DatabaseModels
         public Guid AbsenceTypeId { get; set; }
         public virtual AbsenceTypeModel AbsenceType { get; set; }
         public Guid UserId { get; set; }
-        public virtual UserModel UserModel { get; set; }
+        public virtual UserModel User { get; set; }
         public ApprovalState ApprovalState { get; set; }
         public Guid TimeOffSupervisorId { get; set; }
         public virtual UserModel TimeOffSupervisor { get; set; }
