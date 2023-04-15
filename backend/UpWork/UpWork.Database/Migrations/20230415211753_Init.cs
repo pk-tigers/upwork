@@ -16,7 +16,8 @@ namespace UpWork.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    UrlName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,11 +53,12 @@ namespace UpWork.Database.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
                     Avatar = table.Column<byte[]>(type: "BLOB", maxLength: 102400, nullable: true),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    OrganizationId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TimeOffSupervisorId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Role = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrganizationId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CurrentTimeOffSupervisorId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,11 +67,10 @@ namespace UpWork.Database.Migrations
                         name: "FK_Users_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Users_Users_TimeOffSupervisorId",
-                        column: x => x.TimeOffSupervisorId,
+                        name: "FK_Users_Users_CurrentTimeOffSupervisorId",
+                        column: x => x.CurrentTimeOffSupervisorId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -79,44 +80,93 @@ namespace UpWork.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    From = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    To = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FromDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ToDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AbsenceTypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AbsenceTypeId1 = table.Column<Guid>(type: "TEXT", nullable: true),
+                    AbsenceTypeId = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserModelId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    ApprovalState = table.Column<int>(type: "INTEGER", nullable: false)
+                    ApprovalState = table.Column<int>(type: "INTEGER", nullable: false),
+                    TimeOffSupervisorId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbsenceModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AbsenceModel_AbsenceTypeModel_AbsenceTypeId1",
-                        column: x => x.AbsenceTypeId1,
+                        name: "FK_AbsenceModel_AbsenceTypeModel_AbsenceTypeId",
+                        column: x => x.AbsenceTypeId,
                         principalTable: "AbsenceTypeModel",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AbsenceModel_Users_UserModelId",
-                        column: x => x.UserModelId,
+                        name: "FK_AbsenceModel_Users_TimeOffSupervisorId",
+                        column: x => x.TimeOffSupervisorId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AbsenceModel_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PermissionType = table.Column<int>(type: "INTEGER", nullable: false),
+                    GrantDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Permissions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbsenceModel_AbsenceTypeId1",
+                name: "IX_AbsenceModel_AbsenceTypeId",
                 table: "AbsenceModel",
-                column: "AbsenceTypeId1");
+                column: "AbsenceTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbsenceModel_UserModelId",
+                name: "IX_AbsenceModel_TimeOffSupervisorId",
                 table: "AbsenceModel",
-                column: "UserModelId");
+                column: "TimeOffSupervisorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbsenceModel_UserId",
+                table: "AbsenceModel",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AbsenceTypeModel_OrganizationId",
                 table: "AbsenceTypeModel",
                 column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Organizations_UrlName",
+                table: "Organizations",
+                column: "UrlName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_UserId",
+                table: "Permissions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CurrentTimeOffSupervisorId",
+                table: "Users",
+                column: "CurrentTimeOffSupervisorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -128,11 +178,6 @@ namespace UpWork.Database.Migrations
                 name: "IX_Users_OrganizationId",
                 table: "Users",
                 column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_TimeOffSupervisorId",
-                table: "Users",
-                column: "TimeOffSupervisorId");
         }
 
         /// <inheritdoc />
@@ -140,6 +185,9 @@ namespace UpWork.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AbsenceModel");
+
+            migrationBuilder.DropTable(
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "AbsenceTypeModel");
