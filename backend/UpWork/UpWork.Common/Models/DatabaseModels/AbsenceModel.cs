@@ -8,7 +8,7 @@ namespace UpWork.Common.Models.DatabaseModels
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public bool IsActive { get; set; }
-        public int AbsenceTypeId { get; set; }
+        public Guid AbsenceTypeId { get; set; }
         public virtual AbsenceTypeModel AbsenceType { get; set; }
         public Guid UserId { get; set; }
         public virtual UserModel UserModel { get; set; }
