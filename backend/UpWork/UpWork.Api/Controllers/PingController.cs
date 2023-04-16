@@ -10,7 +10,7 @@ namespace UpWork.Api.Controllers
         [HttpGet]
         public ActionResult Pong()
         {
-            return Ok("pong");
+            return Ok("pong - hello");
         }
         [HttpGet("auth"), Authorize]
         public ActionResult PongAuth()
