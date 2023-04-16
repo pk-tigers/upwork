@@ -7,14 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["backend/UpWork/UpWork.Api/UpWork.Api.csproj", "UpWork.Api/"]
-RUN dotnet restore "backend/UpWork/UpWork.Api/UpWork.Api.csproj"
+COPY ["UpWork.Api/UpWork.Api.csproj", "UpWork.Api/"]
+RUN dotnet restore "UpWork.Api/UpWork.Api.csproj"
 COPY . .
-WORKDIR "/src/backend/UpWork/UpWork.Api"
-RUN dotnet build "backend/UpWork/UpWork.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/UpWork.Api"
+RUN dotnet build "UpWork.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "backend/UpWork/UpWork.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "UpWork.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
