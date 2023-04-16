@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7007/api/v1',
+  apiUrl: 'upwork-api.azurewebsites.net/api',
   allowedDomains: 'localhost:7007',
 };
