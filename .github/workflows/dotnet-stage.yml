@@ -46,6 +46,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'upwork'
-        slot-name: 'stage'
+        slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_04fb8e24af6e41018ed1a76a45397f4f }}
         images: 'registryrm.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4fa7439b923546e9aa178755a0077e41 }}/upwork-api:${{ github.sha }}'
