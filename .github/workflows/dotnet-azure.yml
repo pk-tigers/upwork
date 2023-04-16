@@ -1,7 +1,7 @@
 name: .NET Azure
 
 on:
-  workflow_dispatch:
+  push:
     branches:
       - azure
   
