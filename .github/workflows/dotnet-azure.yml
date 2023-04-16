@@ -1,4 +1,4 @@
-name: .NET Azure - Build and Deploy
+name: .NET Azure
 
 on:
   push:

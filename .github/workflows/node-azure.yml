@@ -1,11 +1,7 @@
-name: Node Azure - Build and Deploy
+name: Node Azure
 
 on:
   push:
-    branches:
-      - azure
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
     branches:
       - azure
 
@@ -29,6 +25,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/frontend/upwork-client/" # App source code path
           output_location: "dist/upwork-client" # Built app content directory - optional
+          app_build_command: npm run start-azure
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
