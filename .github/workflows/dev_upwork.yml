@@ -6,7 +6,7 @@ name: Build and deploy container app to Azure Web App - upwork
 on:
   push:
     branches:
-      - qa
+      - stage
   workflow_dispatch:
   
 defaults:
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'production'
+      name: 'stage'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -49,6 +49,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'upwork'
-        slot-name: 'production'
+        slot-name: 'stage'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_04fb8e24af6e41018ed1a76a45397f4f }}
         images: 'registryrm.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4fa7439b923546e9aa178755a0077e41 }}/upwork-api:${{ github.sha }}'
