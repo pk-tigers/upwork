@@ -1,4 +1,4 @@
-name: .NET Stage - Build and Deploy
+name: .NET Azure - Build and Deploy
 
 on:
   push:
