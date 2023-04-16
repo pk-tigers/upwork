@@ -11,6 +11,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: backend/UpWork
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v2
