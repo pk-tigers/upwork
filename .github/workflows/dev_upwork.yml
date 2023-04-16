@@ -6,13 +6,15 @@ name: Build and deploy container app to Azure Web App - upwork
 on:
   push:
     branches:
-      - dev
+      - qa
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: 'ubuntu-latest'
-
+    defaults:
+      run:
+        working-directory: backend/UpWork/UpWork.Api
     steps:
     - uses: actions/checkout@v2
 
