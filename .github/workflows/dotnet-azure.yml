@@ -3,7 +3,6 @@ name: .NET Stage - Build and Deploy
 on:
   push:
     branches:
-      - stage
       - azure
   workflow_dispatch:
   
