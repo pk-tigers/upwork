@@ -28,10 +28,9 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/frontend/upwork-client/" # App source code path
-          api_location: "/backend/UpWork/" # Api source code path - optional
-          output_location: "/frontend/upwork-client/dist/upwork-client" # Built app content directory - optional
+          output_location: "dist/upwork-client" # Built app content directory - optional
           node_version: "16.19.0-alpine"
-          build_command: "npm install && ng build --prod --configuration=azure"
+          build_command: "npm install && ng build --configuration=azure"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
