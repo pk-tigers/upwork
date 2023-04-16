@@ -51,7 +51,7 @@
               ],
               "outputHashing": "all"
             },
-            "stage": {
+            "azure": {
               "buildOptimizer": true,
               "optimization": false,
               "vendorChunk": true,
@@ -61,7 +61,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.stage.ts"
+                  "with": "src/environments/environment.azure.ts"
                 }
               ]
             },
@@ -88,8 +88,8 @@
             "production": {
               "browserTarget": "upwork-client:build:production"
             },
-            "stage": {
-              "browserTarget": "upwork-client:build:stage"
+            "azure": {
+              "browserTarget": "upwork-client:build:azure"
             },
             "development": {
               "browserTarget": "upwork-client:build:development"
