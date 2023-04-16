@@ -11,7 +11,7 @@ on:
   
 defaults:
     run:
-        working-directory: backend/UpWork/UpWork.Api
+        working-directory: backend/UpWork/UpWork.Api/
 jobs:
   build:
     runs-on: 'ubuntu-latest'
@@ -33,6 +33,7 @@ jobs:
       with:
         push: true
         tags: registryrm.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4fa7439b923546e9aa178755a0077e41 }}/upwork-api:${{ github.sha }}
+        context: backend/UpWork/UpWork.Api/
         file: ./Dockerfile
 
   deploy:
