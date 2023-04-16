@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - stage
+      - azure
   workflow_dispatch:
   
 defaults:
