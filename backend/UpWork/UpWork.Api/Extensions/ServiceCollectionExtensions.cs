@@ -11,11 +11,12 @@ namespace UpWork.Api.Extensions
             //TODO
         }
 
-        public static void AddCustomDbContext(this IServiceCollection services)
+        public static void AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
+            var conn = configuration.GetConnectionString("Default");
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlite(@"DataSource=appliaction.db;");
+                options.UseSqlServer(conn);
             });
         }
 
