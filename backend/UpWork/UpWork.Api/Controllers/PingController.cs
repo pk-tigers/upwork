@@ -7,16 +7,10 @@ namespace UpWork.Api.Controllers
     [ApiController]
     public class PingController : ControllerBase
     {
-        private IConfiguration _configuration;
-        public PingController(IConfiguration configuration) 
-        {
-            _configuration = configuration;
-
-        }
         [HttpGet]
         public ActionResult Pong()
         {
-            return Ok($"pong {_configuration["ConnectionStrings:Default"]}");
+            return Ok($"pong");
         }
         [HttpGet("auth"), Authorize]
         public ActionResult PongAuth()
