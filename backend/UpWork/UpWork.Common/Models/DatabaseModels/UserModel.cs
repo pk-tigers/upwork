@@ -24,5 +24,7 @@ namespace UpWork.Common.Models.DatabaseModels
         public virtual UserModel CurrentTimeOffSupervisor { get; set; }
         public virtual ICollection<UserModel> SupervisedEmployees { get; set; }
         public virtual ICollection<PermissionModel> Permissions { get; set; }
+        public virtual ICollection<AbsenceModel> Absences { get; set; }
+        public virtual ICollection<AbsenceModel> AbsencesSupervised { get; set; }
     }
 }

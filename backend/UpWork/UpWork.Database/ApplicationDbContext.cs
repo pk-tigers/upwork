@@ -13,6 +13,18 @@ namespace UpWork.Database
                 .HasMany(x => x.SupervisedEmployees)
                 .WithOne(x => x.CurrentTimeOffSupervisor)
                 .HasForeignKey(x => x.CurrentTimeOffSupervisorId);
+
+            modelBuilder.Entity<AbsenceModel>()
+                .HasOne(a => a.User)
+                .WithMany(g => g.Absences)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<AbsenceModel>()
+                .HasOne(a => a.TimeOffSupervisor)
+                .WithMany(g => g.AbsencesSupervised)
+                .HasForeignKey(a => a.TimeOffSupervisorId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<UserModel> Users { get; set; }
