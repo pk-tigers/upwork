@@ -8,6 +8,7 @@ env:
     DOTNET_ROOT: ./backend/UpWork
 jobs:
   build:
+    environment: azure
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v3
