@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using UpWork.Database;
 
 namespace UpWork.Api.Extensions
@@ -18,9 +19,9 @@ namespace UpWork.Api.Extensions
             });
         }
 
-        public static void AddCustomServices(this IServiceCollection services)
+        public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //TODO
+            services.AddSingleton(configuration);
         }
 
         public static void AddCustomCors(this IServiceCollection services)
