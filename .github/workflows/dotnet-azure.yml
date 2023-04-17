@@ -20,6 +20,12 @@ jobs:
         registry: https://registryrm.azurecr.io/
         username: ${{ secrets.AzureAppService_ContainerUsername_67f1f39721fd4445af0cad308fb9d99f }}
         password: ${{ secrets.AzureAppService_ContainerPassword_bf7735c6501847538e159f4583418e34 }}
+    - name: App Settings Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./backend/UpWork/UpWork.Api/appsettings.json'
+      env:
+        ConnectionStrings.Default: ${{ secrets.UPWORK_CONNECTION_STRING }}
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
@@ -34,12 +40,6 @@ jobs:
       name: 'azure'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
-    - name: App Settings Variable Substitution
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ./backend/UpWork/UpWork.Api/appsettings.json'
-      env:
-        ConnectionStrings.Default: ${{ secrets.UPWORK_CONNECTION_STRING }}
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
