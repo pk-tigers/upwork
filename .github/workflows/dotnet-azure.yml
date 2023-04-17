@@ -37,7 +37,7 @@ jobs:
     - name: App Settings Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
-        files: '${{env.DOTNET_ROOT}}/UpWork.Api/appsettings.json'
+        files: ./backend/UpWork/UpWork.Api/appsettings.json'
       env:
         ConnectionStrings.Default: ${{ secrets.UPWORK_CONNECTION_STRING }}
     - name: Deploy to Azure Web App
