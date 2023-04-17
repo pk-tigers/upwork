@@ -27,7 +27,7 @@ jobs:
       with:
         push: true
         tags: registryrm.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_67f1f39721fd4445af0cad308fb9d99f }}/registryrm/upwork-api:${{ github.sha }}
-        context: ${{env.DOTNET_ROOT}}
+        context: '${{env.DOTNET_ROOT}}/'
         file: '${{env.DOTNET_ROOT}}/UpWork.Api/Dockerfile'
 
   deploy:
