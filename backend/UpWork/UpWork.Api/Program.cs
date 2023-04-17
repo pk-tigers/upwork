@@ -4,7 +4,7 @@ using UpWork.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCustomServices();
+builder.Services.AddCustomServices(builder.Configuration);
 builder.Services.AddCustomAuthentication();
 builder.Services.AddCustomDbContext();
 builder.Services.AddCustomCors();
