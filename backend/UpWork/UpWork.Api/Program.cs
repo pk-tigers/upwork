@@ -3,10 +3,11 @@ using UpWork.Api.Extensions;
 using UpWork.Database;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
-builder.Services.AddCustomServices(builder.Configuration);
-builder.Services.AddCustomDbContext(builder.Configuration);
-builder.Services.AddCustomAuthentication();
+builder.Services.AddCustomServices(config);
+builder.Services.AddCustomDbContext(config);
+builder.Services.AddCustomAuth(config);
 builder.Services.AddCustomCors();
 
 builder.Services.AddControllers();
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

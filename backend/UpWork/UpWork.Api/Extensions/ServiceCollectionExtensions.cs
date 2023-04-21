@@ -1,14 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using UpWork.Common.Identity;
+using UpWork.Common.Interfaces;
 using UpWork.Database;
+using UpWork.Infrastucture.Services;
 
 namespace UpWork.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddCustomAuthentication(this IServiceCollection services)
+        public static void AddCustomAuth(this IServiceCollection services, IConfiguration config)
         {
-            //TODO
+            if (string.IsNullOrEmpty(config["JwtSettings:Issuer"])
+                    || string.IsNullOrEmpty(config["JwtSettings:Audience"])
+                    || string.IsNullOrEmpty(config["JwtSettings:Key"]))
+                throw new SecurityTokenException("Settings are empty");
+
+            services.AddAuthentication()
+                .AddJwtBearer(x =>
+                {
+                    
+                    x.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = config["JwtSettings:Issuer"],
+                        ValidAudience = config["JwtSettings:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(IdentityData.AdminUserPolicyName, p => p.RequireClaim(IdentityData.AdminUserClaimName, "true"));
+            });
         }
 
         public static void AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -23,6 +51,9 @@ namespace UpWork.Api.Extensions
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(configuration);
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IEncodeService, EncodeService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void AddCustomCors(this IServiceCollection services)

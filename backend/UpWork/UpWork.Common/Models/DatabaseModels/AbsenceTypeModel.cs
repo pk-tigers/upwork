@@ -8,7 +8,9 @@
         public bool NeedApproval { get; set; }
         public bool IsActive { get; set; }
         public Guid OrganizationId { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual OrganizationModel Organization { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<AbsenceModel> Absences { get; set; }
     }
 }

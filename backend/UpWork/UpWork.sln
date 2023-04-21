@@ -5,9 +5,11 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpWork.Api", "UpWork.Api\UpWork.Api.csproj", "{46AE61BD-2C08-447A-AE86-C3D355A79189}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpWork.Database", "UpWork.Database\UpWork.Database.csproj", "{185D2AC1-A586-4854-91A1-83C1E40339E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpWork.Database", "UpWork.Database\UpWork.Database.csproj", "{185D2AC1-A586-4854-91A1-83C1E40339E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpWork.Common", "UpWork.Common\UpWork.Common.csproj", "{AA302DDC-7852-4ABF-AA81-85D230E2A83C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpWork.Common", "UpWork.Common\UpWork.Common.csproj", "{AA302DDC-7852-4ABF-AA81-85D230E2A83C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpWork.Infrastucture", "UpWork.Infrastucture\UpWork.Infrastucture.csproj", "{069A2452-3D4D-4898-8DF8-064B22B2F1AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AA302DDC-7852-4ABF-AA81-85D230E2A83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA302DDC-7852-4ABF-AA81-85D230E2A83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA302DDC-7852-4ABF-AA81-85D230E2A83C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{069A2452-3D4D-4898-8DF8-064B22B2F1AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{069A2452-3D4D-4898-8DF8-064B22B2F1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{069A2452-3D4D-4898-8DF8-064B22B2F1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{069A2452-3D4D-4898-8DF8-064B22B2F1AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
