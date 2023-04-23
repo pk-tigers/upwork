@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.15.0]
+        node-version: [18.15.0, 14.21.3]
     defaults:
       run:
         working-directory: frontend/upwork-client
@@ -24,17 +24,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: frontend/upwork-client/package-lock.json
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-    - name: Check node version
-      run: npm config list
-    - name: npm clean install
-      run: npm ci
+        fetch-depth: 0 
+    - name: npm install
+      run: npm install
     - name: npm run build
       run: npm run build --if-present
-    - name: Check node version
-      run: npm config list
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ANGULAR }}
