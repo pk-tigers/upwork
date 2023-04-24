@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System.Text.Json.Serialization;
 using UpWork.Common.Enums;
 
 namespace UpWork.Common.Models.DatabaseModels
@@ -7,7 +7,7 @@ namespace UpWork.Common.Models.DatabaseModels
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual UserModel User { get; set; }
         public PermissionType PermissionType { get; set; }
         public DateTime GrantDate { get; set; } = DateTime.UtcNow;

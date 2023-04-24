@@ -5,6 +5,6 @@ namespace UpWork.Common.Interfaces
 {
     public interface ITokenService
     {
-        public bool TryAuthenticateUser(LoginDTO loginData, out string token);
+        public bool TryAuthenticateUser(LoginDto loginData, out string token);
     }
 }
