@@ -28,7 +28,7 @@ namespace UpWork.Infrastucture.Services
             {
                 sb.Append(validChars[b % validChars.Length]);
             }
-            return "admin";
+            return sb.ToString();
 
         }
     }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UpWork.Api.Extensions;
+using UpWork.Api.Filters;
 using UpWork.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,11 @@ builder.Services.AddCustomDbContext(config);
 builder.Services.AddCustomAuth(config);
 builder.Services.AddCustomCors();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(typeof(UnauthorizedExceptionFilterAttribute));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

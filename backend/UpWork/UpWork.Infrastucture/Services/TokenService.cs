@@ -69,6 +69,8 @@ namespace UpWork.Infrastucture.Services
         private List<Claim> GetUserClaims(UserModel user)
         {
             var claims = new List<Claim>();
+            claims.Add(new Claim(IdentityData.UserIdClaimName, user.Id.ToString()));
+
             if (user.Role == Common.Enums.Role.Admin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
             return claims;

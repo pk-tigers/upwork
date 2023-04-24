@@ -40,6 +40,8 @@ namespace UpWork.Infrastucture.Services
             _context.Add(newUser);
             _context.SaveChanges();
 
+            //TODO send email to user with generated password
+
             return newUser;
         }
     }
