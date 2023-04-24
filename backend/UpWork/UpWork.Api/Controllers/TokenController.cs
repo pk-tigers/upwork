@@ -14,8 +14,8 @@ namespace UpWork.Api.Controllers
         {
             _tokenService = tokenService;
         }
-        [HttpGet]
-        public ActionResult Login(LoginDTO loginData)
+        [HttpPost]
+        public ActionResult Login([FromBody] LoginDto loginData)
         {
             if (loginData is null)
                 return BadRequest("Invalid client request");
@@ -25,7 +25,7 @@ namespace UpWork.Api.Controllers
             if (!isAuthenticated)
                 return Unauthorized();
 
-            var authResponse = new AuthenticatedResponseDTO() { Token = token };
+            var authResponse = new AuthenticatedResponseDto() { Token = token };
             return Ok(authResponse);
         }
     }

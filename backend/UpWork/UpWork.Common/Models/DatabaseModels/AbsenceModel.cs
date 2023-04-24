@@ -1,4 +1,5 @@
-﻿using UpWork.Common.Enums;
+﻿using System.Text.Json.Serialization;
+using UpWork.Common.Enums;
 
 namespace UpWork.Common.Models.DatabaseModels
 {
@@ -9,14 +10,14 @@ namespace UpWork.Common.Models.DatabaseModels
         public DateTime ToDate { get; set; }
         public bool IsActive { get; set; }
         public Guid AbsenceTypeId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual AbsenceTypeModel AbsenceType { get; set; }
         public Guid UserId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual UserModel User { get; set; }
         public ApprovalState ApprovalState { get; set; }
         public Guid TimeOffSupervisorId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual UserModel TimeOffSupervisor { get; set; }
     }
 }

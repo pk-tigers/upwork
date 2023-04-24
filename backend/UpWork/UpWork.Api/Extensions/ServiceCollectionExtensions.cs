@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using UpWork.Common.Identity;
@@ -17,7 +18,13 @@ namespace UpWork.Api.Extensions
                     || string.IsNullOrEmpty(config["JwtSettings:Key"]))
                 throw new SecurityTokenException("Settings are empty");
 
-            services.AddAuthentication()
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(x =>
                 {
                     
@@ -53,6 +60,7 @@ namespace UpWork.Api.Extensions
             services.AddSingleton(configuration);
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEncodeService, EncodeService>();
+            services.AddScoped<IPermissionsService, PermissionsService>();
             services.AddScoped<IUserService, UserService>();
         }
 
