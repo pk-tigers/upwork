@@ -1,6 +1,6 @@
 ﻿namespace UpWork.Common.DTO
 {
-    public class AuthenticatedResponseDTO
+    public class AuthenticatedResponseDto
     {
         public string Token { get; set; }
     }

@@ -26,28 +26,35 @@ namespace UpWork.Infrastucture.Services
             _encodeService = encodeService;
             _configuration = configuration;
         }
-        public bool TryAuthenticateUser(LoginDTO loginData, out string token)
+        public bool TryAuthenticateUser(LoginDto loginData, out string token)
         {
             token = String.Empty;
-            if (loginData == null || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password))
+            try
+            {
+                if (loginData == null || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password))
+                    return false;
+
+                var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email).FirstOrDefault();
+
+                if (userModel is null)
+                    return false;
+
+                if (!_encodeService.VerifyUser(userModel.Password, loginData.Password))
+                    return false;
+
+                token = CreateToken(userModel);
+                return true;
+            }
+            catch
+            {
                 return false;
-
-            var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email).FirstOrDefault();
-
-            if (userModel is null)
-                return false;
-
-            if (!_encodeService.VerifyUser(userModel.Password, loginData.Password))
-                return false;
-
-            token = CreateToken(userModel);
-            return true;
+            }
         }
 
         private string CreateToken(UserModel userModel)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.EcdsaSha512);
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
             var tokeOptions = new JwtSecurityToken(
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
@@ -62,6 +69,8 @@ namespace UpWork.Infrastucture.Services
         private List<Claim> GetUserClaims(UserModel user)
         {
             var claims = new List<Claim>();
+            claims.Add(new Claim(IdentityData.UserIdClaimName, user.Id.ToString()));
+
             if (user.Role == Common.Enums.Role.Admin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
             return claims;

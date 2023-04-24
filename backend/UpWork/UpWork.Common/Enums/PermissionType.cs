@@ -3,6 +3,7 @@
     public enum PermissionType
     {
         None = 0,
-        BasicRead
+        BasicRead,
+        CreateUser
     }
 }

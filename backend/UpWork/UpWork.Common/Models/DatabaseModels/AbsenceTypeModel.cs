@@ -1,4 +1,6 @@
-﻿namespace UpWork.Common.Models.DatabaseModels
+﻿using System.Text.Json.Serialization;
+
+namespace UpWork.Common.Models.DatabaseModels
 {
     public class AbsenceTypeModel
     {
@@ -8,9 +10,9 @@
         public bool NeedApproval { get; set; }
         public bool IsActive { get; set; }
         public Guid OrganizationId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual OrganizationModel Organization { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public virtual ICollection<AbsenceModel> Absences { get; set; }
     }
 }
