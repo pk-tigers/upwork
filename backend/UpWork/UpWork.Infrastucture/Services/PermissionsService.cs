@@ -31,7 +31,7 @@ namespace UpWork.Infrastucture.Services
                 var permission = userPermData.Permissions
                     .Where(x => x.PermissionType == permType 
                     && x.GrantDate > DateTime.UtcNow
-                    && x.ExpirationDate.HasValue ? x.ExpirationDate.Value < DateTime.UtcNow : true);
+                    && x.ExpirationDate < DateTime.UtcNow);
 
                 if (permission is null)
                     throw new UnauthorizedAccessException();
