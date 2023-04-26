@@ -1,0 +1,82 @@
+@import '../../../variables.scss';
+
+@media (min-width: 992px) {
+  .navbar .container-fluid,
+  .navbar,
+  .navbar-expand-lg .navbar-collapse,
+  .navbar-expand-lg .navbar-nav {
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: $white;
+    color: $dark-blue;
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: $dark-blue;
+    font-weight: 600;
+    font-size: 22px;
+  }
+
+  .navbar-brand {
+    margin-right: 3rem;
+  }
+
+  .navbar {
+    width: 20%;
+    height: 100vh;
+  }
+
+  .nav-item {
+    width: 150%;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+  }
+
+  mat-icon {
+    margin-right: 0.8rem;
+  }
+
+  //roundings left
+  li.active {
+    background: $light-blue;
+  }
+
+  //roundings right
+  li.active p:nth-child(1) {
+    position: absolute;
+    width: 15px;
+    background: $light-blue;
+    height: 20px;
+    right: 0px;
+    margin-top: -20px;
+  }
+
+  li.active p:nth-child(1)::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    background: $white;
+    height: 20px;
+    right: 0px;
+    border-bottom-right-radius: 18px;
+  }
+
+  li.active .rounding-bottom {
+    position: absolute;
+    width: 15px;
+    background: $light-blue;
+    height: 20px;
+    right: 0px;
+    margin-bottom: -1000px;
+  }
+
+  li.active .rounding-bottom::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    background: $white;
+    height: 20px;
+    right: 0px;
+    border-top-right-radius: 18px;
+  }
+}

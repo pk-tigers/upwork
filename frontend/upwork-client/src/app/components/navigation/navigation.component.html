@@ -1,0 +1,41 @@
+<div class="navigation-container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" routerLink="">
+            <img alt="logo" src="../../../assets/images/logo.svg" height="180vh">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item" (click)="onItemClick(0)" [class.active]="activeIndex === 0">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>dashboard</mat-icon>Dashboard</a>  
+                    <p class ="rounding-bottom"></p>
+                </li>
+                <li class="nav-item" (click)="onItemClick(1)" [class.active]="activeIndex === 1">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>person_outline</mat-icon>Profile</a>
+                    <p class="rounding-bottom"></p>
+                </li>
+                <li class="nav-item" (click)="onItemClick(2)" [class.active]="activeIndex === 2">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>beach_access</mat-icon>Time off</a>
+                    <p class="rounding-bottom"></p>
+                </li>
+                <li class="nav-item" (click)="onItemClick(3)" [class.active]="activeIndex === 3">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>calendar_today</mat-icon>Calendar</a>
+                    <p class="rounding-bottom"></p>
+                </li>
+                <li class="nav-item" (click)="onItemClick(4)" [class.active]="activeIndex === 4">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>settings</mat-icon>Settings</a>
+                    <p class="rounding-bottom"></p>
+                </li>
+                <li class="nav-item" (click)="onItemClick(5)" [class.active]="activeIndex === 5">
+                    <p></p>
+                    <a class="nav-link" routerLink="#"><mat-icon>event_note</mat-icon>Requests</a>
+                    <p class="rounding-bottom"></p>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
