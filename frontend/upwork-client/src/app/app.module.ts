@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -25,8 +26,8 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ['example.com'],
-        disallowedRoutes: ['http://example.com/examplebadroute/'],
+        allowedDomains: [environment.allowedDomains],
+        disallowedRoutes: [],
       },
     }),
   ],
