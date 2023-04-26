@@ -1,7 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using UpWork.Api.Requirements;
+using UpWork.Api.Requirements.Handlers;
+using UpWork.Common.Dto;
+using UpWork.Common.DTO;
+using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Database;
@@ -42,7 +50,15 @@ namespace UpWork.Api.Extensions
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(IdentityData.AdminUserPolicyName, p => p.RequireClaim(IdentityData.AdminUserClaimName, "true"));
+                options.AddPolicy(IdentityData.AdminUserPolicy, policy => policy.RequireClaim(IdentityData.AdminUserClaimName, "true"));
+
+                options.AddPolicy(IdentityData.CreateUserPolicy, 
+                    policy => policy
+                    .RequireClaim(IdentityData.OrganizationIdClaimName)
+                    .RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CreateUser.ToString()));
+
+                options.AddPolicy(IdentityData.MatchOrganizationIdQueryPolicy, policy => policy.Requirements.Add(new MatchOrganizationQueryRequirement()));
+                options.AddPolicy(IdentityData.MatchOrganizationIdBodyPolicy, policy => policy.Requirements.Add(new MatchOrganizationBodyRequirement()));
             });
         }
 
@@ -62,6 +78,9 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IEncodeService, EncodeService>();
             services.AddScoped<IPermissionsService, PermissionsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
+
         }
 
         public static void AddCustomCors(this IServiceCollection services)
