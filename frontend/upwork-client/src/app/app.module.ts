@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { ToastrModule } from 'ngx-toastr';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -23,6 +23,13 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      closeButton: true,
+      preventDuplicates: true,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
