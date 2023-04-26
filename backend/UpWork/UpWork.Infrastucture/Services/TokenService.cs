@@ -67,7 +67,7 @@ namespace UpWork.Infrastucture.Services
             return tokenString;
         }
 
-        private List<Claim> GetUserClaims(UserModel user)
+        private static List<Claim> GetUserClaims(UserModel user)
         {
             var claims = new List<Claim>
             {
@@ -81,7 +81,7 @@ namespace UpWork.Infrastucture.Services
             return claims;
         }
 
-        private void AddPermissionClaims(List<Claim> claims, UserModel user)
+        private static void AddPermissionClaims(List<Claim> claims, UserModel user)
         {
             if (!user.OrganizationId.HasValue) return;
             
