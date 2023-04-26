@@ -20,7 +20,7 @@ export class LoginComponent {
     private router: Router
   ) {
     if (this.userService.isUserAuthenticated) {
-      // TODO: navigate to home page. No need to log again
+      this.router.navigate(['/']);
     }
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
@@ -36,7 +36,6 @@ export class LoginComponent {
     };
     this.userService.login(credentials).subscribe(loggedIn => {
       if (loggedIn) this.router.navigate(['/']);
-      else this.loginForm.reset();
     });
   }
 }
