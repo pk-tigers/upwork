@@ -37,7 +37,6 @@ export class UserService {
       .post<AuthenticatedResponse>(`${environment.apiUrl}/token`, loginModel)
       .pipe(
         map((res: AuthenticatedResponse) => {
-          console.log(res);
           if (!res) return false;
           this.setUser(res);
           this.tokenService.setToken(res);
@@ -54,18 +53,14 @@ export class UserService {
   private setUser(auth: AuthenticatedResponse | null): void {
     if (!auth) return;
     const roles = this.getUserClams(auth);
-    console.log('roles: ' + roles); //! delete
-    const user = {
-      token: auth.token,
+    const user: User = {
       roles: roles,
-    } as User;
+    };
     this.user.next(user);
   }
 
-  private getUserClams(auth: AuthenticatedResponse): string {
+  private getUserClams(auth: AuthenticatedResponse): string[] {
     const token: any = this.jwtHelper.decodeToken(auth.token);
-    return token[
-      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-    ];
+    return []; // TODO: get user roles when added
   }
 }
