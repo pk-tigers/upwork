@@ -37,8 +37,20 @@ namespace UpWork.Infrastucture.Services
                 Password = _encodeService.EncodePassword(generatedPassword)
             };
 
+            if (registerDto.OrganizationId.HasValue)
+            {
+                newUser.Permissions = new List<PermissionModel>();
+                var basicPerm = new PermissionModel()
+                {
+                    PermissionType = Common.Enums.PermissionType.BasicRead,
+                    GrantDate = DateTime.UtcNow
+                };
+                newUser.Permissions.Add(basicPerm);
+            }
+
             _context.Add(newUser);
             _context.SaveChanges();
+
 
             //TODO send email to user with generated password
 
