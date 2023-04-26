@@ -18,7 +18,7 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public bool VerifyPermission(Guid userId, PermissionType permType, Guid? organizationId)
+        public bool VerifyPermissionDatabase(Guid userId, PermissionType permType, Guid? organizationId)
         {
             try
             {
@@ -30,8 +30,8 @@ namespace UpWork.Infrastucture.Services
 
                 var permission = userPermData.Permissions
                     .Where(x => x.PermissionType == permType 
-                    && x.GrantDate > DateTime.UtcNow
-                    && x.ExpirationDate < DateTime.UtcNow);
+                    && x.GrantDate < DateTime.UtcNow
+                    && x.ExpirationDate.GetValueOrDefault(DateTime.MaxValue) > DateTime.UtcNow);
 
                 if (permission is null)
                     throw new UnauthorizedAccessException();
