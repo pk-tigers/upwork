@@ -3,7 +3,7 @@
 
 .navigation-container {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
 }
 
@@ -22,6 +22,7 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: start;
+  flex-wrap: nowrap;
   background-color: $white;
   color: $dark-blue;
 }
