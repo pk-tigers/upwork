@@ -1,82 +1,112 @@
 @import '../../../variables.scss';
 
-@media (min-width: 992px) {
-  .navbar .container-fluid,
-  .navbar,
-  .navbar-expand-lg .navbar-collapse,
-  .navbar-expand-lg .navbar-nav {
-    flex-direction: column;
-    align-items: flex-end;
-    background-color: $white;
-    color: $dark-blue;
-  }
 
-  .navbar-light .navbar-nav .nav-link {
-    color: $dark-blue;
-    font-weight: 600;
-    font-size: 22px;
-  }
+.navigation-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
 
-  .navbar-brand {
-    margin-right: 3rem;
-  }
+.content-container {
+  width: 100%;
+}
 
-  .navbar {
-    width: 20%;
-    height: 100vh;
-  }
+.upwork-nav-brand {
+  margin: 0 15px;
+}
 
-  .nav-item {
-    width: 150%;
-    border-top-left-radius: 18px;
-    border-bottom-left-radius: 18px;
-  }
+.navbar .container-fluid,
+.navbar,
+.navbar-expand-lg .navbar-collapse,
+.navbar-expand-lg .navbar-nav {
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: start;
+  background-color: $white;
+  color: $dark-blue;
+}
 
-  mat-icon {
-    margin-right: 0.8rem;
-  }
+.navbar-light .navbar-nav .nav-link {
+  color: $dark-blue;
+  font-weight: 600;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+}
 
-  //roundings left
-  li.active {
-    background: $light-blue;
-  }
+.navbar-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 25px;
+}
 
-  //roundings right
-  li.active p:nth-child(1) {
-    position: absolute;
-    width: 15px;
-    background: $light-blue;
-    height: 20px;
-    right: 0px;
-    margin-top: -20px;
-  }
+.navbar {
+  width: 250px;
+  height: 100%;
+}
 
-  li.active p:nth-child(1)::after {
-    content: '';
-    position: absolute;
-    width: 15px;
-    background: $white;
-    height: 20px;
-    right: 0px;
-    border-bottom-right-radius: 18px;
-  }
+.nav-items-container {
+  width: 100%;
+}
 
-  li.active .rounding-bottom {
-    position: absolute;
-    width: 15px;
-    background: $light-blue;
-    height: 20px;
-    right: 0px;
-    margin-bottom: -1000px;
-  }
+.nav-item-div {
+  width: 90%;
+  margin: 5px 0;
+}
 
-  li.active .rounding-bottom::after {
-    content: '';
-    position: absolute;
-    width: 15px;
-    background: $white;
-    height: 20px;
-    right: 0px;
-    border-top-right-radius: 18px;
-  }
+.nav-item {
+  width: 100%;
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+
+.nav-link > mat-icon {
+  margin-right: 20px;
+}
+
+//roundings left
+li.active {
+  background: $light-blue;
+}
+
+//roundings right
+li.active p:nth-child(1) {
+  position: absolute;
+  width: 15px;
+  background: $light-blue;
+  height: 20px;
+  right: 0px;
+  margin-top: -20px;
+}
+
+li.active p:nth-child(1)::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  background: $white;
+  height: 20px;
+  right: 0px;
+  border-bottom-right-radius: 18px;
+}
+
+li.active .rounding-bottom {
+  position: absolute;
+  width: 15px;
+  background: $light-blue;
+  height: 20px;
+  right: 0px;
+  margin-bottom: -1000px;
+}
+
+li.active .rounding-bottom::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  background: $white;
+  height: 20px;
+  right: 0px;
+  border-top-right-radius: 18px;
 }

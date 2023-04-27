@@ -9,11 +9,23 @@ import { Router } from '@angular/router';
 export class NavigationComponent implements OnInit {
   activeIndex = 0;
 
-  constructor() {}
+  MENU_DATA = [
+    { icon: "dashboard", text: "Dashboard", router_link: "" }, 
+    { icon: "person_outline", text: "Profile", router_link: "" },
+    { icon: "beach_access", text: "Time off", router_link: "" },
+    { icon: "calendar_today", text: "Calendar", router_link: "" },
+    { icon: "settings", text: "Settings", router_link: "" },
+    { icon: "event_note", text: "Requests", router_link: "" }];
 
-  ngOnInit(): void {}
+  constructor() { }
+
+  ngOnInit(): void { }
 
   onItemClick(index: number) {
     this.activeIndex = index;
+  }
+
+  isMenuActive(index: number) {
+    return this.activeIndex == index;
   }
 }
