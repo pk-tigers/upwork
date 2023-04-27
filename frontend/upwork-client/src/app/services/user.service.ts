@@ -14,7 +14,6 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
   private user = new BehaviorSubject<User | null>(null);
   public user$ = this.user.asObservable();
-  private controllerUrl = `${environment.apiUrl}/user`;
 
   constructor(
     private http: HttpClient,
@@ -33,13 +32,15 @@ export class UserService {
     return false;
   }
 
-  public login(loginModel: LoginModel): Observable<AuthenticatedResponse> {
+  public login(loginModel: LoginModel): Observable<boolean> {
     return this.http
-      .post<AuthenticatedResponse>(`${this.controllerUrl}/login`, loginModel)
+      .post<AuthenticatedResponse>(`${environment.apiUrl}/token`, loginModel)
       .pipe(
         map((res: AuthenticatedResponse) => {
+          if (!res) return false;
           this.setUser(res);
-          return res;
+          this.tokenService.setToken(res);
+          return true;
         })
       );
   }
@@ -52,17 +53,14 @@ export class UserService {
   private setUser(auth: AuthenticatedResponse | null): void {
     if (!auth) return;
     const roles = this.getUserClams(auth);
-    const user = {
-      token: auth.token,
+    const user: User = {
       roles: roles,
-    } as User;
+    };
     this.user.next(user);
   }
 
-  private getUserClams(auth: AuthenticatedResponse): string {
+  private getUserClams(auth: AuthenticatedResponse): string[] {
     const token: any = this.jwtHelper.decodeToken(auth.token);
-    return token[
-      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-    ];
+    return []; // TODO: get user roles when added
   }
 }

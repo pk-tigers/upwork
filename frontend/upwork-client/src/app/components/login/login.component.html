@@ -3,8 +3,8 @@
     <div class="form-group">
       <!-- Email input -->
       <div class="form-outline mb-4">
-        <input type="text" formControlName="username" class="form-control" />
-        <label class="form-label" for="username">Email address</label>
+        <input type="email" formControlName="email" class="form-control" />
+        <label class="form-label" for="email">Email address</label>
       </div>
 
       <!-- Password input -->
@@ -17,7 +17,10 @@
       </div>
 
       <!-- Submit button -->
-      <button type="button" class="btn btn-primary btn-block mb-4">
+      <button
+        type="button"
+        class="btn btn-primary btn-block mb-4"
+        (click)="onSubmit()">
         Sign in
       </button>
     </div>

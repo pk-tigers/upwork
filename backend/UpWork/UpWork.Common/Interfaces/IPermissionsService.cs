@@ -4,6 +4,6 @@ namespace UpWork.Common.Interfaces
 {
     public interface IPermissionsService
     {
-        bool VerifyPermission(Guid userId, PermissionType permType, Guid? organizationId);
+        bool VerifyPermissionDatabase(Guid userId, PermissionType permType, Guid? organizationId);
     }
 }

@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using UpWork.Common.DTO;
+using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
@@ -34,7 +35,7 @@ namespace UpWork.Infrastucture.Services
                 if (loginData == null || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password))
                     return false;
 
-                var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email).FirstOrDefault();
+                var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email).Include(x => x.Permissions).FirstOrDefault();
 
                 if (userModel is null)
                     return false;
@@ -66,14 +67,34 @@ namespace UpWork.Infrastucture.Services
             return tokenString;
         }
 
-        private List<Claim> GetUserClaims(UserModel user)
+        private static List<Claim> GetUserClaims(UserModel user)
         {
-            var claims = new List<Claim>();
-            claims.Add(new Claim(IdentityData.UserIdClaimName, user.Id.ToString()));
+            var claims = new List<Claim>
+            {
+                new Claim(IdentityData.UserIdClaimName, user.Id.ToString())
+            };
 
-            if (user.Role == Common.Enums.Role.Admin)
+            if (user.Role == Role.Admin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
+
+            AddPermissionClaims(claims, user);
             return claims;
+        }
+
+        private static void AddPermissionClaims(List<Claim> claims, UserModel user)
+        {
+            if (!user.OrganizationId.HasValue) return;
+            
+            claims.Add(new Claim(IdentityData.OrganizationIdClaimName, user.OrganizationId.ToString()));
+
+            if (user.Permissions == null) return;
+            
+            var userPerms = user.Permissions.Where(x => x.GrantDate < DateTime.UtcNow && x.ExpirationDate.GetValueOrDefault(DateTime.MaxValue) > DateTime.UtcNow);
+
+            foreach (var perm in userPerms)
+            {
+                claims.Add(new Claim(IdentityData.PermissionsClaimName, perm.PermissionType.ToString()));
+            }
         }
     }
 }
