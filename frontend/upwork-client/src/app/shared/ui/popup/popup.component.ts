@@ -6,7 +6,6 @@ import { Component,Input,OnInit } from '@angular/core';
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent {
-
   closePopup(){
     document.querySelector(".popup-content")?.remove();
   }
@@ -23,13 +22,6 @@ export class PopupComponent {
 
   ngOnInit(): void {
     const popup=document.querySelector(".popup-content") as HTMLElement;
-    if(this.width){
-      popup.style.width=this.width;
-    }
-    if(this.height){
-      popup.style.height=this.height;
-    }
-    
   
   }
   //Width of the popup with units, default 500px
