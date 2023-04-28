@@ -1,82 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@import '_variables';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-/* Primary button css */
-.upwork-btn-primary{
-
-    
-    font-weight: 500;
-    font-size: 20px;
-    color: #000000;
-    background-color: #f8c48c;
-    padding: 10px 30px;
-    border: solid #f8c48c 2px;
-    border-radius: 19px;
-    transition : 255ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
+html,
+body {
+    height: 100%;
 }
-    
-.upwork-btn-primary:hover{
-    
-    transition : 255ms;
-    padding: 10px 30px;
-    transform : translateY(-2px);
-    background-color: #f8c48c;
-    color: #3b4a84;
-    border: solid 2px #3b4a84;
-}
-
-// Secondary button css
-
-.upwork-btn-secondary{
-
-    font-weight: 500;
-    font-size: 20px;
-    color: #000000;
-    background-color: #c2bdb7;
-    padding: 10px 30px;
-    border: solid #c2bdb7 2px;
-    border-radius: 19px;
-    transition : 255ms;
-    transform: translateY(0);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-}
-    
-.upwork-btn-secondary:hover{
-    
-    transition : 255ms;
-    padding: 10px 30px;
-    transform : translateY(-2px);
-    background-color: #c2bdb7;
-    color: #3b4a84;
-    border: none;
-    border: solid 2px #3b4a84;
-}
-
-//Input css
-.upwork-input {
-    padding: 7px;
-    font-size: 32px;
-    border-width: 1px;
-    border-color: #cccccc;
-    background-color: #92A7FF;
-    color: #FFFFFF;
-    border-style: solid;
-    border-radius: 11px;
-    box-shadow: 0px 4px 4px 0px #00000040;
-    text-align:center;
-    outline-width: 0;
-}
-
-.upwork-input:focus-visible{
-    border: 2px solid #3b4a84;
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    background-color: $light-blue;
 }
