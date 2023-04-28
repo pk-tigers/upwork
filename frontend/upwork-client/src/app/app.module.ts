@@ -21,11 +21,11 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    LoginComponent, 
-    DropdownSelectComponent, 
-    PopupComponent, 
-    NavigationComponent
+    AppComponent,
+    LoginComponent,
+    DropdownSelectComponent,
+    PopupComponent,
+    NavigationComponent,
   ],
   imports: [
     BrowserModule,

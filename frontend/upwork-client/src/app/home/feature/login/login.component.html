@@ -25,5 +25,20 @@
       </button>
     </div>
   </form>
-
 </div>
+
+<app-dropdown-select
+  name="employee"
+  defaultText="Select"
+  [displayValues]="['A', 'V', 'C']"
+  [actualValues]="['1', '2', '3']"
+  selectedValue="1"
+  displayedValue="F"></app-dropdown-select>
+
+<app-popup
+  popupTitle="new popup"
+  popupInfo="Are you sure?"
+  btnPrimaryText="Yes"
+  btnSecondaryText="NO!"></app-popup>
+
+<input matInput class="upwork-input" type="text" />
