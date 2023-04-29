@@ -1,33 +1,38 @@
-import { Component,Input,OnInit } from '@angular/core';
-
+import { Component,Input,OnInit, Inject} from '@angular/core';
+import {
+  MatDialog, 
+  MatDialogRef, 
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent {
-
   closePopup(){
-    document.querySelector(".popup-content")?.remove();
+    this.dialogRef.close('primary');
   }
   
-  constructor() {
-    this.width="500px";
-    this.height="300px";
-    this.popupTitle="Popup";
-    this.popupInfo="Confirm choice?";
-    this.btnPrimaryText="Accept";
-    this.btnSecondaryText="Decline";
-    this.btnSecondaryFunction=this.closePopup;
+  
+  constructor(public dialogRef: MatDialogRef<PopupComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.width="500px";
+      this.height="300px";
+      this.popupTitle="Popup";
+      this.popupInfo="Confirm choice?";
+      this.btnPrimaryText="Accept";
+      this.btnSecondaryText="Decline";
+      this.btnSecondaryFunction=this.closePopup;
   }
 
   ngOnInit(): void {
     const popup=document.querySelector(".popup-content") as HTMLElement;
-    if(this.width){
-      popup.style.width=this.width;
+    if  (this.width)  {
+      popup.style.width=this.data.width;
     }
-    if(this.height){
-      popup.style.height=this.height;
+    if  (this.height) {
+      popup.style.height=this.data.height;
     }
     
   
