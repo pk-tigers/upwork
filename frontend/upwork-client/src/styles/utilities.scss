@@ -1,8 +1,10 @@
+
+@import '../_variables';
 .upwork-btn {
     min-width: 80px;
     min-height: 40px;
     font-weight: 500;
-    color: #000000;
+    color: $black;
     padding: 8px 20px;
     border: solid 2px;
     border-radius: 5px;
@@ -16,25 +18,25 @@
 }
 
 .upwork-btn-primary {
-    background-color: #f8c48c;
-    border-color: #f8c48c;
+    background-color: $light-orange;
+    border-color: $light-orange;
 }
 
 .upwork-btn-secondary{
-    background-color: #c2bdb7;
-    border-color: #c2bdb7;
+    background-color: $light-beige;
+    border-color: $light-beige;
 }
     
 .upwork-btn:hover{
     transition : 255ms;
-    color: #3b4a84;
+    color: $dark-blue;
     border: none;
-    border: solid 2px #3b4a84;
+    border: solid 2px $dark-blue;
 }
 
 .upwork-input {
     font-weight: 500;
-    border-color: #3b4a84;
+    border-color: $dark-blue;
     border-style: solid;
     border-radius: 5px;
     outline-width: 0;
@@ -44,26 +46,33 @@
 }
 
 .upwork-input:focus-visible{
-    border: 2px solid #cccccc;
+    border: 2px solid $light-grey;
 }
-+
-//Matselect
 
+//Matselect
+// <mat-form-field class="upwork-select-form" appearance="fill">
+  
+//     <mat-select class="upwork-select"  panelClass="upwork-panel">
+//       <mat-option value="red">Red</mat-option>
+//       <mat-option value="green">Green</mat-option>
+//       <mat-option value="blue">Blue</mat-option>
+//     </mat-select>
+//   </mat-form-field>
 //panelClass="upwork-panel"
 .upwork-panel.mat-mdc-select-panel mat-option:hover {
-    background-color: #92a7ff !important;
+    background-color: $light-blue;
 }
+.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled):hover{
 
+    background-color: $light-blue;
+  }
 //mat-form-field class="upwork-select-form"
 .upwork-select-form .mat-mdc-text-field-wrapper{
-    border: 2px solid #3b4a84 !important;
+    border: 2px solid $dark-blue;
 }
 
 //mat-select class="upwork-select"
 .mat-mdc-select-arrow svg {
-    color: #3b4a84 ;
+    color: $dark-blue;
 }
   
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

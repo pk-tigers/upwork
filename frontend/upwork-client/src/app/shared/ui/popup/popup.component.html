@@ -1,27 +1,17 @@
-<div class="popup-content">
-  <div class="close-button" (click)="closePopup()">X</div>
-
+<div class="popup-content" >
+  <div class="close-button" (click)="closePopup()" ><mat-icon>close</mat-icon></div>
   <div class="popup-header">
-    <div>
-      {{ popupTitle ? popupTitle : 'Popup' }}
-    </div>
+      <div>
+       {{data.popupTitle ? data.popupTitle : 'Popup'}} 
+      </div>
   </div>
   <div class="popup-body">
-    <div class="popup-info">
-      {{ popupInfo ? popupInfo : 'Confirm choice?' }}
-    </div>
-    <div class="popup-buttons-container">
-      <div
-        class="upwork-btn upwork-btn-primary"
-        (click)="btnPrimaryFunction ? btnPrimaryFunction() : false">
-        {{ btnPrimaryText ? btnPrimaryText : 'Accept' }}
+      <div class="popup-info">  {{data.popupInfo ? data.popupInfo : 'Confirm choice?'}}</div>
+      <div class="popup-buttons-container">
+          <div class="upwork-btn upwork-btn-primary" (click)="btnPrimaryFunction ? btnPrimaryFunction() : false">{{data.btnPrimaryText ? data.btnPrimaryText : 'Accept'}}</div>
+          <div class="upwork-btn upwork-btn-secondary"   (click) ="btnSecondaryFunction ? btnSecondaryFunction() : closePopup()" >{{data.btnSecondaryText ? data.btnSecondaryText : 'Decline'}}</div>
       </div>
-      <div
-        class="upwork-btn upwork-btn-secondary"
-        (click)="btnSecondaryFunction ? btnSecondaryFunction() : closePopup()">
-        {{ btnSecondaryText ? btnSecondaryText : 'Decline' }}
-      </div>
-    </div>
   </div>
-  <!-- <input matInput class="upwork-input" type="text"> -->
+  
+
 </div>
