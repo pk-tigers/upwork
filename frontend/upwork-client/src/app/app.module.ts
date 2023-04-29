@@ -13,6 +13,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -33,6 +36,9 @@ export function tokenGetter() {
     ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,
