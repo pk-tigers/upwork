@@ -46,3 +46,24 @@
 .upwork-input:focus-visible{
     border: 2px solid #cccccc;
 }
++
+//Matselect
+
+//panelClass="upwork-panel"
+.upwork-panel.mat-mdc-select-panel mat-option:hover {
+    background-color: #92a7ff !important;
+}
+
+//mat-form-field class="upwork-select-form"
+.upwork-select-form .mat-mdc-text-field-wrapper{
+    border: 2px solid #3b4a84 !important;
+}
+
+//mat-select class="upwork-select"
+.mat-mdc-select-arrow svg {
+    color: #3b4a84 ;
+}
+  
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
