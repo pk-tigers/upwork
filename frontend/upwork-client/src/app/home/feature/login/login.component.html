@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center p-2">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <!-- Email input -->
+      <div class="form-outline mb-4">
+        <input type="email" formControlName="email" class="form-control" />
+        <label class="form-label" for="email">Email address</label>
+      </div>
+
+      <!-- Password input -->
+      <div class="form-outline mb-4">
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control" />
+        <label class="form-label" for="password">Password</label>
+      </div>
+
+      <!-- Submit button -->
+      <button
+        type="button"
+        class="btn btn-primary btn-block mb-4"
+        (click)="onSubmit()">
+        Sign in
+      </button>
+    </div>
+  </form>
+</div>
+
+<app-dropdown-select
+  name="employee"
+  defaultText="Select"
+  [displayValues]="['A', 'V', 'C']"
+  [actualValues]="['1', '2', '3']"
+  selectedValue="1"
+  displayedValue="F"></app-dropdown-select>
+
+<app-popup
+  popupTitle="new popup"
+  popupInfo="Are you sure?"
+  btnPrimaryText="Yes"
+  btnSecondaryText="NO!"></app-popup>
+
+<input matInput class="upwork-input" type="text" />

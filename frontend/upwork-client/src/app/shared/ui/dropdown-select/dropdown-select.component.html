@@ -1,0 +1,30 @@
+<div id="dropdown-{{ selectName }}" class="dropdown">
+  <input
+    id="dropdown-input-{{ selectName }}"
+    class="dropdown-input-value"
+    type="hidden"
+    value="{{ selectedValue ? selectedValue : '' }}" />
+  <input
+    type="text"
+    class="textBox dropdown-input-display"
+    placeholder="{{ defaultText }}"
+    value="{{
+      displayedValue
+        ? displayedValue
+        : selectedValue && displayValues
+        ? displayValues[actualValues.indexOf(selectedValue)]
+        : selectedValue
+        ? selectedValue
+        : ''
+    }}"
+    readonly />
+  <div class="options">
+    <div
+      class="option"
+      (click)="buttonPressed($event, selectName)"
+      attr.value="{{ actualValues[i] }}"
+      *ngFor="let option of actualValues; let i = index">
+      {{ displayValues ? displayValues[i] : actualValues[i] }}
+    </div>
+  </div>
+</div>

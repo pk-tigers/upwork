@@ -1,0 +1,48 @@
+.upwork-btn {
+    min-width: 80px;
+    min-height: 40px;
+    font-weight: 500;
+    color: #000000;
+    padding: 8px 20px;
+    border: solid 2px;
+    border-radius: 5px;
+    transition : 255ms;
+    transform: translateY(0);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.upwork-btn-primary {
+    background-color: #f8c48c;
+    border-color: #f8c48c;
+}
+
+.upwork-btn-secondary{
+    background-color: #c2bdb7;
+    border-color: #c2bdb7;
+}
+    
+.upwork-btn:hover{
+    transition : 255ms;
+    color: #3b4a84;
+    border: none;
+    border: solid 2px #3b4a84;
+}
+
+.upwork-input {
+    font-weight: 500;
+    border-color: #3b4a84;
+    border-style: solid;
+    border-radius: 5px;
+    outline-width: 0;
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+}
+
+.upwork-input:focus-visible{
+    border: 2px solid #cccccc;
+}
