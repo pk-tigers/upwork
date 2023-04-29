@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './home/feature/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownSelectComponent } from './shared/ui/dropdown-select/dropdown-select.component';
 import { PopupComponent } from './shared/ui/popup/popup.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NavigationComponent } from './home/feature/navigation/navigation.component';
@@ -23,7 +22,6 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginComponent,
-    DropdownSelectComponent,
     PopupComponent,
     NavigationComponent,
   ],
