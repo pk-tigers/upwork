@@ -28,7 +28,7 @@
             "style": "kebab-case"
           }
         ],
-        "linebreak-style": ["error", "unix | windows"],
+        "linebreak-style": ["error", "unix"],
         "prettier/prettier": [
           "error",
           {
