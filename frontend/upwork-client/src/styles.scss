@@ -1,12 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
 @import '_variables';
+@import 'src/styles/utilities.scss';
+@import 'src/styles/containers.scss';
 
 html,
 body {
-  height: 100%;
+    height: 100%;
 }
 body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background-color: $light-blue;
+    margin: 0;
+    background-color: $light-blue;
+}
+
+* {
+    font-size: 16px;
 }

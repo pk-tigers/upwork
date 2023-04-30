@@ -1,4 +1,4 @@
-@import '../../../variables.scss';
+@import '../../../../_variables.scss';
 
 
 .navigation-container {
@@ -30,7 +30,6 @@
 .navbar-light .navbar-nav .nav-link {
   color: $dark-blue;
   font-weight: 600;
-  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -110,4 +109,24 @@ li.active .rounding-bottom::after {
   height: 20px;
   right: 0px;
   border-top-right-radius: 18px;
+}
+
+@media screen and (max-width: 768px) {
+
+  .nav-text-link {
+      display: none;
+  }
+
+  .nav-link > mat-icon {
+    margin-right: 0;
+  }
+
+  .navbar {
+    width: 60px;
+    padding-top: 30px;
+  }
+
+  .upwork-nav-brand {
+    display: none;
+  }
 }
