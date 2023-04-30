@@ -8,8 +8,7 @@
 .upwork-default-container {
     display: flex;
     justify-content: center;
-    width: 100%;
-    margin: 20px 5px;
+    margin: 20px 10px;
 }
 
 .upwork-default-content-container {
@@ -41,6 +40,6 @@
 @media screen and (max-width: 1024px) {
 
     .upwork-default-content-container {
-        min-width: 520px;
+        min-width: 90%;
     }
 }
