@@ -110,3 +110,23 @@ li.active .rounding-bottom::after {
   right: 0px;
   border-top-right-radius: 18px;
 }
+
+@media screen and (max-width: 768px) {
+
+  .nav-text-link {
+      display: none;
+  }
+
+  .nav-link > mat-icon {
+    margin-right: 0;
+  }
+
+  .navbar {
+    width: 60px;
+    padding-top: 30px;
+  }
+
+  .upwork-nav-brand {
+    display: none;
+  }
+}

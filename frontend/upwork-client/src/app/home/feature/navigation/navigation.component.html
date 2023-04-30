@@ -15,7 +15,7 @@
             <p *ngIf="isMenuActive(i)"></p>
             <a class="nav-link" routerLink="{{ element.router_link }}"
               ><mat-icon>{{ element.icon }}</mat-icon
-              >{{ element.text }}</a
+              ><span class="nav-text-link">{{ element.text }}</span></a
             >
             <p class="rounding-bottom" *ngIf="isMenuActive(i)"></p>
           </li>
