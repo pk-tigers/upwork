@@ -34,6 +34,9 @@
     border: solid 2px $dark-blue;
 }
 
+
+// <input matInput type="text" class="upwork-input" />
+
 .upwork-input {
     font-weight: 500;
     border-color: $dark-blue;
@@ -41,38 +44,60 @@
     border-radius: 5px;
     outline-width: 0;
     width: 100%;
-    height: 40px;
-    padding: 5px;
+    height: 38px;
+    padding: 5px 5px 5px 10px;
+    border-width: 2px;
 }
 
 .upwork-input:focus-visible{
     border: 2px solid $light-grey;
 }
 
-//Matselect
-// <mat-form-field class="upwork-select-form" appearance="fill">
-  
-//     <mat-select class="upwork-select"  panelClass="upwork-panel">
+
+// <mat-select class="upwork-select" panelClass="upwork-select-panel">
 //       <mat-option value="red">Red</mat-option>
 //       <mat-option value="green">Green</mat-option>
 //       <mat-option value="blue">Blue</mat-option>
-//     </mat-select>
-//   </mat-form-field>
-//panelClass="upwork-panel"
-.upwork-panel.mat-mdc-select-panel mat-option:hover {
+// </mat-select>
+
+.upwork-select {
+    font-weight: 500;
+    border-color: $dark-blue;
+    border-style: solid;
+    border-radius: 5px;
+    outline-width: 0;
+    width: 100%;
+    height: 38px;
+    padding: 5px 5px 5px 10px;
+    border-width: 2px;
+    background-color: $white;
+}
+
+.upwork-select-panel {
+    background-color: $white;
+    left: -12px;
+    top: 3px;
+    position: relative !important;
+    border-style: solid;
+    border-color: $dark-blue;
+    border-width: 0 2px 2px 2px;
+}
+.mat-mdc-option:hover:not(.mdc-list-item--disabled), .mat-mdc-option:focus:not(.mdc-list-item--disabled), .mat-mdc-option.mat-mdc-option-active, .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled) {
     background-color: $light-blue;
 }
-.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(.mdc-list-item--disabled):hover{
 
-    background-color: $light-blue;
-  }
-//mat-form-field class="upwork-select-form"
-.upwork-select-form .mat-mdc-text-field-wrapper{
-    border: 2px solid $dark-blue;
-}
-
-//mat-select class="upwork-select"
-.mat-mdc-select-arrow svg {
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after, .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
     color: $dark-blue;
 }
-  
+
+.mat-mdc-select-arrow svg {
+    color: $white;
+    height: 37px;
+    background-color: $dark-blue;
+    border: 2px solid $dark-blue;
+    border-radius: 0 5px 5px 0;
+}
+
+.mat-mdc-option {
+    min-height: 38px !important;
+}
