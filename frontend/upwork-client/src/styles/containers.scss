@@ -1,0 +1,46 @@
+// <div class="upwork-default-container">
+//       <div class="upwork-default-content-container">
+//         <div class="upwork-default-content-heading">heading</div>
+//         <div class="upwork-default-content-data">content</div>
+//       </div>
+// </div>
+
+.upwork-default-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 5px;
+}
+
+.upwork-default-content-container {
+    min-width: 750px;
+    filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.25));
+    border-radius: 20px;
+}
+
+.upwork-default-content-heading {
+    background-color: $dark-blue;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    min-height: 80px;
+    color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: larger;
+}
+
+.upwork-default-content-data {
+    background-color: $white;
+    border-radius: 0 0 20px 20px;
+    padding: 20px;
+    min-height: 300px;
+}
+
+@media screen and (max-width: 1024px) {
+
+    .upwork-default-content-container {
+        min-width: 520px;
+    }
+}
