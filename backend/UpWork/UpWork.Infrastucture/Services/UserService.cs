@@ -56,5 +56,19 @@ namespace UpWork.Infrastucture.Services
 
             return newUser;
         }
+
+        public UserModel GetUser(Guid Id)
+        {
+                
+            var user = _context.Users.Find(Id);
+            return user;
+        }
+
+        public void DeleteUser(Guid Id) 
+        {
+            var user = _context.Users.Find(Id);        
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+        }
     }
 }

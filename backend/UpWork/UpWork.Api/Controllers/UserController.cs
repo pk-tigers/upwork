@@ -33,5 +33,32 @@ namespace UpWork.Api.Controllers
 
             return Ok(res);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<UserModel> GetUser(Guid Id)
+        {
+            var res = _userService.GetUser(Id);
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(res);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(Guid Id)
+        {
+            var user = _userService.GetUser(Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _userService.DeleteUser(Id);
+            return Ok("User has been deleted");
+        }
     }
 }
