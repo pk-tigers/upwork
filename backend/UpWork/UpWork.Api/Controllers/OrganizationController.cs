@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UpWork.Common.DTO;
+using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 
@@ -19,6 +21,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDTO createOrganizationDTO)
         {
             OrganizationModel res = _organizationService.CreateOrganization(createOrganizationDTO);
@@ -27,6 +30,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public ActionResult<OrganizationModel> GetOrganization(Guid id)
         {
             var res = _organizationService.GetOrganization(id);
@@ -40,6 +44,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public IActionResult DeleteOrganization(Guid id)
         {
             var organization = _organizationService.GetOrganization(id);
@@ -55,6 +60,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost("addUser")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public ActionResult<OrganizationModel> AddUserToOrganization([FromBody] UserOrganizationDto userOrganizationDto)
         {
             var user = _userService.GetUser(userOrganizationDto.UserId);
@@ -79,6 +85,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpDelete("deleteUser")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public ActionResult<OrganizationModel> DeleteUserFromOrganization([FromBody] UserOrganizationDto userOrganizationDto)
         {
             var user = _userService.GetUser(userOrganizationDto.UserId);
