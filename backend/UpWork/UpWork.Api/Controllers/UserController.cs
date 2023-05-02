@@ -24,10 +24,10 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
+        //[Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
         public ActionResult<UserModel> CreateUser([FromBody] RegisterDto registerDto)
         {
-            _permissionsService.VerifyPermissionDatabase(User.Identity.GetUserId(), PermissionType.CreateUser, registerDto.OrganizationId);
+            //_permissionsService.VerifyPermissionDatabase(User.Identity.GetUserId(), PermissionType.CreateUser, registerDto.OrganizationId);
 
             UserModel res = _userService.CreateUser(registerDto);
 
