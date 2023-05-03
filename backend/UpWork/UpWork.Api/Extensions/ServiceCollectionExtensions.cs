@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -80,6 +81,7 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
+            SwaggerAuth(services);
 
         }
 
@@ -96,5 +98,37 @@ namespace UpWork.Api.Extensions
                 });
             });
         }
+
+        public static void SwaggerAuth(IServiceCollection services)
+        {
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UpWork", Version = "v1" });
+
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT",
+                        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below."
+                    });
+
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    }
+                                },
+                                new string[] {}
+                            }
+                        });
+                            });
+        }
+
     }
 }
