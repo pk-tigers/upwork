@@ -2,7 +2,7 @@
 
 namespace UpWork.Common.DTO
 {
-    public class CreateOrganizationDTO
+    public class CreateOrganizationDto
     {
         [Required]
         public string Name { get; set; }

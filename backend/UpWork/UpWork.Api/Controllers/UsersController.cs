@@ -11,12 +11,10 @@ namespace UpWork.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        private readonly IPermissionsService _permissionsService;
 
-        public UsersController(IUsersService usersService, IPermissionsService permissionsService)
+        public UsersController(IUsersService usersService)
         {
             _usersService = usersService;
-            _permissionsService=permissionsService;
         }
 
         [HttpGet]

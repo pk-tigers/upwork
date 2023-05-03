@@ -12,17 +12,15 @@ namespace UpWork.Api.Controllers
     public class OrganizationController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
-        private readonly IUserService _userService;
 
-        public OrganizationController(IOrganizationService organizationService, IUserService userService)
+        public OrganizationController(IOrganizationService organizationService)
         {
             _organizationService = organizationService;
-            _userService=userService;
         }
 
         [HttpPost]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDTO createOrganizationDTO)
+        public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDTO)
         {
             OrganizationModel res = _organizationService.CreateOrganization(createOrganizationDTO);
 
