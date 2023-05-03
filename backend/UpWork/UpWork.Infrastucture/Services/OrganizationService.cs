@@ -17,7 +17,7 @@ namespace UpWork.Infrastucture.Services
             _userService=userService;
         }
 
-        public OrganizationModel CreateOrganization(CreateOrganizationDTO organizationDTO)
+        public OrganizationModel CreateOrganization(CreateOrganizationDto organizationDTO)
         {
             var newOrganization = new OrganizationModel()
             {

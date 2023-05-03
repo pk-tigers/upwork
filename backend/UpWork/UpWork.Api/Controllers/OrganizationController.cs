@@ -20,9 +20,9 @@ namespace UpWork.Api.Controllers
 
         [HttpPost]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDTO)
+        public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
         {
-            OrganizationModel res = _organizationService.CreateOrganization(createOrganizationDTO);
+            OrganizationModel res = _organizationService.CreateOrganization(createOrganizationDto);
 
             return Ok(res);
         }

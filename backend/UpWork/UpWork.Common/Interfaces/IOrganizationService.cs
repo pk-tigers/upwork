@@ -7,7 +7,7 @@ namespace UpWork.Common.Interfaces
     {
         public OrganizationModel GetOrganization(Guid Id);
         public bool DeleteOrganization(Guid Id);
-        public OrganizationModel CreateOrganization(CreateOrganizationDTO organizationDTO);
+        public OrganizationModel CreateOrganization(CreateOrganizationDto organizationDTO);
         public OrganizationModel GetOrganizationWithUsers(Guid Id);
     }
 }
