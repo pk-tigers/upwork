@@ -7,7 +7,7 @@ namespace UpWork.Common.Interfaces
     {
         UserModel CreateUser(RegisterDto registerDto);
         UserModel GetUser(Guid Id);
-        void DeleteUser(Guid Id);
+        bool DeleteUser(Guid Id);
         
     }
 }

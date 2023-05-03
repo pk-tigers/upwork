@@ -64,11 +64,19 @@ namespace UpWork.Infrastucture.Services
             return user;
         }
 
-        public void DeleteUser(Guid Id) 
+        public bool DeleteUser(Guid Id)
         {
-            var user = _context.Users.Find(Id);        
+            var user = _context.Users.Find(Id);
+
+            if (user == null)
+            {
+                return false; 
+            }
+
             _context.Users.Remove(user);
             _context.SaveChanges();
+
+            return true; 
         }
     }
 }

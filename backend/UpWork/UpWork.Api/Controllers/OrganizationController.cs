@@ -45,73 +45,10 @@ namespace UpWork.Api.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public IActionResult DeleteOrganization(Guid id)
+        public ActionResult<bool> DeleteOrganization(Guid id)
         {
-            var organization = _organizationService.GetOrganization(id);
-
-            if (organization == null)
-            {
-                return NotFound("No organization to delete");
-            }
-
-            _organizationService.DeleteOrganization(id);
-
-            return Ok("Organization deleted");
+            return _organizationService.DeleteOrganization(id);
         }
-
-        [HttpPost("addUser")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<OrganizationModel> AddUserToOrganization([FromBody] UserOrganizationDto userOrganizationDto)
-        {
-            var user = _userService.GetUser(userOrganizationDto.UserId);
-            if(user == null)
-            {
-               return NotFound("User does not exist");
-            }
-
-            var organization = _organizationService.GetOrganizationWithUsers(userOrganizationDto.OrganizationId);
-            if( organization == null)
-            {
-                return NotFound("Organization not found");
-            }
-
-            if (organization.Users.Contains(user))
-            {
-                return BadRequest("User already exists in the organization");
-            }
-
-            _organizationService.AddUserToOrganization(userOrganizationDto);
-            return Ok("User added to organization");
-        }
-
-        [HttpDelete("deleteUser")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<OrganizationModel> DeleteUserFromOrganization([FromBody] UserOrganizationDto userOrganizationDto)
-        {
-            var user = _userService.GetUser(userOrganizationDto.UserId);
-            if (user == null)
-            {
-                return NotFound("User does not exist");
-            }
-
-            var organization = _organizationService.GetOrganizationWithUsers(userOrganizationDto.OrganizationId);
-            if (organization == null)
-            {
-                return NotFound("Organization not found");
-            }
-
-            if (!organization.Users.Contains(user))
-            {
-                return BadRequest("User has been removed");
-            }
-
-
-            _organizationService.DeleteUserFromOrganization(userOrganizationDto);
-            return Ok("User removed from organization");
-        }
-
-
-
 
     }
 }

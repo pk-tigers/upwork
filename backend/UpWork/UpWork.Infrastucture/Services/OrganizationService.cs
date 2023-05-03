@@ -9,10 +9,12 @@ namespace UpWork.Infrastucture.Services
     public class OrganizationService : IOrganizationService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
 
-        public OrganizationService(ApplicationDbContext context)
+        public OrganizationService(ApplicationDbContext context, IUserService userService)
         {
             _context = context;
+            _userService=userService;
         }
 
         public OrganizationModel CreateOrganization(CreateOrganizationDTO organizationDTO)
@@ -29,22 +31,6 @@ namespace UpWork.Infrastucture.Services
             return newOrganization;
         }
 
-        public void AddUserToOrganization(UserOrganizationDto userOrganizationDto)
-        {
-            var organization = _context.Organizations
-                .Include(o => o.Users)
-                .FirstOrDefault(o => o.Id == userOrganizationDto.OrganizationId);
-
-            var user = _context.Users.Find(userOrganizationDto.UserId);
-
-            if (organization != null)
-            {
-                organization.Users.Add(user);
-                _context.SaveChanges();
-            }
-
-        }
-
         public OrganizationModel GetOrganizationWithUsers(Guid Id)
         {
             var organization = _context.Organizations
@@ -59,29 +45,26 @@ namespace UpWork.Infrastucture.Services
             return organization;
         }
 
-        public void  DeleteOrganization(Guid Id)
-        {
-            var organization = _context.Organizations.Find(Id);
-            _context.Organizations.Remove(organization);
-            _context.SaveChanges();
-        }
-
-        public void DeleteUserFromOrganization(UserOrganizationDto userOrganizationDto)
+        public bool  DeleteOrganization(Guid Id)
         {
             var organization = _context.Organizations
                 .Include(o => o.Users)
-                .FirstOrDefault(o => o.Id == userOrganizationDto.OrganizationId);
+                .FirstOrDefault(x => x.Id == Id);
 
-            var user = _context.Users.Find(userOrganizationDto.UserId);
-
-            if (organization != null)
+            if (organization == null)
             {
-                organization.Users.Remove(user);
-                _context.SaveChanges();
+                return false;
             }
+
+            foreach (var user in organization.Users)
+            {
+                _userService.DeleteUser(user.Id); 
+            }
+
+            _context.Organizations.Remove(organization);
+            _context.SaveChanges();
+            return true;
         }
-
-
 
     }
 }
