@@ -81,7 +81,6 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
-            SwaggerAuth(services);
 
         }
 
@@ -99,7 +98,7 @@ namespace UpWork.Api.Extensions
             });
         }
 
-        public static void SwaggerAuth(IServiceCollection services)
+        public static void AddCustomSwaggerGen(this IServiceCollection services)
         {
                 services.AddSwaggerGen(c =>
                 {
