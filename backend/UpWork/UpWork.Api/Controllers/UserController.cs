@@ -49,6 +49,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public IActionResult DeleteUser(Guid Id)
         {
             var user = _userService.GetUser(Id);

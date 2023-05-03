@@ -37,8 +37,12 @@ namespace UpWork.Infrastucture.Services
 
             var user = _context.Users.Find(userOrganizationDto.UserId);
 
-            organization.Users.Add(user);
-            _context.SaveChanges();
+            if (organization != null)
+            {
+                organization.Users.Add(user);
+                _context.SaveChanges();
+            }
+
         }
 
         public OrganizationModel GetOrganizationWithUsers(Guid Id)
@@ -70,8 +74,11 @@ namespace UpWork.Infrastucture.Services
 
             var user = _context.Users.Find(userOrganizationDto.UserId);
 
-            organization.Users.Remove(user);
-            _context.SaveChanges();
+            if (organization != null)
+            {
+                organization.Users.Remove(user);
+                _context.SaveChanges();
+            }
         }
 
 

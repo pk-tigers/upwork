@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Infrastucture.Services;
@@ -18,6 +20,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
         public ActionResult<IEnumerable<OrganizationModel>> GetOrganizations()
         {
             var res = _organizationsService.GetOrganizations();
