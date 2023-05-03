@@ -33,5 +33,26 @@ namespace UpWork.Api.Controllers
 
             return Ok(res);
         }
+
+        [HttpGet("{id}")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        public ActionResult<UserModel> GetUser(Guid Id)
+        {
+            var res = _userService.GetUser(Id);
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(res);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        public ActionResult <bool> DeleteUser(Guid Id)
+        {
+            return _userService.DeleteUser(Id); 
+        }
     }
 }
