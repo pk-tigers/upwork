@@ -7,6 +7,7 @@ namespace UpWork.Common.Interfaces
     {
         IEnumerable<AbsenceModel> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip, int take);
         IEnumerable<AbsenceModel> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip, int take);
-        IEnumerable<AbsenceModel> GetAbsencesRequestsBySupervisorId(Guid supervisorId, ApprovalState? approvalState, int skip, int take);
+        IEnumerable<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
+        IEnumerable<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
     }
 }

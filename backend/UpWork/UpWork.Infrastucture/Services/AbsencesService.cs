@@ -32,17 +32,24 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
-        public IEnumerable<AbsenceModel> GetAbsencesRequestsBySupervisorId(Guid supervisorId, ApprovalState? approvalState, int skip, int take)
+        public IEnumerable<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
         {
             var res = _context.Absences
-                .Where(x => x.TimeOffSupervisorId == supervisorId);
-
-            if (approvalState is not null)
-                res = res.Where(x => x.ApprovalState == approvalState);
-
-            res = res.Skip(skip).Take(take);
+                .Where(x => x.TimeOffSupervisorId == supervisorId)
+                .Where(x => x.ApprovalState == ApprovalState.Pending)
+                .Skip(skip).Take(take);
 
             return res;                
+        }
+
+        public IEnumerable<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        {
+            var res = _context.Absences
+                .Where(x => x.TimeOffSupervisorId == supervisorId)
+                .Where(x => x.ApprovalState != ApprovalState.Pending)
+                .Skip(skip).Take(take);
+
+            return res;
         }
     }
 }
