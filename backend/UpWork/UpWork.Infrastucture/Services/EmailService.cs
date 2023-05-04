@@ -33,6 +33,7 @@ namespace UpWork.Infrastucture.Services
             client.Credentials = new NetworkCredential(_configuration["EmailSettings:Login"], _configuration["EmailSettings:Password"]);
 
             client.Send(mailMessage);
+            client.Dispose();
 #endif
         }
     }
