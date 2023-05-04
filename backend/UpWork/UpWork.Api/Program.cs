@@ -10,6 +10,7 @@ builder.Services.AddCustomServices(config);
 builder.Services.AddCustomDbContext(config);
 builder.Services.AddCustomAuth(config);
 builder.Services.AddCustomCors();
+builder.Services.AddCustomSwaggerGen();
 
 builder.Services.AddControllers(options =>
 {
@@ -17,7 +18,6 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

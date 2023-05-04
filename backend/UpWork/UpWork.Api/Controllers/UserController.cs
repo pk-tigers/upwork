@@ -10,6 +10,7 @@ using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
