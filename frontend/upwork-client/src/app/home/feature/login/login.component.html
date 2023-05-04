@@ -1,54 +1,39 @@
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">heading</div>
+    <div class="upwork-default-content-heading">Log In</div>
     <div class="upwork-default-content-data">
       <div class="d-flex justify-content-center p-2">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <!-- Email input -->
-            <div class="form-outline mb-4">
+            <div style="margin: 10px 0">
               <input
+                matInput
                 type="email"
                 formControlName="email"
-                class="form-control" />
+                class="upwork-input" />
               <label class="form-label" for="email">Email address</label>
             </div>
 
             <!-- Password input -->
-            <div class="form-outline mb-4">
+            <div style="margin: 10px 0">
               <input
+                matInput
                 type="password"
                 formControlName="password"
-                class="form-control" />
+                class="upwork-input" />
               <label class="form-label" for="password">Password</label>
             </div>
 
             <!-- Submit button -->
             <button
-              type="button"
-              class="btn btn-primary btn-block mb-4"
+              type="submit"
+              class="upwork-btn upwork-btn-primary"
               (click)="onSubmit()">
               Sign in
             </button>
           </div>
         </form>
-      </div>
-
-      <div style="margin: 10px">
-        <div>
-          <mat-select class="upwork-select" panelClass="upwork-select-panel">
-            <mat-option value="red">Red</mat-option>
-            <mat-option value="green">Green</mat-option>
-            <mat-option value="blue">Blue</mat-option>
-          </mat-select>
-        </div>
-
-        <div style="margin: 10px 0">
-          <input matInput type="text" class="upwork-input" />
-        </div>
-
-        <button class="upwork-btn upwork-btn-primary">prim</button>
-        <button class="upwork-btn upwork-btn-secondary">sec</button>
       </div>
     </div>
   </div>
