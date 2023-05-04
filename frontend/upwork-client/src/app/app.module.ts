@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './home/feature/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PopupComponent } from './shared/ui/popup/popup.component';
+import { PopupWithInputsComponent } from './shared/ui/popup_with_inputs/popup-with-inputs.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NavigationComponent } from './home/feature/navigation/navigation.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -31,9 +33,10 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginComponent,
-    PopupComponent,
+    PopupWithInputsComponent,
     NavigationComponent,
     CalendarComponent,
+    OrganizationControlComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,8 @@ export function tokenGetter() {
       },
     }),
   ],
+  entryComponents: [PopupWithInputsComponent],
+
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
