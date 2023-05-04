@@ -78,6 +78,9 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IEncodeService, EncodeService>();
             services.AddScoped<IPermissionsService, PermissionsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddScoped<IOrganizationsService, OrganizationsService>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
             services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
 
