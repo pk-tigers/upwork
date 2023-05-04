@@ -1,0 +1,14 @@
+button {
+    background: #F8C48C;
+    /* border-radius: 19px;*/
+    height: 55px; 
+  }
+
+  .upwork-default-content-data {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 30px;
+  }
+
+

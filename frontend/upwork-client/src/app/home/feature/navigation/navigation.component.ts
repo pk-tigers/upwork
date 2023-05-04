@@ -15,6 +15,7 @@ export class NavigationComponent {
     { icon: 'calendar_today', text: 'Calendar', router_link: '' },
     { icon: 'settings', text: 'Settings', router_link: '' },
     { icon: 'event_note', text: 'Requests', router_link: '' },
+    { icon: 'business', text: 'Organization Control', router_link: '/organization-control' }
   ];
 
   onItemClick(index: number) {

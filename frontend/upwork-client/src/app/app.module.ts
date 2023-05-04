@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './home/feature/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PopupComponent } from './shared/ui/popup/popup.component';
+import { PopupWithInputsComponent } from './shared/ui/popup_with_inputs/popup-with-inputs.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NavigationComponent } from './home/feature/navigation/navigation.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +17,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { OrganizationControlComponent } from './organization-control/organization-control.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -26,7 +29,9 @@ export function tokenGetter() {
     AppComponent,
     LoginComponent,
     PopupComponent,
+    PopupWithInputsComponent,
     NavigationComponent,
+    OrganizationControlComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,10 @@ export function tokenGetter() {
       },
     }),
   ],
+  entryComponents: [
+    PopupWithInputsComponent
+  ],
+
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
