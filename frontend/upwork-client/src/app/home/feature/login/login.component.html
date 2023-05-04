@@ -6,7 +6,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <!-- Email input -->
-            <div style="margin: 10px 0">
+            <div class="button-space">
               <input
                 matInput
                 type="email"
@@ -16,7 +16,7 @@
             </div>
 
             <!-- Password input -->
-            <div style="margin: 10px 0">
+            <div class="button-space">
               <input
                 matInput
                 type="password"
@@ -26,10 +26,7 @@
             </div>
 
             <!-- Submit button -->
-            <button
-              type="submit"
-              class="upwork-btn upwork-btn-primary"
-              (click)="onSubmit()">
+            <button type="submit" class="upwork-btn upwork-btn-primary">
               Sign in
             </button>
           </div>
