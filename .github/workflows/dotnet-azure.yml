@@ -26,6 +26,9 @@ jobs:
         files: '**/appsettings.json'
       env:
         ConnectionStrings.Default: ${{ secrets.UPWORK_CONNECTION_STRING }}
+        JwtSettings.Issuer: ${{ secrets.UPWORK_ISSUER }}
+        JwtSettings.Audience: ${{ secrets.UPWORK_AUDIENCE }}
+        JwtSettings.Key: ${{ secrets.UPWORK_JWT_KEY }}
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
