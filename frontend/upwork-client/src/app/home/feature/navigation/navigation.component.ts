@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-navigation',
@@ -15,7 +15,11 @@ export class NavigationComponent {
     { icon: 'calendar_today', text: 'Calendar', router_link: '' },
     { icon: 'settings', text: 'Settings', router_link: '' },
     { icon: 'event_note', text: 'Requests', router_link: '' },
-    { icon: 'business', text: 'Organization Control', router_link: '/organization-control' }
+    {
+      icon: 'business',
+      text: 'Organization Control',
+      router_link: '/organization-control',
+    },
   ];
 
   onItemClick(index: number) {

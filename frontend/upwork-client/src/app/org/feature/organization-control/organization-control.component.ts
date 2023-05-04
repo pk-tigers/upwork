@@ -8,7 +8,6 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
-import { RegisterModel } from 'src/app/models/register.model';
 
 @Component({
   selector: 'app-organization-control',
