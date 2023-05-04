@@ -1,0 +1,40 @@
+<!-- eslint-disable prettier/prettier -->
+<div class="upwork-default-container">
+  <div class="upwork-default-content-container">
+    <div class="upwork-default-content-heading">Your calendar</div>
+    <div class="upwork-default-content-data">
+      <div class="calendar-container">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}</h2>
+          </div>
+          <div class="col-md-4">
+            <div class="btn-group display-flex flex-row justify-content-space-between">
+              <div class="upwork-btn upwork-btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()">
+                Previous
+              </div>
+              <div class="upwork-btn upwork-btn-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                Today
+              </div>
+              <div class="upwork-btn upwork-btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()">
+                Next
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div [ngSwitch]="view">
+          <mwl-calendar-month-view
+            [viewDate]="viewDate"
+            [events]="events"
+            [weekStartsOn]="1"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)">
+          </mwl-calendar-month-view>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,7 @@ export class NavigationComponent {
     { icon: 'dashboard', text: 'Dashboard', router_link: '' },
     { icon: 'person_outline', text: 'Profile', router_link: '' },
     { icon: 'beach_access', text: 'Time off', router_link: '' },
-    { icon: 'calendar_today', text: 'Calendar', router_link: '' },
+    { icon: 'calendar_today', text: 'Calendar', router_link: 'calendar' },
     { icon: 'settings', text: 'Settings', router_link: '' },
     { icon: 'event_note', text: 'Requests', router_link: '' },
   ];

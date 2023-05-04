@@ -1,0 +1,17 @@
+@import '../../../../_variables.scss';
+
+h2,
+mwl-calendar-month-view {
+  color: $dark-blue;
+}
+
+::ng-deep .cal-month-view .cal-open-day-events {
+  color: #fff;
+  background-color: $light-grey;
+  box-shadow: none;
+  color: $dark-blue;
+}
+
+::ng-deep .cal-month-view .cal-day-badge {
+  background-color: $dark-blue;
+}
