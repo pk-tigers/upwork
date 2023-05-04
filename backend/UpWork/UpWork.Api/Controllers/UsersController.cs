@@ -7,6 +7,7 @@ using UpWork.Common.Models.DatabaseModels;
 namespace UpWork.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -27,9 +28,9 @@ namespace UpWork.Api.Controllers
 
         [HttpGet("{OrganizationId}")]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<UserModel>> GetUsersByOrganizationId(Guid OrganizationId, int skip = 0, int take = 10)
+        public ActionResult<IEnumerable<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
-            var res = _usersService.GetUsersByOrganizationId(OrganizationId, skip, take);
+            var res = _usersService.GetUsersByOrganizationId(organizationId, skip, take);
 
             return Ok(res);
         }

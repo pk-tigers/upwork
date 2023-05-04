@@ -1,5 +1,4 @@
-﻿using UpWork.Common.DTO;
-using UpWork.Common.Models.DatabaseModels;
+﻿using UpWork.Common.Dto;
 
 namespace UpWork.Common.Interfaces
 {

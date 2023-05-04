@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UpWork.Api.Extensions;
-using UpWork.Common.DTO;
+using UpWork.Common.Dto;
 using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
@@ -10,8 +9,8 @@ using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Security.Claims;
-using System.Text.Json;
 using UpWork.Common.Dto;
-using UpWork.Common.DTO;
 using UpWork.Common.Identity;
 
 namespace UpWork.Api.Requirements.Handlers

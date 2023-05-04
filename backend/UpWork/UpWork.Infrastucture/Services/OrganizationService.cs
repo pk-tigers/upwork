@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UpWork.Common.DTO;
+using UpWork.Common.Dto;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
