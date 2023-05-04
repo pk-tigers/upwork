@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UpWork.Common.DTO;
+using UpWork.Common.Dto;
 using UpWork.Common.Interfaces;
 
 namespace UpWork.Api.Controllers

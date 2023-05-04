@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using UpWork.Api.Requirements;
 using UpWork.Api.Requirements.Handlers;
-using UpWork.Common.Dto;
-using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
@@ -36,7 +32,7 @@ namespace UpWork.Api.Extensions
                 })
                 .AddJwtBearer(x =>
                 {
-                    
+
                     x.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = config["JwtSettings:Issuer"],
@@ -53,7 +49,7 @@ namespace UpWork.Api.Extensions
             {
                 options.AddPolicy(IdentityData.AdminUserPolicy, policy => policy.RequireClaim(IdentityData.AdminUserClaimName, "true"));
 
-                options.AddPolicy(IdentityData.CreateUserPolicy, 
+                options.AddPolicy(IdentityData.CreateUserPolicy,
                     policy => policy
                     .RequireClaim(IdentityData.OrganizationIdClaimName)
                     .RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CreateUser.ToString()));
@@ -75,6 +71,9 @@ namespace UpWork.Api.Extensions
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(configuration);
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
+
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEncodeService, EncodeService>();
             services.AddScoped<IPermissionsService, PermissionsService>();
@@ -82,9 +81,7 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();
-            services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
-            services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
-
+            services.AddScoped<IAbsencesService, AbsencesService>();
         }
 
         public static void AddCustomCors(this IServiceCollection services)
@@ -103,20 +100,20 @@ namespace UpWork.Api.Extensions
 
         public static void AddCustomSwaggerGen(this IServiceCollection services)
         {
-                services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UpWork", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UpWork", Version = "v1" });
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below."
+                });
 
-                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "bearer",
-                        BearerFormat = "JWT",
-                        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below."
-                    });
-
-                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                        {
                             {
                                 new OpenApiSecurityScheme
                                 {
@@ -128,8 +125,8 @@ namespace UpWork.Api.Extensions
                                 },
                                 Array.Empty<string>()
                             }
-                        });
-                            });
+                    });
+            });
         }
 
     }

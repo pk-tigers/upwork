@@ -8,6 +8,7 @@ using UpWork.Infrastucture.Services;
 namespace UpWork.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class OrganizationsController : ControllerBase
     {

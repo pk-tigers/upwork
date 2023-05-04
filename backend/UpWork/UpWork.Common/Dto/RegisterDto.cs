@@ -1,4 +1,4 @@
-﻿namespace UpWork.Common.DTO
+﻿namespace UpWork.Common.Dto
 {
     public class RegisterDto
     {

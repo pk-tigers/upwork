@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using UpWork.Common.DTO;
+using UpWork.Common.Dto;
 using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;

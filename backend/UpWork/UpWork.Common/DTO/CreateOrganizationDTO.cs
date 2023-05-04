@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UpWork.Common.DTO
+namespace UpWork.Common.Dto
 {
     public class CreateOrganizationDto
     {
