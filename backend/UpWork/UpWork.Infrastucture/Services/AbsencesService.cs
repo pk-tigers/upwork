@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
@@ -34,6 +30,19 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.UserId == userId)
                 .Where(x => (from >= x.FromDate && from <= x.ToDate) || to >= x.FromDate && to <= x.ToDate);
             return res;
+        }
+
+        public IEnumerable<AbsenceModel> GetAbsencesRequestsBySupervisorId(Guid supervisorId, ApprovalState? approvalState, int skip, int take)
+        {
+            var res = _context.Absences
+                .Where(x => x.TimeOffSupervisorId == supervisorId);
+
+            if (approvalState is not null)
+                res = res.Where(x => x.ApprovalState == approvalState);
+
+            res = res.Skip(skip).Take(take);
+
+            return res;                
         }
     }
 }

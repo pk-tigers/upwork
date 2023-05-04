@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 
@@ -28,6 +29,13 @@ namespace UpWork.Api.Controllers
         public ActionResult<IEnumerable<AbsenceModel>> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByUserId(userId, from, to, skip, take);
+            return Ok();
+        }
+
+        [HttpGet("GetAbsencesRequestsBySupervisorId")]
+        public ActionResult<IEnumerable<AbsenceModel>> GetAbsencesRequestsBySupervisorId(Guid supervisorId, ApprovalState? approvalState = null, int skip = 0, int take = 10)
+        {
+            var res = _absencesService.GetAbsencesRequestsBySupervisorId(supervisorId, approvalState, skip, take);
             return Ok();
         }
     }
