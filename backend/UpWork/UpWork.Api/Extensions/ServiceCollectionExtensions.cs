@@ -123,7 +123,7 @@ namespace UpWork.Api.Extensions
                                         Id = "Bearer"
                                     }
                                 },
-                                new string[] {}
+                                Array.Empty<string>()
                             }
                         });
                             });
