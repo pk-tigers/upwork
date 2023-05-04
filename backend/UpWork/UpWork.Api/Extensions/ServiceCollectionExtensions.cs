@@ -81,6 +81,7 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();
+            services.AddScoped<IAbsenceService, AbsenceService>();
             services.AddScoped<IAbsencesService, AbsencesService>();
         }
 

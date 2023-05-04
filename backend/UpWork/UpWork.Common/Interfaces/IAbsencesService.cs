@@ -1,4 +1,5 @@
-﻿using UpWork.Common.Models.DatabaseModels;
+﻿using UpWork.Common.Enums;
+using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Common.Interfaces
 {
@@ -6,5 +7,7 @@ namespace UpWork.Common.Interfaces
     {
         IEnumerable<AbsenceModel> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip, int take);
         IEnumerable<AbsenceModel> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip, int take);
+        IEnumerable<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
+        IEnumerable<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
     }
 }
