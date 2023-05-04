@@ -30,6 +30,11 @@ jobs:
         JwtSettings.Audience: ${{ secrets.UPWORK_AUDIENCE }}
         JwtSettings.Key: ${{ secrets.UPWORK_JWT_KEY }}
         CorsSettings.DefaultOrigin: ${{ secrets.UPWORK_DEFAULT_ORIGIN }}
+        EmailSettings.Login: ${{ secrets.UPWORK_MAIL_SENDER }}
+        EmailSettings.Password: ${{ secrets.UPWORK_MAIL_PASSWORD }}
+        EmailSettings.DisplayName: ${{ secrets.UPWORK_MAIL_DISPLAY_NAME }}
+        EmailSettings.StmpHost: ${{ secrets.UPWORK_MAIL_HOST }}
+        EmailSettings.StmpPort: ${{ secrets.UPWORK_MAIL_PORT }}
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
