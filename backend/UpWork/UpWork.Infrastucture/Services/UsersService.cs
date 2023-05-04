@@ -20,9 +20,9 @@ namespace UpWork.Infrastucture.Services
             return users;
         }
 
-        public IEnumerable<UserModel> GetUsersByOrganizationId(Guid OrganizationId)
+        public IEnumerable<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take)
         {
-            var users = _context.Users.Where(x => x.OrganizationId == OrganizationId);
+            var users = _context.Users.Where(x => x.OrganizationId == OrganizationId).Skip(skip).Take(take);
             return users;
         }
 

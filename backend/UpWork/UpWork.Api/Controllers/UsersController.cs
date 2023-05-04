@@ -19,17 +19,17 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<UserModel>> GetUsers()
+        public ActionResult<IEnumerable<UserModel>> GetUsers(int skip = 0, int take = 10)
         {
-            var res = _usersService.GetUsers();
+            var res = _usersService.GetUsers(skip, take);
             return Ok(res);
         }
 
         [HttpGet("{OrganizationId}")]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<UserModel>> GetUsersByOrganizationId(Guid OrganizationId)
+        public ActionResult<IEnumerable<UserModel>> GetUsersByOrganizationId(Guid OrganizationId, int skip = 0, int take = 10)
         {
-            var res = _usersService.GetUsersByOrganizationId(OrganizationId);
+            var res = _usersService.GetUsersByOrganizationId(OrganizationId, skip, take);
 
             return Ok(res);
         }
