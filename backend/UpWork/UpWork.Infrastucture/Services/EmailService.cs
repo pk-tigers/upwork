@@ -17,7 +17,7 @@ namespace UpWork.Infrastucture.Services
 
         public void SendEmail(string recipient, string subject, string body)
         {
-#if !RELEASE
+#if RELEASE
             using var mailMessage = new MailMessage(_configuration["EmailSettings:Login"], recipient);
             mailMessage.Subject = subject;
             mailMessage.Body = body;
