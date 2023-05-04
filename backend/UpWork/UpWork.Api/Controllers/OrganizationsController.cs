@@ -21,9 +21,9 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<OrganizationModel>> GetOrganizations()
+        public ActionResult<IEnumerable<OrganizationModel>> GetOrganizations(int skip = 0, int take = 10)
         {
-            var res = _organizationsService.GetOrganizations();
+            var res = _organizationsService.GetOrganizations(skip, take);
 
             return Ok(res);
         }

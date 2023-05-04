@@ -4,6 +4,6 @@ namespace UpWork.Common.Interfaces
 {
     public interface IOrganizationsService
     {
-        public IEnumerable<OrganizationModel> GetOrganizations();
+        public IEnumerable<OrganizationModel> GetOrganizations(int skip, int take);
     }
 }

@@ -13,9 +13,9 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public IEnumerable<OrganizationModel> GetOrganizations()
+        public IEnumerable<OrganizationModel> GetOrganizations(int skip, int take)
         {
-            var organizations = _context.Organizations.ToList();
+            var organizations = _context.Organizations.Skip(skip).Take(take);
             return organizations;
         }
     }
