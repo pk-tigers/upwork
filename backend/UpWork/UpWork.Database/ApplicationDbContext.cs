@@ -30,5 +30,7 @@ namespace UpWork.Database
         public DbSet<UserModel> Users { get; set; }
         public DbSet<OrganizationModel> Organizations { get; set; }
         public DbSet<PermissionModel> Permissions { get; set; }
+        public DbSet<AbsenceModel> Absences { get; set; }
+        public DbSet<AbsenceTypeModel> AbsencesType { get; set; }
     }
 }

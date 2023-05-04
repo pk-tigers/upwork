@@ -71,6 +71,9 @@ namespace UpWork.Api.Extensions
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(configuration);
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
+            services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
+
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEncodeService, EncodeService>();
             services.AddScoped<IPermissionsService, PermissionsService>();
@@ -78,9 +81,7 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();
-            services.AddSingleton<IAuthorizationHandler, MatchOrganizationQueryHandler>();
-            services.AddSingleton<IAuthorizationHandler, MatchOrganizationBodyHandler>();
-
+            services.AddScoped<IAbsencesService, AbsencesService>();
         }
 
         public static void AddCustomCors(this IServiceCollection services)
