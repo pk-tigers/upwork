@@ -35,8 +35,10 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     };
-    this.userService.login(credentials).subscribe(async loggedIn => {
-      if (loggedIn) await this.router.navigate(['/']);
+    this.userService.login(credentials).subscribe(loggedIn => {
+      (async () => {
+        if (loggedIn) await this.router.navigate(['/']);
+      })();
     });
   }
 }
