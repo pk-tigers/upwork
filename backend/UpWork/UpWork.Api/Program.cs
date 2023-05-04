@@ -9,7 +9,7 @@ var config = builder.Configuration;
 builder.Services.AddCustomServices(config);
 builder.Services.AddCustomDbContext(config);
 builder.Services.AddCustomAuth(config);
-builder.Services.AddCustomCors();
+builder.Services.AddCustomCors(config);
 builder.Services.AddCustomSwaggerGen();
 
 builder.Services.AddControllers(options =>

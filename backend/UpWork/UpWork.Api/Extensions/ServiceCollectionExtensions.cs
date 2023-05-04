@@ -85,14 +85,14 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IAbsencesService, AbsencesService>();
         }
 
-        public static void AddCustomCors(this IServiceCollection services)
+        public static void AddCustomCors(this IServiceCollection services, IConfiguration config)
         {
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
                     builder
-                    .WithOrigins("http://localhost:4200")
+                    .WithOrigins(config["CorsSettings:DefaultOrigin"])
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });
