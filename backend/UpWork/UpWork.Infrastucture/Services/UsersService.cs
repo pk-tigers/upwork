@@ -14,9 +14,9 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public IEnumerable<UserModel> GetUsers()
+        public IEnumerable<UserModel> GetUsers(int skip, int take)
         {
-            var users = _context.Users.ToList();
+            var users = _context.Users.Skip(skip).Take(take);
             return users;
         }
 
