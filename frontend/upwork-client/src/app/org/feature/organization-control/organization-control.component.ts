@@ -1,39 +1,57 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from '../shared/ui/popup/popup.component';
-import { PopupWithInputsComponent } from '../shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { PopupComponent } from '../../../shared/ui/popup/popup.component';
+import { PopupWithInputsComponent } from '../../../shared/ui/popup_with_inputs/popup-with-inputs.component';
+import {
+  ButtonPopupModel,
+  ButtonTypes,
+  Dictionary,
+  InputPopupDataModel,
+  InputPopupModel,
+} from 'src/app/models/input-popup-data.model';
 
 @Component({
   selector: 'app-organization-control',
   templateUrl: './organization-control.component.html',
-  styleUrls: ['./organization-control.component.css']
+  styleUrls: ['./organization-control.component.scss'],
 })
 export class OrganizationControlComponent {
-
-
-constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {}
 
   openAddUserPopup(): void {
-    const dialogRef = this.dialog.open(PopupWithInputsComponent, {
-      data: {
-        width: '900px',
-        popupTitle: 'Add User',
-        popupInfo: 'Please enter user details:',
-        inputs: [
-          { placeholder: 'Email', value: '' },
-          { placeholder: 'Password', value: '' },
-          { placeholder: 'Confirm Password', value: '' }
-        ],
-        btnPrimaryText: 'Continue',
-        btnSecondaryText: 'Cancel',
-      }
-    });
+    const inputs: Dictionary<InputPopupModel> = {
+      ['firstname']: { value: '', type: 'text', placeholder: 'Firstname' },
+      ['lastname']: { value: '', type: 'text', placeholder: 'Lastname' },
+      ['email']: { value: '', type: 'text', placeholder: 'E-mail' },
+    };
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Create user',
+        onClick: () => {
+          for (const key in inputs) {
+            console.log(inputs[key]);
+          }
+        },
+      },
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'Cancel',
+      },
+    ];
 
-    dialogRef.afterClosed().subscribe(result => {
-      // Obsługa zamknięcia popupa
+    const data: InputPopupDataModel = {
+      title: 'Create user',
+      description: 'Fill basic data:',
+      inputs: inputs,
+      buttons: buttons,
+    };
+
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
     });
   }
-
 
   openDeleteUserPopup() {
     // Logika otwierania popupa dla "Delete User"
@@ -61,14 +79,22 @@ constructor(private dialog: MatDialog) {}
         popupTitle: 'Organization Settings',
         popupInfo: 'Please, choose an option:',
         buttons: [
-          { text: 'Change organization name', action: () => { this.openOrganizationNameChange(); } },
-          { text: 'Delete organization', action: () => { this.openDeleteOrganization(); }  }
+          {
+            text: 'Change organization name',
+            action: () => {
+              this.openOrganizationNameChange();
+            },
+          },
+          {
+            text: 'Delete organization',
+            action: () => {
+              this.openDeleteOrganization();
+            },
+          },
         ],
         btnSecondaryText: 'Cancel',
-      }
+      },
     });
-
-
 
     dialogRef.afterClosed().subscribe(result => {
       // Obsługa zamknięcia popupa
@@ -82,10 +108,8 @@ constructor(private dialog: MatDialog) {}
         popupInfo: 'Do you want to confirm this operation?',
         btnPrimaryText: 'Confirm',
         btnSecondaryText: 'Cancel',
-      }
+      },
     });
-
-
 
     dialogRef.afterClosed().subscribe(result => {
       // Obsługa zamknięcia popupa
@@ -97,15 +121,11 @@ constructor(private dialog: MatDialog) {}
       data: {
         popupTitle: 'Change Organization Name',
         popupInfo: 'Enter:',
-        inputs: [
-          { placeholder: 'New organization name', value: '' },
-        ],
+        inputs: [{ placeholder: 'New organization name', value: '' }],
         btnPrimaryText: 'Continue',
         btnSecondaryText: 'Cancel',
-      }
+      },
     });
-
-
 
     dialogRef.afterClosed().subscribe(result => {
       // Obsługa zamknięcia popupa
@@ -115,6 +135,4 @@ constructor(private dialog: MatDialog) {}
   handleAddUser(): void {
     // Logika dodawania użytkownika
   }
-
-
 }

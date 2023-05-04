@@ -37,6 +37,25 @@
     min-height: 300px;
 }
 
+.mdc-dialog .mdc-dialog__content {
+    padding: 0 !important;
+    border-radius: 20px !important;
+    background-color: $dark-blue !important;
+}
+.mdc-dialog__container {
+    border-radius: 20px !important;
+    background-color: $dark-blue !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 20px !important;
+    background-color: $dark-blue !important;
+}
+
+.mdc-dialog__container {
+    background-color: $dark-blue !important;
+}
+
 @media screen and (max-width: 1024px) {
 
     .upwork-default-content-container {

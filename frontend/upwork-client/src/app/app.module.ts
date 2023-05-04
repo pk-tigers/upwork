@@ -17,8 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { OrganizationControlComponent } from './organization-control/organization-control.component';
-
+import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -59,9 +58,7 @@ export function tokenGetter() {
       },
     }),
   ],
-  entryComponents: [
-    PopupWithInputsComponent
-  ],
+  entryComponents: [PopupWithInputsComponent],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
