@@ -1,3 +1,5 @@
+import { Dictionary } from './dictionary.model';
+
 export interface InputPopupDataModel {
   title: string;
   description: string;
@@ -26,8 +28,4 @@ export interface InputPopupModel {
 export interface SelectOptionPopupModel {
   value: number | string;
   displayValue: string;
-}
-
-export interface Dictionary<T> {
-  [Key: string]: T;
 }

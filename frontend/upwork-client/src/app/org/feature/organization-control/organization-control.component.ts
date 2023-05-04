@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from '../../../shared/ui/popup/popup.component';
 import { PopupWithInputsComponent } from '../../../shared/ui/popup_with_inputs/popup-with-inputs.component';
 import {
   ButtonPopupModel,
   ButtonTypes,
-  Dictionary,
   InputPopupDataModel,
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
+import { Dictionary } from 'src/app/models/dictionary.model';
+import { RegisterModel } from 'src/app/models/register.model';
 
 @Component({
   selector: 'app-organization-control',
@@ -34,10 +34,7 @@ export class OrganizationControlComponent {
           }
         },
       },
-      {
-        type: ButtonTypes.SECONDARY,
-        text: 'Cancel',
-      },
+      { type: ButtonTypes.SECONDARY, text: 'Cancel' },
     ];
 
     const data: InputPopupDataModel = {
