@@ -21,6 +21,13 @@ namespace UpWork.Api.Controllers
         public ActionResult<IEnumerable<AbsenceModel>> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByOrganizationId(organizationId, from, to, skip, take);
+            return Ok(res);
+        }
+
+        [HttpGet("GetAbsencesByUserId")]
+        public ActionResult<IEnumerable<AbsenceModel>> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip = 0, int take = 10)
+        {
+            var res = _absencesService.GetAbsencesByUserId(userId, from, to, skip, take);
             return Ok();
         }
     }
