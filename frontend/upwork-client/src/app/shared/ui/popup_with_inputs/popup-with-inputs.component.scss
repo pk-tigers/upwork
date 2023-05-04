@@ -1,0 +1,19 @@
+.upwork-default-content-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    min-height: 150px;
+}
+
+.upwork-default-content-container {
+    min-width: 450px;
+}
+
+@media screen and (max-width: 1024px) {
+
+    .upwork-default-content-container {
+        min-width: 95%;
+    }
+}
