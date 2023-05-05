@@ -157,8 +157,9 @@ export class AdminPanelComponent {
   }
 
   prevPage(): void {
-    if (this.currentPage$.value > 0)
+    if (this.currentPage$.value > 0) {
       this.currentPage$.next(this.currentPage$.value - 1);
+    }
   }
 
   private loadOrganizations() {

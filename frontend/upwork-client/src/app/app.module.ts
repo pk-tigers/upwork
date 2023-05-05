@@ -25,7 +25,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 
-
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
