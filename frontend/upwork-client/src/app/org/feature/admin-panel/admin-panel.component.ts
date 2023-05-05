@@ -12,6 +12,7 @@ import {
 } from 'src/app/models/input-popup-data.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
+import { RegisterModel } from 'src/app/models/register.model';
 import { AdminService } from 'src/app/shared/data-access/admin.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
 
@@ -82,10 +83,17 @@ export class AdminPanelComponent {
         type: ButtonTypes.PRIMARY,
         text: 'Create user',
         onClick: () => {
-          // TODO: Create organization owner based on this.
-          console.log(inputs['firstname']?.value);
-          console.log(inputs['lastname']?.value);
-          console.log(inputs['email']?.value);
+          const owner: RegisterModel = {
+            firstName: String(inputs['firstname']?.value),
+            lastName: String(inputs['lastname']?.value),
+            email: String(inputs['email']?.value),
+            organizationId: guid,
+          };
+          this.adminService.createUser(owner).subscribe(res => {
+            if (res) {
+              this.tostr.success('Successfully added organizations owner');
+            }
+          });
         },
       },
       { type: ButtonTypes.SECONDARY, text: 'Cancel' },

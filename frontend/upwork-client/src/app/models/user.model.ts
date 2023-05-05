@@ -1,3 +1,14 @@
+import { Roles } from './enums/roles.enum';
+
 export interface User {
-  roles: string[];
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  avatar?: Blob;
+  isActive?: string;
+  role?: Roles;
+  organizationId?: string;
+  currentTimeOffSupervisorId?: string;
+  roles?: string[];
 }
