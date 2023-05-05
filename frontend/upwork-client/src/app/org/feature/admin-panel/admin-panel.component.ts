@@ -167,6 +167,7 @@ export class AdminPanelComponent {
       switchMap(currentPage => this.adminService.getOrganizations(currentPage)),
       map((res: PaginatedResult<OrganizationModel>) => {
         this.totalNumberOfPages = res.count ?? 1;
+        if (res.data.length === 0) this.prevPage();
         return res.data;
       })
     );
