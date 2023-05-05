@@ -15,9 +15,7 @@
             <tr>
               <th>No.</th>
               <th>Organization's Name</th>
-              <th>Manage</th>
-              <th>Delete</th>
-              <th>Go to</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody class="upwork-table-body">
@@ -29,14 +27,10 @@
                   class="upwork-icon manage-button"
                   fontIcon="settings"
                   (click)="manageOrganization(org?.id)"></mat-icon>
-              </td>
-              <td>
                 <mat-icon
-                  class="upwork-icon delete-button"
+                  class="upwork-icon delete-button mx-2"
                   fontIcon="delete"
                   (click)="deleteOrganization(org?.id)"></mat-icon>
-              </td>
-              <td>
                 <mat-icon
                   class="upwork-icon"
                   fontIcon="launch"
