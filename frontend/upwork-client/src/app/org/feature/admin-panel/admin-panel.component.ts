@@ -70,8 +70,38 @@ export class AdminPanelComponent {
     });
   }
 
-  manageOrganization(): void {
-    console.log('manage');
+  manageOrganization(guid: string | undefined): void {
+    if (typeof guid === 'undefined') return;
+    const inputs: Dictionary<InputPopupModel> = {
+      ['firstname']: { value: '', type: 'text', placeholder: 'Firstname' },
+      ['lastname']: { value: '', type: 'text', placeholder: 'Lastname' },
+      ['email']: { value: '', type: 'text', placeholder: 'E-mail' },
+    };
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Create user',
+        onClick: () => {
+          // TODO: Create organization owner based on this.
+          console.log(inputs['firstname']?.value);
+          console.log(inputs['lastname']?.value);
+          console.log(inputs['email']?.value);
+        },
+      },
+      { type: ButtonTypes.SECONDARY, text: 'Cancel' },
+    ];
+
+    const data: InputPopupDataModel = {
+      title: 'Add owner',
+      description: 'Fill basic data:',
+      inputs: inputs,
+      buttons: buttons,
+    };
+
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
+    });
   }
 
   deleteOrganization(guid: string | undefined): void {
@@ -108,7 +138,7 @@ export class AdminPanelComponent {
 
   goTo(urlName: string | undefined): void {
     if (typeof urlName === 'undefined') return;
-    //! TODO: make sure that works
+    // TODO: route to correct url
     // this.router.navigate([`/${urlName}/dashboard`]);
   }
 
