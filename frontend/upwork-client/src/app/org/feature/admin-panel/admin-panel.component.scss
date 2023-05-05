@@ -55,6 +55,14 @@
       text-align: left;
     }
   }
+
+  .manage-button:hover {
+    color: $green;
+  }
+
+  .delete-button:hover {
+    color: $red;
+  }
 }
 
 .upwork-icon {
