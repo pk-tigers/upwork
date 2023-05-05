@@ -1,4 +1,5 @@
 ﻿using UpWork.Common.Interfaces;
+using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
 
@@ -13,10 +14,12 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public IEnumerable<OrganizationModel> GetOrganizations(int skip, int take)
+        public PaginatedResult<OrganizationModel> GetOrganizations(int skip, int take)
         {
             var organizations = _context.Organizations.Skip(skip).Take(take);
-            return organizations;
+            var count = _context.Organizations.Count()/take + 1;
+            var res = new PaginatedResult<OrganizationModel>(organizations, count);
+            return res;
         }
     }
 }

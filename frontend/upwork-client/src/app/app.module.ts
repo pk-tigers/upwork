@@ -23,6 +23,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
+import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 
 
 export function tokenGetter() {
@@ -37,6 +38,7 @@ export function tokenGetter() {
     NavigationComponent,
     CalendarComponent,
     OrganizationControlComponent,
+    AdminPanelComponent,
   ],
   imports: [
     BrowserModule,

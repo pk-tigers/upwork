@@ -1,9 +1,10 @@
-﻿using UpWork.Common.Models.DatabaseModels;
+﻿using UpWork.Common.Models;
+using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Common.Interfaces
 {
     public interface IOrganizationsService
     {
-        public IEnumerable<OrganizationModel> GetOrganizations(int skip, int take);
+        public PaginatedResult<OrganizationModel> GetOrganizations(int skip, int take);
     }
 }

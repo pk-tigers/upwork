@@ -1,0 +1,62 @@
+<div class="upwork-default-container">
+  <div class="upwork-default-content-container">
+    <div class="upwork-default-content-heading">Admin Panel</div>
+    <div class="upwork-default-content-data">
+      <div class="d-flex justify-content-end p-0">
+        <button
+          class="upwork-btn upwork-btn-primary"
+          (click)="createOrganization()">
+          Create Organization
+        </button>
+      </div>
+      <div class="upwork-table-wrapper mt-2">
+        <table class="upwork-table">
+          <thead class="upwork-table-header">
+            <tr>
+              <th>No.</th>
+              <th>Organization's Name</th>
+              <th>Manage</th>
+              <th>Delete</th>
+              <th>Go to</th>
+            </tr>
+          </thead>
+          <tbody class="upwork-table-body">
+            <tr *ngFor="let org of listOfOrganization$ | async; index as i">
+              <td>{{ i + 1 }}.</td>
+              <td>{{ org.name }}</td>
+              <td>
+                <mat-icon
+                  class="upwork-icon"
+                  fontIcon="settings"
+                  (click)="manageOrganization()"></mat-icon>
+              </td>
+              <td>
+                <mat-icon
+                  class="upwork-icon"
+                  fontIcon="delete"
+                  (click)="deleteOrganization(org?.id)"></mat-icon>
+              </td>
+              <td>
+                <mat-icon
+                  class="upwork-icon"
+                  fontIcon="launch"
+                  (click)="goTo(org.urlName)"></mat-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="upwork-table-foot">
+          <mat-icon class="upwork-icon" (click)="prevPage()"
+            >chevron_left</mat-icon
+          >
+          {{ currentPage$.value + 1 }}
+          of
+          {{ totalNumberOfPages }}
+          <mat-icon class="upwork-icon" (click)="nextPage()"
+            >chevron_right</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
