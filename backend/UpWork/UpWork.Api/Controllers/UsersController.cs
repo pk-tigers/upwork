@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
+using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Api.Controllers
@@ -20,7 +21,7 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<UserModel>> GetUsers(int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<UserModel>> GetUsers(int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsers(skip, take);
             return Ok(res);
@@ -28,7 +29,7 @@ namespace UpWork.Api.Controllers
 
         [HttpGet("{OrganizationId}")]
         [Authorize(Policy = IdentityData.AdminUserClaimName)]
-        public ActionResult<IEnumerable<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsersByOrganizationId(organizationId, skip, take);
 

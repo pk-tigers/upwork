@@ -16,10 +16,9 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<OrganizationModel> GetOrganizations(int skip, int take)
         {
-            var organizations = _context.Organizations.Skip(skip).Take(take);
-            var totalItems = _context.Organizations.Count();
-            var count = (int)Math.Ceiling((decimal)totalItems / (decimal)take);
-            var res = new PaginatedResult<OrganizationModel>(organizations, count);
+            var organizations = _context.Organizations;
+            
+            var res = new PaginatedResult<OrganizationModel>(organizations.Skip(skip).Take(take), organizations.Count(), take);
             return res;
         }
     }

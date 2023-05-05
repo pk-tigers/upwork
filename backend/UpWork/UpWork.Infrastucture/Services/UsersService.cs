@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using UpWork.Common.Interfaces;
+using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
 
@@ -14,16 +15,20 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public IEnumerable<UserModel> GetUsers(int skip, int take)
+        public PaginatedResult<UserModel> GetUsers(int skip, int take)
         {
             var users = _context.Users.Skip(skip).Take(take);
-            return users;
+
+            var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
         }
 
-        public IEnumerable<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take)
+        public PaginatedResult<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take)
         {
             var users = _context.Users.Where(x => x.OrganizationId == OrganizationId).Skip(skip).Take(take);
-            return users;
+
+            var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
         }
 
     }
