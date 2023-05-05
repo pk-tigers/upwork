@@ -34,7 +34,7 @@ export class AdminPanelComponent {
     private dialog: MatDialog
   ) {}
 
-  createOrganization(): void {
+  openCreateOrganizationPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
       ['OrganizationName']: {
         value: '',
@@ -46,17 +46,7 @@ export class AdminPanelComponent {
       {
         type: ButtonTypes.PRIMARY,
         text: 'Create Organization',
-        onClick: () => {
-          const organization: OrganizationModel = {
-            name: String(inputs['OrganizationName'].value),
-            urlName: String(inputs['OrganizationName'].value)
-              .replace(/\s/g, '-')
-              .replace('.', '-'),
-          };
-          this.adminService.createOrganization(organization).subscribe(() => {
-            this.listOfOrganization$ = this.loadOrganizations();
-          });
-        },
+        onClick: () => this.createOrganization(inputs),
       },
     ];
     const data: InputPopupDataModel = {
@@ -71,7 +61,7 @@ export class AdminPanelComponent {
     });
   }
 
-  manageOrganization(guid: string | undefined): void {
+  openManageOrganizationPopup(guid: string | undefined): void {
     if (typeof guid === 'undefined') return;
     const inputs: Dictionary<InputPopupModel> = {
       ['firstname']: { value: '', type: 'text', placeholder: 'Firstname' },
@@ -82,19 +72,7 @@ export class AdminPanelComponent {
       {
         type: ButtonTypes.PRIMARY,
         text: 'Create user',
-        onClick: () => {
-          const owner: RegisterModel = {
-            firstName: String(inputs['firstname']?.value),
-            lastName: String(inputs['lastname']?.value),
-            email: String(inputs['email']?.value),
-            organizationId: guid,
-          };
-          this.adminService.createUser(owner).subscribe(res => {
-            if (res) {
-              this.tostr.success('Successfully added organizations owner');
-            }
-          });
-        },
+        onClick: () => this.manageOrganization(inputs, guid),
       },
       { type: ButtonTypes.SECONDARY, text: 'Cancel' },
     ];
@@ -112,19 +90,14 @@ export class AdminPanelComponent {
     });
   }
 
-  deleteOrganization(guid: string | undefined): void {
+  openDeleteOrganizationPopup(guid: string | undefined): void {
     if (typeof guid === 'undefined') return;
     const inputs: Dictionary<InputPopupModel> = {};
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Yes',
-        onClick: () => {
-          this.adminService.deleteOrganization(guid).subscribe(isDeleted => {
-            if (!isDeleted) this.tostr.warning('Something went wrong');
-            else this.listOfOrganization$ = this.loadOrganizations();
-          });
-        },
+        onClick: () => this.deleteOrganization(guid),
       },
       {
         type: ButtonTypes.SECONDARY,
@@ -141,6 +114,39 @@ export class AdminPanelComponent {
     this.dialog.open(PopupWithInputsComponent, {
       data: data,
       panelClass: 'upwork-popup',
+    });
+  }
+
+  createOrganization(inputs: Dictionary<InputPopupModel>): void {
+    const organization: OrganizationModel = {
+      name: String(inputs['OrganizationName'].value),
+      urlName: String(inputs['OrganizationName'].value)
+        .replace(/\s/g, '-')
+        .replace('.', '-'),
+    };
+    this.adminService.createOrganization(organization).subscribe(() => {
+      this.listOfOrganization$ = this.loadOrganizations();
+    });
+  }
+
+  manageOrganization(inputs: Dictionary<InputPopupModel>, orgId: string): void {
+    const owner: RegisterModel = {
+      firstName: String(inputs['firstname']?.value),
+      lastName: String(inputs['lastname']?.value),
+      email: String(inputs['email']?.value),
+      organizationId: orgId,
+    };
+    this.adminService.createUser(owner).subscribe(res => {
+      if (res) {
+        this.tostr.success('Successfully added organizations owner');
+      }
+    });
+  }
+
+  deleteOrganization(guid: string): void {
+    this.adminService.deleteOrganization(guid).subscribe(isDeleted => {
+      if (!isDeleted) this.tostr.warning('Something went wrong');
+      else this.listOfOrganization$ = this.loadOrganizations();
     });
   }
 

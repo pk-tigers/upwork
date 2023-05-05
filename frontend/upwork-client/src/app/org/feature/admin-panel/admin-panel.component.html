@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-end p-0">
         <button
           class="upwork-btn upwork-btn-primary"
-          (click)="createOrganization()">
+          (click)="openCreateOrganizationPopup()">
           Create Organization
         </button>
       </div>
@@ -29,11 +29,11 @@
                 <mat-icon
                   class="upwork-icon manage-button"
                   fontIcon="settings"
-                  (click)="manageOrganization(org?.id)"></mat-icon>
+                  (click)="openManageOrganizationPopup(org?.id)"></mat-icon>
                 <mat-icon
                   class="upwork-icon delete-button mx-2"
                   fontIcon="delete"
-                  (click)="deleteOrganization(org?.id)"></mat-icon>
+                  (click)="openDeleteOrganizationPopup(org?.id)"></mat-icon>
                 <mat-icon
                   class="upwork-icon"
                   fontIcon="launch"
