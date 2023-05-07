@@ -26,17 +26,21 @@ export class NavigationComponent {
 
   constructor(private userService: UserService) {}
 
-  onItemClick(index: number) {
+  public onItemClick(index: number) {
     this.activeIndex = index;
   }
 
-  isMenuActive(index: number) {
+  public isMenuActive(index: number) {
     return this.activeIndex == index;
   }
 
-  logout() {
+  public logout(): void {
     this.logoutActive = true;
     this.userService.logout();
     window.location.reload();
+  }
+
+  public get isUserLoggedIn(): boolean {
+    return this.userService.isUserAuthenticated;
   }
 }
