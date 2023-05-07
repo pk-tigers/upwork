@@ -112,6 +112,18 @@ li.active .rounding-bottom::after {
   border-top-right-radius: 18px;
 }
 
+.nav-ng-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.logout-container {
+  margin-bottom: 7px;
+}
+
 @media screen and (max-width: 768px) {
 
   .nav-text-link {

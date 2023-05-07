@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from 'src/app/shared/data-access/user.service';
 
 @Component({
   selector: 'app-navigation',
@@ -6,7 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent {
-  activeIndex = 0;
+  public activeIndex = 0;
+  public logoutActive = false;
 
   MENU_DATA = [
     { icon: 'dashboard', text: 'Dashboard', router_link: '' },
@@ -22,11 +24,19 @@ export class NavigationComponent {
     },
   ];
 
+  constructor(private userService: UserService) {}
+
   onItemClick(index: number) {
     this.activeIndex = index;
   }
 
   isMenuActive(index: number) {
     return this.activeIndex == index;
+  }
+
+  logout() {
+    this.logoutActive = true;
+    this.userService.logout();
+    window.location.reload();
   }
 }
