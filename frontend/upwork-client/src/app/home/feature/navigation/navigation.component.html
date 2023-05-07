@@ -3,24 +3,43 @@
     <a class="upwork-nav-brand" routerLink="">
       <img alt="logo" src="../../../assets/images/logo.svg" width="200px" />
     </a>
-    <div class="collapse navbar-collapse" class="nav-items-container">
-      <ul class="navbar-nav">
-        <div
-          class="nav-item-div"
-          *ngFor="let element of MENU_DATA; let i = index">
-          <li
-            class="nav-item"
-            (click)="onItemClick(i)"
-            [class.active]="isMenuActive(i)">
-            <p *ngIf="isMenuActive(i)"></p>
-            <a class="nav-link" routerLink="{{ element.router_link }}"
-              ><mat-icon>{{ element.icon }}</mat-icon
-              ><span class="nav-text-link">{{ element.text }}</span></a
-            >
-            <p class="rounding-bottom" *ngIf="isMenuActive(i)"></p>
-          </li>
-        </div>
-      </ul>
+    <div class="nav-ng-container">
+      <div class="nav-items-container">
+        <ul class="navbar-nav">
+          <div
+            class="nav-item-div"
+            *ngFor="let element of MENU_DATA; let i = index">
+            <li
+              class="nav-item"
+              (click)="onItemClick(i)"
+              [class.active]="isMenuActive(i)">
+              <p *ngIf="isMenuActive(i)"></p>
+              <a class="nav-link" routerLink="{{ element.router_link }}"
+                ><mat-icon>{{ element.icon }}</mat-icon
+                ><span class="nav-text-link">{{ element.text }}</span></a
+              >
+              <p class="rounding-bottom" *ngIf="isMenuActive(i)"></p>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <div class="nav-items-container logout-container" *ngIf="isUserLoggedIn">
+        <ul class="navbar-nav">
+          <div class="nav-item-div">
+            <li
+              class="nav-item"
+              (click)="logout()"
+              [class.active]="logoutActive">
+              <p *ngIf="logoutActive"></p>
+              <a class="nav-link" routerLink="#"
+                ><mat-icon>logout</mat-icon
+                ><span class="nav-text-link">Logout</span></a
+              >
+              <p class="rounding-bottom" *ngIf="logoutActive"></p>
+            </li>
+          </div>
+        </ul>
+      </div>
     </div>
   </nav>
   <div class="content-container">
