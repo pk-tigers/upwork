@@ -1,5 +1,5 @@
 <div class="navigation-container">
-  <nav class="navbar navbar-expand-lg navbar-light">
+  <nav class="navbar navbar-expand-lg navbar-light" *ngIf="isUserLoggedIn">
     <a class="upwork-nav-brand" routerLink="">
       <img alt="logo" src="../../../assets/images/logo.svg" width="200px" />
     </a>
@@ -23,7 +23,7 @@
           </div>
         </ul>
       </div>
-      <div class="nav-items-container logout-container" *ngIf="isUserLoggedIn">
+      <div class="nav-items-container logout-container">
         <ul class="navbar-nav">
           <div class="nav-item-div">
             <li
