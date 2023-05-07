@@ -2,12 +2,12 @@ import { inject } from '@angular/core';
 import { UserService } from '../data-access/user.service';
 import { Router } from '@angular/router';
 
-export const authGuard = () => {
+export const authGuard = async () => {
   const userService = inject(UserService);
   const router = inject(Router);
 
   if (!userService.isUserAuthenticated) {
-    router.navigateByUrl('/login');
+    await router.navigateByUrl('/login');
     return false;
   }
 
