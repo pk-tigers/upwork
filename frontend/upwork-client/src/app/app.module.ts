@@ -25,6 +25,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
+import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -40,6 +41,7 @@ export function tokenGetter() {
     OrganizationControlComponent,
     AdminPanelComponent,
     RoleRestrictDirective,
+    SharedTableComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,29 @@
+<div class="upwork-table-wrapper mt-2">
+  <table class="upwork-table">
+    <caption>
+      shared table's caption
+    </caption>
+    <thead class="upwork-table-header">
+      <tr>
+        <th>No.</th>
+        <th *ngFor="let header of headers">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody class="upwork-table-body">
+      <tr *ngFor="let row of data; index as i">
+        <td>{{ i + 1 }}.</td>
+        <td *ngFor="let col of row?.cols">{{ col }}</td>
+        <td *ngFor="let action of row?.actions" (click)="action.func()">
+          <mat-icon>{{ action.icon }}</mat-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="upwork-table-foot">
+    <mat-icon class="upwork-icon" (click)="prevPage()">chevron_left</mat-icon>
+    {{ currentPage }}
+    of
+    {{ totalNumberOfPages }}
+    <mat-icon class="upwork-icon" (click)="nextPage()">chevron_right</mat-icon>
+  </div>
+</div>

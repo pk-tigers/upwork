@@ -9,6 +9,12 @@
           Create Organization
         </button>
       </div>
+      <app-shared-table
+        [headers]="header"
+        [data]="data"
+        [currentPage]="0"
+        [totalNumberOfPages]="2"></app-shared-table>
+      <!--
       <div class="upwork-table-wrapper mt-2">
         <table class="upwork-table">
           <caption>
@@ -54,6 +60,7 @@
           >
         </div>
       </div>
+      -->
     </div>
   </div>
 </div>
