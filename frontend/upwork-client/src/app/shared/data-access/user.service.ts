@@ -57,10 +57,16 @@ export class UserService {
     const decodeToken = this.jwtHelper.decodeToken(auth.token);
     const user: User = {
       id: decodeToken['userId'],
-      roles: [],
+      roles: this.getRoles(decodeToken['permissions']),
     };
     this.user.next(user);
     if (decodeToken['admin']) this.isAdmin.next(true);
+  }
+
+  private getRoles(roles: string | string[] | undefined): string[] {
+    if (typeof roles === 'undefined') return [];
+    if (typeof roles === 'string') return [roles];
+    return roles;
   }
 
   private clearUser() {
