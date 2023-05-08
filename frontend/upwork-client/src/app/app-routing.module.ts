@@ -9,7 +9,6 @@ import { adminGuard } from './shared/data-access/admin.guard';
 import { TimeOffComponent } from './home/feature/time-off/time-off.component';
 
 const routes: Routes = [
-  { path: 'time-off', component: TimeOffComponent },
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -22,6 +21,7 @@ const routes: Routes = [
       },
       { path: 'calendar', component: CalendarComponent },
       { path: 'organization-control', component: OrganizationControlComponent },
+      { path: 'time-off', component: TimeOffComponent },
     ],
   },
 ];
