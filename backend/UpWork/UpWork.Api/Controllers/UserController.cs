@@ -35,7 +35,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<UserModel> GetUser(Guid Id)
         {
             var res = _userService.GetUser(Id);
@@ -49,7 +49,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult <bool> DeleteUser(Guid Id)
         {
             return _userService.DeleteUser(Id); 
