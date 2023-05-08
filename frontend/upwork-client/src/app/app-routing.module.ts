@@ -5,6 +5,7 @@ import { OrganizationControlComponent } from './org/feature/organization-control
 import { CalendarComponent } from './home/feature/calendar/calendar.component';
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 import { authGuard } from './shared/auth/auth.guard';
+import { adminGuard } from './shared/data-access/admin.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -12,7 +13,11 @@ const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     children: [
-      { path: 'admin-panel', component: AdminPanelComponent },
+      {
+        path: 'admin-panel',
+        component: AdminPanelComponent,
+        canActivate: [adminGuard],
+      },
       { path: 'calendar', component: CalendarComponent },
       { path: 'organization-control', component: OrganizationControlComponent },
     ],
