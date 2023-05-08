@@ -14,6 +14,8 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
   private user = new BehaviorSubject<User | null>(null);
   public user$ = this.user.asObservable();
+  private isAdmin = new BehaviorSubject<boolean>(false);
+  public isAdmin$ = this.isAdmin.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -47,20 +49,22 @@ export class UserService {
 
   public logout(): void {
     this.tokenService.clearToken();
-    this.setUser(null);
+    this.deleteUser();
   }
 
   private setUser(auth: AuthenticatedResponse | null): void {
     if (!auth) return;
-    const roles = this.getUserClams(auth);
+    const decodeToken = this.jwtHelper.decodeToken(auth.token);
     const user: User = {
-      roles: roles,
+      id: decodeToken['userId'],
+      roles: [],
     };
     this.user.next(user);
+    if (decodeToken['admin']) this.isAdmin.next(true);
   }
 
-  private getUserClams(auth: AuthenticatedResponse): string[] {
-    const token: any = this.jwtHelper.decodeToken(auth.token);
-    return []; // TODO: get user roles when added
+  private deleteUser() {
+    this.user.next(null);
+    this.isAdmin.next(false);
   }
 }

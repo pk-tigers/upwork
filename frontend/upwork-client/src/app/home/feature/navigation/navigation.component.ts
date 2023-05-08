@@ -24,7 +24,7 @@ export class NavigationComponent {
     },
   ];
 
-  constructor(private userService: UserService) {}
+  constructor(public userService: UserService) {}
 
   public onItemClick(index: number) {
     this.activeIndex = index;
@@ -38,9 +38,5 @@ export class NavigationComponent {
     this.logoutActive = true;
     this.userService.logout();
     window.location.reload();
-  }
-
-  public get isUserLoggedIn(): boolean {
-    return this.userService.isUserAuthenticated;
   }
 }

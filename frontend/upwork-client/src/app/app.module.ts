@@ -24,6 +24,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
+import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -38,6 +39,7 @@ export function tokenGetter() {
     CalendarComponent,
     OrganizationControlComponent,
     AdminPanelComponent,
+    RoleRestrictDirective,
   ],
   imports: [
     BrowserModule,

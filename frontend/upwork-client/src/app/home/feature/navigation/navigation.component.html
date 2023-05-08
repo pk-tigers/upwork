@@ -1,5 +1,7 @@
 <div class="navigation-container">
-  <nav class="navbar navbar-expand-lg navbar-light" *ngIf="isUserLoggedIn">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    *ngIf="userService.isUserAuthenticated">
     <a class="upwork-nav-brand" routerLink="">
       <img alt="logo" src="../../../assets/images/logo.svg" width="200px" />
     </a>
@@ -19,6 +21,21 @@
                 ><span class="nav-text-link">{{ element.text }}</span></a
               >
               <p class="rounding-bottom" *ngIf="isMenuActive(i)"></p>
+            </li>
+          </div>
+          <div class="nav-item-div" *ngIf="userService.isAdmin$ | async">
+            <li
+              class="nav-item"
+              (click)="onItemClick(MENU_DATA.length)"
+              [class.active]="isMenuActive(MENU_DATA.length)">
+              <p *ngIf="isMenuActive(MENU_DATA.length)"></p>
+              <a class="nav-link" routerLink="admin-panel"
+                ><mat-icon>settings</mat-icon
+                ><span class="nav-text-link">Admin Panel</span></a
+              >
+              <p
+                class="rounding-bottom"
+                *ngIf="isMenuActive(MENU_DATA.length)"></p>
             </li>
           </div>
         </ul>
