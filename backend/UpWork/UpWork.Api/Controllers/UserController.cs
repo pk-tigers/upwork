@@ -27,9 +27,18 @@ namespace UpWork.Api.Controllers
         [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
         public ActionResult<UserModel> CreateUser([FromBody] RegisterDto registerDto)
         {
-            _permissionsService.VerifyPermissionDatabase(User.Identity.GetUserId(), PermissionType.CreateUser, registerDto.OrganizationId);
+            //_permissionsService.VerifyPermissionDatabase(User.Identity.GetUserId(), PermissionType.CreateUser, registerDto.OrganizationId);
 
             UserModel res = _userService.CreateUser(registerDto);
+
+            return Ok(res);
+        }
+
+        [HttpPost("CreateOwner")]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        public ActionResult<UserModel> CreateOwner([FromBody] RegisterDto registerDto)
+        {
+            UserModel res = _userService.CreateUser(registerDto, Role.OrganizationOwner);
 
             return Ok(res);
         }

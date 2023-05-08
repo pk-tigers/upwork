@@ -1,4 +1,5 @@
 ﻿using UpWork.Common.Dto;
+using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
@@ -18,7 +19,7 @@ namespace UpWork.Infrastucture.Services
             _emailService = emailService;
         }
 
-        public UserModel CreateUser(RegisterDto registerDto)
+        public UserModel CreateUser(RegisterDto registerDto, Role role = Role.User)
         {
             using var transaction = _context.Database.BeginTransaction();
             try
