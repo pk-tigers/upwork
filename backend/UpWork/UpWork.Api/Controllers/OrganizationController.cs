@@ -20,7 +20,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<OrganizationModel> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
         {
             OrganizationModel res = _organizationService.CreateOrganization(createOrganizationDto);
@@ -29,7 +29,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<OrganizationModel> GetOrganization(Guid id)
         {
             var res = _organizationService.GetOrganization(id);
@@ -43,7 +43,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<bool> DeleteOrganization(Guid id)
         {
             return _organizationService.DeleteOrganization(id);

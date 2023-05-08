@@ -20,7 +20,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetUsers(int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsers(skip, take);
@@ -28,7 +28,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("{OrganizationId}")]
-        [Authorize(Policy = IdentityData.AdminUserClaimName)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsersByOrganizationId(organizationId, skip, take);

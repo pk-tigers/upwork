@@ -9,51 +9,14 @@
           Create Organization
         </button>
       </div>
-      <div class="upwork-table-wrapper mt-2">
-        <table class="upwork-table">
-          <caption>
-            List of all Organizations
-          </caption>
-          <thead class="upwork-table-header">
-            <tr>
-              <th>No.</th>
-              <th>Organization's Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="upwork-table-body">
-            <tr *ngFor="let org of listOfOrganization$ | async; index as i">
-              <td>{{ i + 1 }}.</td>
-              <td>{{ org.name }}</td>
-              <td>
-                <mat-icon
-                  class="upwork-icon manage-button"
-                  fontIcon="settings"
-                  (click)="openManageOrganizationPopup(org?.id)"></mat-icon>
-                <mat-icon
-                  class="upwork-icon delete-button mx-2"
-                  fontIcon="delete"
-                  (click)="openDeleteOrganizationPopup(org?.id)"></mat-icon>
-                <mat-icon
-                  class="upwork-icon"
-                  fontIcon="launch"
-                  (click)="goTo(org.urlName)"></mat-icon>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="upwork-table-foot">
-          <mat-icon class="upwork-icon" (click)="prevPage()"
-            >chevron_left</mat-icon
-          >
-          {{ currentPage$.value + 1 }}
-          of
-          {{ totalNumberOfPages }}
-          <mat-icon class="upwork-icon" (click)="nextPage()"
-            >chevron_right</mat-icon
-          >
-        </div>
-      </div>
+      <app-shared-table
+        [caption]="'List of all organizations'"
+        [headers]="header"
+        [data]="(listOfOrganization$ | async) ?? []"
+        [currentPage]="(currentPage$ | async) ?? 1"
+        [totalNumberOfPages]="totalNumberOfPages"
+        (nextPageEvent)="setPage($event)"
+        (prevPageEvent)="setPage($event)"></app-shared-table>
     </div>
   </div>
 </div>

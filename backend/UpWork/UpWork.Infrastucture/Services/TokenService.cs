@@ -74,7 +74,7 @@ namespace UpWork.Infrastucture.Services
                 new Claim(IdentityData.UserIdClaimName, user.Id.ToString())
             };
 
-            if (user.Role == Role.Admin)
+            if (user.Role == Role.PageAdmin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
 
             AddPermissionClaims(claims, user);
