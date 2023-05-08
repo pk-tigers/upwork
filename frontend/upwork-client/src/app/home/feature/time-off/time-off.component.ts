@@ -24,20 +24,30 @@ export class TimeOffComponent {
       ['TimeOffBeginningDate']: {
         value: '',
         type: 'date',
-        placeholder: 'Select beginning date',
+        placeholder: 'Enter beginning date',
       },
       ['TimeOffEndDate']: {
         value: '',
         type: 'date',
-        placeholder: 'Select end date',
+        placeholder: 'Enter end date',
+      },
+      ['TimeOffOptions']: {
+        value: '',
+        type: 'select',
+        placeholder: 'Select type of Time off',
+        selectOptions: [
+          { value: 'paid-time-off', displayValue: 'Paid time off' },
+          { value: 'sick-leave', displayValue: 'Sick leave' },
+          { value: 'unpaid-leave', displayValue: 'Unpaid leave' },
+        ],
       },
     };
-    console.log(inputs);
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Submit',
-        //onClick: () => this.createOrganization(inputs),
+        // onClick: () => this.createTimeOffRequest(inputs),
+        onClick: () => this.createTimeOffRequest(inputs),
       },
     ];
     const data: InputPopupDataModel = {
@@ -50,5 +60,13 @@ export class TimeOffComponent {
       data: data,
       panelClass: 'upwork-popup',
     });
+  }
+
+  createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
+    for (const key in inputs) {
+      console.log(inputs[key]);
+    }
+
+    //TODO: add logic about creating new request by user
   }
 }
