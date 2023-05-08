@@ -161,7 +161,7 @@ export class AdminPanelComponent {
     // this.router.navigate([`/${urlName}/dashboard`]);
   }
 
-  setPage(pageNumber: number) {
+  setPage(pageNumber: number): void {
     this.currentPage$.next(pageNumber);
   }
 
