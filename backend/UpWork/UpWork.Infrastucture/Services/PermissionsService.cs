@@ -23,7 +23,7 @@ namespace UpWork.Infrastucture.Services
             try
             {
                 var userPermData = _context.Users.Where(x => x.Id == userId).Select(x => new { x.Role, x.Permissions }).First();
-                if (userPermData.Role is Role.Admin) return true;
+                if (userPermData.Role is Role.PageAdmin) return true;
 
                 if (organizationId is null)
                     throw new UnauthorizedAccessException();
