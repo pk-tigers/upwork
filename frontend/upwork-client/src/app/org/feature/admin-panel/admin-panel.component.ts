@@ -13,9 +13,9 @@ import {
 import { OrganizationModel } from 'src/app/models/organization.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
+import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { AdminService } from 'src/app/shared/data-access/admin.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
-import { sharedTableData } from 'src/app/shared/ui/shared-table/shared-table.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -24,8 +24,8 @@ import { sharedTableData } from 'src/app/shared/ui/shared-table/shared-table.com
 })
 export class AdminPanelComponent {
   currentPage$ = new BehaviorSubject<number>(0);
-  listOfOrganization$: Observable<OrganizationModel[]> =
-    this.loadOrganizations();
+  listOfOrganization$: Observable<SharedTableData[]> = this.loadOrganizations();
+  header = ['Organizations name', 'Actions'];
   totalNumberOfPages = 1;
 
   constructor(
@@ -35,16 +35,8 @@ export class AdminPanelComponent {
     private dialog: MatDialog
   ) {}
 
-  header = ['Organizations name', 'Actions'];
-  data: sharedTableData[] = [
-    {
-      cols: ['1'],
-      actions: [{ icon: 'settings', func: this.func }],
-    },
-  ];
-
-  func() {
-    console.log('func');
+  func(arg: string) {
+    console.log('func' + arg);
   }
 
   openCreateOrganizationPopup(): void {
@@ -169,16 +161,8 @@ export class AdminPanelComponent {
     // this.router.navigate([`/${urlName}/dashboard`]);
   }
 
-  nextPage(): void {
-    if (this.currentPage$.value < this.totalNumberOfPages - 1) {
-      this.currentPage$.next(this.currentPage$.value + 1);
-    }
-  }
-
-  prevPage(): void {
-    if (this.currentPage$.value > 0) {
-      this.currentPage$.next(this.currentPage$.value - 1);
-    }
+  setPage(pageNumber: number) {
+    this.currentPage$.next(pageNumber);
   }
 
   private loadOrganizations() {
@@ -186,9 +170,44 @@ export class AdminPanelComponent {
       switchMap(currentPage => this.adminService.getOrganizations(currentPage)),
       map((res: PaginatedResult<OrganizationModel>) => {
         this.totalNumberOfPages = res.page ?? 1;
-        if (res.data.length === 0) this.prevPage();
-        return res.data;
+        // TODO: handle deleting last element
+        return this.mapData(res);
       })
     );
+  }
+
+  private mapData(data: PaginatedResult<OrganizationModel>): SharedTableData[] {
+    const organizations = data.data;
+    const results: SharedTableData[] = [];
+    organizations.forEach(organization => {
+      const result: SharedTableData = {
+        cols: [organization.name],
+        actions: [
+          {
+            icon: 'settings',
+            func: (arg: string) => {
+              this.openManageOrganizationPopup(arg);
+            },
+            arg: organization?.id,
+          },
+          {
+            icon: 'delete',
+            func: (arg: string) => {
+              this.openDeleteOrganizationPopup(arg);
+            },
+            arg: organization?.id,
+          },
+          {
+            icon: 'launch',
+            func: (arg: string) => {
+              this.goTo(arg);
+            },
+            arg: organization.urlName,
+          },
+        ],
+      };
+      results.push(result);
+    });
+    return results;
   }
 }

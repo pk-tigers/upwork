@@ -1,14 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export interface sharedTableData {
-  cols?: string[];
-  actions?: sf[];
-}
-
-export interface sf {
-  icon: string;
-  func: CallableFunction;
-}
+import { SharedTableData } from 'src/app/models/shared-table-data.model';
 
 @Component({
   selector: 'app-shared-table',
@@ -16,8 +7,9 @@ export interface sf {
   styleUrls: ['./shared-table.component.scss'],
 })
 export class SharedTableComponent {
+  @Input() caption!: string;
   @Input() headers!: string[];
-  @Input() data!: sharedTableData[];
+  @Input() data!: SharedTableData[];
   @Input() currentPage!: number;
   @Input() totalNumberOfPages!: number;
 
@@ -29,7 +21,7 @@ export class SharedTableComponent {
   }
 
   nextPage() {
-    if (this.currentPage < this.totalNumberOfPages)
+    if (this.currentPage < this.totalNumberOfPages - 1)
       this.nextPageEvent.emit(++this.currentPage);
   }
 }

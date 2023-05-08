@@ -1,7 +1,9 @@
 <div class="upwork-table-wrapper mt-2">
   <table class="upwork-table">
     <caption>
-      shared table's caption
+      {{
+        caption
+      }}
     </caption>
     <thead class="upwork-table-header">
       <tr>
@@ -13,15 +15,20 @@
       <tr *ngFor="let row of data; index as i">
         <td>{{ i + 1 }}.</td>
         <td *ngFor="let col of row?.cols">{{ col }}</td>
-        <td *ngFor="let action of row?.actions" (click)="action.func()">
-          <mat-icon>{{ action.icon }}</mat-icon>
+        <td>
+          <mat-icon
+            class="upwork-icon mx-1"
+            *ngFor="let action of row?.actions"
+            (click)="action.func(action.arg)"
+            >{{ action.icon }}</mat-icon
+          >
         </td>
       </tr>
     </tbody>
   </table>
   <div class="upwork-table-foot">
     <mat-icon class="upwork-icon" (click)="prevPage()">chevron_left</mat-icon>
-    {{ currentPage }}
+    {{ currentPage + 1 }}
     of
     {{ totalNumberOfPages }}
     <mat-icon class="upwork-icon" (click)="nextPage()">chevron_right</mat-icon>
