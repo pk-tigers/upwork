@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarComponent } from './home/feature/calendar/calendar.component';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,11 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
+import { TimeOffComponent } from './home/feature/time-off/time-off.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -40,6 +45,7 @@ export function tokenGetter() {
     OrganizationControlComponent,
     AdminPanelComponent,
     RoleRestrictDirective,
+    TimeOffComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +60,10 @@ export function tokenGetter() {
     MatDialogModule,
     CommonModule,
     NgbModalModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -78,6 +88,7 @@ export function tokenGetter() {
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
   bootstrap: [AppComponent],
 })
