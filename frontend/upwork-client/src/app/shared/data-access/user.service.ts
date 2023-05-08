@@ -49,7 +49,7 @@ export class UserService {
 
   public logout(): void {
     this.tokenService.clearToken();
-    this.deleteUser();
+    this.clearUser();
   }
 
   private setUser(auth: AuthenticatedResponse | null): void {
@@ -63,7 +63,7 @@ export class UserService {
     if (decodeToken['admin']) this.isAdmin.next(true);
   }
 
-  private deleteUser() {
+  private clearUser() {
     this.user.next(null);
     this.isAdmin.next(false);
   }
