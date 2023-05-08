@@ -16,11 +16,11 @@ export class SharedTableComponent {
   @Output() prevPageEvent = new EventEmitter<number>();
   @Output() nextPageEvent = new EventEmitter<number>();
 
-  prevPage() {
+  prevPage(): void {
     if (this.currentPage > 0) this.prevPageEvent.emit(--this.currentPage);
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalNumberOfPages - 1)
       this.nextPageEvent.emit(++this.currentPage);
   }
