@@ -141,7 +141,7 @@ export class AdminPanelComponent {
       email: String(inputs['email']?.value),
       organizationId: orgId,
     };
-    this.adminService.createUser(owner).subscribe(res => {
+    this.adminService.createOwner(owner).subscribe(res => {
       if (res) {
         this.tostr.success('Successfully added organizations owner');
       }

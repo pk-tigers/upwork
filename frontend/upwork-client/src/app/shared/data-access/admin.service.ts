@@ -38,7 +38,7 @@ export class AdminService {
     return this.http.delete<boolean>(`${this.env.apiUrl}/organization/${guid}`);
   }
 
-  public createUser(user: RegisterModel): Observable<User> {
-    return this.http.post<User>(`${this.env.apiUrl}/user`, user);
+  public createOwner(owner: RegisterModel): Observable<User> {
+    return this.http.post<User>(`${this.env.apiUrl}/user/createOwner`, owner);
   }
 }
