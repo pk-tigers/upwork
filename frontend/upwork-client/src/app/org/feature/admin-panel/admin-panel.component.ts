@@ -165,12 +165,13 @@ export class AdminPanelComponent {
     this.currentPage$.next(pageNumber);
   }
 
-  private loadOrganizations() {
+  private loadOrganizations(): Observable<SharedTableData[]> {
     return this.currentPage$.pipe(
       switchMap(currentPage => this.adminService.getOrganizations(currentPage)),
       map((res: PaginatedResult<OrganizationModel>) => {
         this.totalNumberOfPages = res.page ?? 1;
-        // TODO: handle deleting last element
+        if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
+          this.currentPage$.next(this.currentPage$.value - 1);
         return this.mapData(res);
       })
     );
