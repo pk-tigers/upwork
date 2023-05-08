@@ -21,6 +21,11 @@ export class TimeOffComponent {
 
   openNewRequestPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
+      ['TimeOffNote']: {
+        value: '',
+        type: 'text',
+        placeholder: 'Add a note',
+      },
       ['TimeOffBeginningDate']: {
         value: '',
         type: 'date',
@@ -52,7 +57,7 @@ export class TimeOffComponent {
     ];
     const data: InputPopupDataModel = {
       title: 'New time off request',
-      description: '',
+      description: 'Fill basic data about your request:',
       inputs: inputs,
       buttons: buttons,
     };
@@ -63,10 +68,9 @@ export class TimeOffComponent {
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
+    //TODO: add logic about creating new request by user
     for (const key in inputs) {
       console.log(inputs[key]);
     }
-
-    //TODO: add logic about creating new request by user
   }
 }
