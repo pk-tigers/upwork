@@ -17,17 +17,17 @@ export class AbsenceService {
   }
 
   public getAbsencesForUser(
-    guid: string,
+    userId: string,
     from: Date,
     to: Date,
     pageNumber = 0,
-    pageSize = 3
+    pageSize = 10
   ): Observable<PaginatedResult<AbsenceModel>> {
     console.log('2');
     return this.http.get<PaginatedResult<AbsenceModel>>(
       `${
         this.env.apiUrl
-      }/absences/GetAbsencesByUserId/${guid}?from=${from.toISOString()}&to=${to.toISOString()}&skip=${
+      }/absences/GetAbsencesByUserId?userId=${userId}&from=${from.toISOString()}&to=${to.toISOString()}&skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
     );
