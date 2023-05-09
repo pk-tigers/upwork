@@ -12,10 +12,9 @@
 }
 
 .upwork-default-content-container {
-    min-width: 750px;
-    filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.25));
-    border-radius: 20px;
-
+  min-width: 750px;
+  filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
 }
 
 .upwork-default-content-heading {
@@ -82,7 +81,11 @@
     min-width: 90%;
   }
 
-<<<<<<< HEAD
+  .upwork-default-content-container {
+    min-width: 90%;
+    filter: drop-shadow(20px 20px 20px rgba(0, 0, 0, 0.25));
+  }
+
   .upwork-popup-inputs-container {
     width: 95%;
   }
@@ -91,19 +94,3 @@
     width: 95%;
   }
 }
-=======
-    .upwork-default-content-container {
-        min-width: 90%;
-        filter: drop-shadow(20px 20px 20px rgba(0, 0, 0, 0.25));
-    }
-    
-    .upwork-popup-inputs-container {
-        width: 95%;
-    }
-
-    .upwork-popup-buttons-container {
-        width: 95%;
-    }
-    
-}
->>>>>>> dev
