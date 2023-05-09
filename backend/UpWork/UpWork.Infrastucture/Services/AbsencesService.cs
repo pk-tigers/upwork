@@ -45,7 +45,7 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.ApprovalState == ApprovalState.Pending);
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
-            return res;                
+            return res;
         }
 
         public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)

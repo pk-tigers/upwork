@@ -6,4 +6,5 @@ export interface AbsenceModel {
   absenceTypeId: string;
   approvalState: number;
   timeOffSupervisorId: string;
+  //TODO: add: note: string; to database
 }

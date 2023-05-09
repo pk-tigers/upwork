@@ -10,25 +10,15 @@
           New request
         </button>
       </div>
-      <div class="upwork-table-wrapper mt-2">
-        <table class="upwork-table">
-          <caption>
-            List of all Organizations
-          </caption>
-          <thead class="upwork-table-header">
-            <tr>
-              <th>No.</th>
-              <th>Times off taken</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="upwork-table-body"></tbody>
-        </table>
-        <div class="upwork-table-foot">
-          <mat-icon class="upwork-icon">chevron_left</mat-icon>
-          <mat-icon class="upwork-icon">chevron_right</mat-icon>
-        </div>
-      </div>
+      <app-shared-table
+        [caption]="'List of your Time off requests'"
+        [headers]="header"
+        [data]="(listOfUserRequests$ | async) ?? []"
+        [currentPage]="(currentPage$ | async) ?? 1"
+        [totalNumberOfPages]="totalNumberOfPages"
+        (nextPageEvent)="setPage($event)"
+        (prevPageEvent)="setPage($event)">
+      </app-shared-table>
     </div>
   </div>
 </div>
