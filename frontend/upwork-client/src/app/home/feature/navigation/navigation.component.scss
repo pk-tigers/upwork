@@ -19,6 +19,7 @@
 
 .content-container {
   width: 100%;
+  min-width: 350px;
   overflow-y: auto;
   background-color: $light-blue;
 }
