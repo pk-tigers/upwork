@@ -14,7 +14,7 @@ namespace UpWork.Common.Models.DatabaseModels
         public string UrlName { get; set; }
         [JsonIgnore]
         public virtual ICollection<UserModel> Users { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<AbsenceTypeModel> AbsenceTypes { get; set; }
+        //[JsonIgnore]
+        //public virtual ICollection<AbsenceTypeModel> AbsenceTypes { get; set; }
     }
 }
