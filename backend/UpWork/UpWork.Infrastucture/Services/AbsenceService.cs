@@ -53,7 +53,7 @@ namespace UpWork.Infrastucture.Services
                 FromDate = requestDto.FromDate,
                 ToDate = requestDto.ToDate,
                 IsActive = true,
-                AbsenceTypeId = requestDto.AbsenceTypeId,
+                AbsenceType = requestDto.AbsenceType,
                 UserId = userId
             };
 
