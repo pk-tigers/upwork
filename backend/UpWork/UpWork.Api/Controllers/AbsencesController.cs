@@ -30,7 +30,6 @@ namespace UpWork.Api.Controllers
         public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByUserId(userId, from, to, skip, take);
-            Console.WriteLine("tutaj");
             return Ok(res);
         }
 
