@@ -12,7 +12,6 @@ namespace UpWork.Common.Interfaces
         PaginatedResult<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
         PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take);
         int GetCurrentYearAbsenceDays(Guid userId);
-        PaginatedResult<AbsenceTypeModel> GetAbsenceTypesForUser(Guid userId, int skip, int take);
         PaginatedResult<AbsenceModel> GetUserAbsences(Guid userId, int skip, int take);
 
     }

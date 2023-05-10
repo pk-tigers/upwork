@@ -57,16 +57,6 @@ namespace UpWork.Api.Controllers
             return res;
         }
 
-        [HttpGet("GetAbsenceTypesForUser")]
-        //przenies do absence types bo rafal sue przypierdala 
-        public ActionResult<PaginatedResult<AbsenceTypeModel>> GetAbsenceTypesForUser(int skip = 0, int take = 10)
-        {
-            var userId = User.Identity.GetUserId();
-
-            var res = _absencesService.GetAbsenceTypesForUser(userId, skip, take);
-            return res;
-        }
-
         [HttpGet("GetUserAbsences")]
         public ActionResult<PaginatedResult<AbsenceModel>> GetUserAbsences(int skip = 0, int take = 10)
         {

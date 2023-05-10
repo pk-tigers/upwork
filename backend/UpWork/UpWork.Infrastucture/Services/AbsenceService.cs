@@ -58,7 +58,7 @@ namespace UpWork.Infrastucture.Services
                 ToDate = requestDto.ToDate,
                 IsActive = true,
                 AbsenceType = requestDto.AbsenceType,
-                UserId = userId
+                UserId = userId,
                 TimeOffSupervisorId = superVisiorId
             };
 

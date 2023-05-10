@@ -84,23 +84,6 @@ namespace UpWork.Infrastucture.Services
             return absenceDays;
         }
 
-        public PaginatedResult<AbsenceTypeModel> GetAbsenceTypesForUser(Guid userId, int skip, int take)
-        {
-            var organization = _context.Organizations
-                .Include(o => o.Users)
-                .FirstOrDefault(o => o.Users.Any(u => u.Id == userId));
-
-            if (organization == null)
-            {
-                return new PaginatedResult<AbsenceTypeModel>(new List<AbsenceTypeModel>(), 0, take);
-            }
-
-            var organizationId = organization.Id;
-            var res = _context.AbsencesType.Where(x => x.OrganizationId == organizationId);
-
-            return new PaginatedResult<AbsenceTypeModel>(res.Skip(skip).Take(take), res.Count(), take);
-        }
-
         public PaginatedResult<AbsenceModel> GetUserAbsences(Guid userId, int skip, int take)
         {
             var absences = _context.Absences.Where(x => x.UserId == userId);
