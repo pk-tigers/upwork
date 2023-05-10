@@ -48,7 +48,7 @@ namespace UpWork.Infrastucture.Services
 
         public AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto)
         {
-            var superVisiorId = _context.Users?.FirstOrDefault(u => u.Id == userId).CurrentTimeOffSupervisorId;
+            var superVisiorId = _context.Users?.First(u => u.Id == userId).CurrentTimeOffSupervisorId;
 
 
             AbsenceModel newAbsence = new AbsenceModel
