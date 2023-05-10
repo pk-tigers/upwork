@@ -7,12 +7,11 @@
     </a>
     <div class="nav-ng-container">
       <div class="nav-items-container">
-        <ul class="navbar-nav">
-          <div
-            class="nav-item-div"
-            *ngFor="let element of MENU_DATA; let i = index">
+        <div class="navbar-nav">
+          <ul class="nav-item-div">
             <li
-              class="nav-item"
+              *ngFor="let element of MENU_DATA; let i = index"
+              class="nav-item my-3"
               (click)="onItemClick(i)"
               [class.active]="isMenuActive(i)">
               <div *ngIf="isMenuActive(i)"></div>
@@ -22,7 +21,7 @@
               >
               <!-- <div class="rounding-bottom" *ngIf="isMenuActive(i)"></div> -->
             </li>
-          </div>
+          </ul>
           <div class="nav-item-div" *ngIf="userService.isAdmin$ | async">
             <li
               class="nav-item"
@@ -38,11 +37,11 @@
                 *ngIf="isMenuActive(MENU_DATA.length)"></p>
             </li>
           </div>
-        </ul>
+        </div>
       </div>
       <div class="nav-items-container logout-container">
-        <ul class="navbar-nav">
-          <div class="nav-item-div">
+        <div class="navbar-nav">
+          <ul class="nav-item-div">
             <li
               class="nav-item"
               (click)="logout()"
@@ -54,8 +53,8 @@
               >
               <p class="rounding-bottom" *ngIf="logoutActive"></p>
             </li>
-          </div>
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
