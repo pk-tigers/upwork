@@ -21,22 +21,22 @@
               >
               <!-- <div class="rounding-bottom" *ngIf="isMenuActive(i)"></div> -->
             </li>
+            <ng-container *ngIf="userService.isAdmin$ | async">
+              <li
+                class="nav-item"
+                (click)="onItemClick(MENU_DATA.length)"
+                [class.active]="isMenuActive(MENU_DATA.length)">
+                <p *ngIf="isMenuActive(MENU_DATA.length)"></p>
+                <a class="nav-link" routerLink="admin-panel"
+                  ><mat-icon>settings</mat-icon
+                  ><span class="nav-text-link">Admin Panel</span></a
+                >
+                <p
+                  class="rounding-bottom"
+                  *ngIf="isMenuActive(MENU_DATA.length)"></p>
+              </li>
+            </ng-container>
           </ul>
-          <div class="nav-item-div" *ngIf="userService.isAdmin$ | async">
-            <li
-              class="nav-item"
-              (click)="onItemClick(MENU_DATA.length)"
-              [class.active]="isMenuActive(MENU_DATA.length)">
-              <p *ngIf="isMenuActive(MENU_DATA.length)"></p>
-              <a class="nav-link" routerLink="admin-panel"
-                ><mat-icon>settings</mat-icon
-                ><span class="nav-text-link">Admin Panel</span></a
-              >
-              <p
-                class="rounding-bottom"
-                *ngIf="isMenuActive(MENU_DATA.length)"></p>
-            </li>
-          </div>
         </div>
       </div>
       <div class="nav-items-container logout-container">
