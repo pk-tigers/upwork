@@ -10,7 +10,7 @@ using UpWork.Common.Models.DatabaseModels;
 namespace UpWork.Api.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class AbsencesController : ControllerBase
     {

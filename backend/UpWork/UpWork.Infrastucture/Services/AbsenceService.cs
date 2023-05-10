@@ -18,7 +18,7 @@ namespace UpWork.Infrastucture.Services
 
         public bool CancelRequestIfNotStarted(Guid requestId)
         {
-            AbsenceModel request = _context.Absences.FirstOrDefault(a => a.Id == requestId && !a.IsActive && a.FromDate > DateTime.Now);
+            AbsenceModel request = _context.Absences.FirstOrDefault(a => a.Id == requestId && a.IsActive && a.FromDate > DateTime.Now);
 
             if (request != null)
             {
