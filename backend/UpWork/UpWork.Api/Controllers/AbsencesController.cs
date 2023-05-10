@@ -10,7 +10,7 @@ using UpWork.Common.Models.DatabaseModels;
 namespace UpWork.Api.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class AbsencesController : ControllerBase
     {
@@ -57,15 +57,23 @@ namespace UpWork.Api.Controllers
             return res;
         }
 
-        [HttpGet("GetAbsenceTypesByOrganizationId")]
-        public ActionResult<PaginatedResult<AbsenceTypeModel>> GetAbsenceTypes(int skip = 0, int take = 10)
+        [HttpGet("GetAbsenceTypesForUser")]
+        //przenies do absence types bo rafal sue przypierdala 
+        public ActionResult<PaginatedResult<AbsenceTypeModel>> GetAbsenceTypesForUser(int skip = 0, int take = 10)
         {
             var userId = User.Identity.GetUserId();
 
-            var res = _absencesService.GetAbsenceTypes(userId, skip, take);
+            var res = _absencesService.GetAbsenceTypesForUser(userId, skip, take);
             return res;
         }
 
+        [HttpGet("GetUserAbsences")]
+        public ActionResult<PaginatedResult<AbsenceModel>> GetUserAbsences(int skip = 0, int take = 10)
+        {
+            var userId = User.Identity.GetUserId();
 
+            var res = _absencesService.GetUserAbsences(userId, skip, take);
+            return res;
+        }
     }
 }

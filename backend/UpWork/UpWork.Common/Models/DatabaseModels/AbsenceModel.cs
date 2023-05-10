@@ -16,7 +16,7 @@ namespace UpWork.Common.Models.DatabaseModels
         [JsonIgnore]
         public virtual UserModel User { get; set; }
         public ApprovalState ApprovalState { get; set; }
-        public Guid TimeOffSupervisorId { get; set; }
+        public Guid? TimeOffSupervisorId { get; set; }
         [JsonIgnore]
         public virtual UserModel TimeOffSupervisor { get; set; }
     }

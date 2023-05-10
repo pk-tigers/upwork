@@ -7,7 +7,7 @@ namespace UpWork.Common.Interfaces
     public interface IAbsenceService
     {
         AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState);
-        bool CancelRequestIfNotStarted(Guid id);
+        bool CancelRequestIfNotStarted(Guid requestId);
         AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto);
     }
 }

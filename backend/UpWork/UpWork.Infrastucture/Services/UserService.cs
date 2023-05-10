@@ -80,7 +80,7 @@ namespace UpWork.Infrastucture.Services
                 return false;
             }
 
-            _context.Users.Remove(user);
+            user.IsActive = false;
             _context.SaveChanges();
 
             return true;

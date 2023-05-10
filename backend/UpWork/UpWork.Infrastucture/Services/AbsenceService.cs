@@ -1,4 +1,5 @@
-﻿using UpWork.Common.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using UpWork.Common.Dto;
 using UpWork.Common.DTO;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
@@ -21,7 +22,7 @@ namespace UpWork.Infrastucture.Services
 
             if (request != null)
             {
-                _context.Absences.Remove(request);
+                request.IsActive = false;
                 _context.SaveChanges();
                 return true;
             }
@@ -47,6 +48,9 @@ namespace UpWork.Infrastucture.Services
 
         public AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto)
         {
+            var superVisiorId = _context.Users?.FirstOrDefault(u => u.Id == userId).CurrentTimeOffSupervisorId;
+
+
             AbsenceModel newAbsence = new AbsenceModel
             {
                 Id = Guid.NewGuid(),
@@ -54,7 +58,8 @@ namespace UpWork.Infrastucture.Services
                 ToDate = requestDto.ToDate,
                 IsActive = true,
                 AbsenceTypeId = requestDto.AbsenceTypeId,
-                UserId = userId
+                UserId = userId,
+                TimeOffSupervisorId = superVisiorId
             };
 
             _context.Add(newAbsence);
