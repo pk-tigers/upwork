@@ -14,6 +14,7 @@ import { AbsenceService } from '../../../shared/absence/absence.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { AbsenceModel } from 'src/app/models/absence.model';
 import { SharedTableComponent } from '../../../shared/ui/shared-table/shared-table.component';
+import { AbsenceTypes } from 'src/app/models/enums/absence-types.enum';
 
 @Component({
   selector: 'app-time-off',
@@ -81,18 +82,19 @@ export class TimeOffComponent {
         value: '',
         type: 'select',
         placeholder: 'Select type of Time off',
-        selectOptions: [
-          { value: 'paid-time-off', displayValue: 'Paid time off' },
-          { value: 'sick-leave', displayValue: 'Sick leave' },
-          { value: 'unpaid-leave', displayValue: 'Unpaid leave' },
-        ],
+        //TODO: to be replaced with values from API - specific absence types for organization
+        selectOptions: Object.keys(AbsenceTypes)
+          .filter(key => isNaN(Number(key)))
+          .map(key => ({
+            value: key,
+            displayValue: key.replace(/([A-Z])/g, ' $1').trim(),
+          })),
       },
     };
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Submit',
-        // onClick: () => this.createTimeOffRequest(inputs),
         onClick: () => this.createTimeOffRequest(inputs),
       },
     ];
@@ -117,11 +119,17 @@ export class TimeOffComponent {
     const userRequest: AbsenceModel = {
       fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
       toDate: new Date(String(inputs['TimeOffEndDate'].value)),
-      absenceTypeId: '68796C52-594E-47D0-FDAB-08DB4D65E637',
+      absenceTypeId: '3C672EAE-8D98-465D-7172-08DB4B302635',
+      /*
+      absenceTypeId:
+        AbsenceTypes[
+          inputs['TimeOffOptions'].value as keyof typeof AbsenceTypes
+        ],*/
     };
-    this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
-      this.listOfUserRequests$ = this.loadUserRequests();
-    });
+    console.log(inputs['TimeOffOptions'].value),
+      this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
+        this.listOfUserRequests$ = this.loadUserRequests();
+      });
   }
 
   goTo(urlName: string | undefined): void {

@@ -2,6 +2,7 @@ export enum AbsenceTypes {
   PaidTimeOff,
   UnpaidLeave,
   SickLeave,
+  MaternityLeave,
 }
 
 export class AbsenceTypesHelper {
