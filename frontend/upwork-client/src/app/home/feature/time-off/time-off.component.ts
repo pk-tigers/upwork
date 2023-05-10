@@ -117,7 +117,7 @@ export class TimeOffComponent {
     const userRequest: AbsenceModel = {
       fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
       toDate: new Date(String(inputs['TimeOffEndDate'].value)),
-      //absenceTypeId: String(inputs['TimeOffOptions'].value),
+      absenceTypeId: '68796C52-594E-47D0-FDAB-08DB4D65E637',
     };
     this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
       this.listOfUserRequests$ = this.loadUserRequests();

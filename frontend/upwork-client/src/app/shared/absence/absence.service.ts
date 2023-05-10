@@ -14,7 +14,7 @@ export class AbsenceService {
 
   public createAbsenceRequest(absence: AbsenceModel): Observable<AbsenceModel> {
     return this.http.post<AbsenceModel>(
-      `${this.env.apiUrl}/CreateAbsenceRequest`,
+      `${this.env.apiUrl}/absence/CreateAbsenceRequest`,
       absence
     ); //TODO: to be implemented on backend site
   }
