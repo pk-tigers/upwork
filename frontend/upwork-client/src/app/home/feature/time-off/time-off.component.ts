@@ -67,11 +67,6 @@ export class TimeOffComponent {
 
   openNewRequestPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
-      ['TimeOffNote']: {
-        value: '',
-        type: 'text',
-        placeholder: 'Add a note',
-      },
       ['TimeOffBeginningDate']: {
         value: '',
         type: 'date',
@@ -118,6 +113,15 @@ export class TimeOffComponent {
     for (const key in inputs) {
       console.log(inputs[key]);
     }
+    console.log(inputs['TimeOffBeginningDate'].value);
+    const userRequest: AbsenceModel = {
+      fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
+      toDate: new Date(String(inputs['TimeOffEndDate'].value)),
+      //absenceTypeId: String(inputs['TimeOffOptions'].value),
+    };
+    this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
+      this.listOfUserRequests$ = this.loadUserRequests();
+    });
   }
 
   goTo(urlName: string | undefined): void {

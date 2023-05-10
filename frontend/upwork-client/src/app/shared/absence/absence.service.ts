@@ -13,7 +13,10 @@ export class AbsenceService {
   constructor(private http: HttpClient) {}
 
   public createAbsenceRequest(absence: AbsenceModel): Observable<AbsenceModel> {
-    return this.http.post<AbsenceModel>(`${this.env.apiUrl}/absence`, absence); //TODO: to be implemented on backend site
+    return this.http.post<AbsenceModel>(
+      `${this.env.apiUrl}/CreateAbsenceRequest`,
+      absence
+    ); //TODO: to be implemented on backend site
   }
 
   public getAbsencesForUser(

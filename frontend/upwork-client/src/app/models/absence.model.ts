@@ -1,10 +1,9 @@
 export interface AbsenceModel {
-  id: string;
+  id?: string;
   fromDate: Date;
   toDate: Date;
-  isActive: boolean;
-  absenceTypeId: string;
-  approvalState: number;
-  timeOffSupervisorId: string;
-  //TODO: add: note: string; to database
+  isActive?: boolean;
+  absenceTypeId?: string;
+  approvalState?: number;
+  timeOffSupervisorId?: string;
 }
