@@ -38,6 +38,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("UsersWithSupervisors")]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<PaginatedResult<UserWithSupervisorDto>> UsersWithSupervisors(Guid organizationId, int skip = 0, int take = 10)
         {
             PaginatedResult<UserWithSupervisorDto> res = _usersService.UsersWithSupervisors(organizationId, skip, take);
