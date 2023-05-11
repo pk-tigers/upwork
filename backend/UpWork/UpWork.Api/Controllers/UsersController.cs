@@ -4,6 +4,7 @@ using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
+using UpWork.Common.Dto;
 
 namespace UpWork.Api.Controllers
 {
@@ -32,6 +33,14 @@ namespace UpWork.Api.Controllers
         public ActionResult<PaginatedResult<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsersByOrganizationId(organizationId, skip, take);
+
+            return Ok(res);
+        }
+
+        [HttpGet("UsersWithSupervisors")]
+        public ActionResult<PaginatedResult<UserWithSupervisorDto>> UsersWithSupervisors(Guid organizationId, int skip = 0, int take = 10)
+        {
+            PaginatedResult<UserWithSupervisorDto> res = _usersService.UsersWithSupervisors(organizationId, skip, take);
 
             return Ok(res);
         }
