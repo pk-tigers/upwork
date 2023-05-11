@@ -26,6 +26,7 @@ import { OrganizationControlComponent } from './org/feature/organization-control
 import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
 import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
+import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -42,6 +43,7 @@ export function tokenGetter() {
     AdminPanelComponent,
     RoleRestrictDirective,
     SharedTableComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
