@@ -57,6 +57,7 @@ export class UserService {
     const decodeToken = this.jwtHelper.decodeToken(auth.token);
     const user: User = {
       id: decodeToken['userId'],
+      organizationId: decodeToken['organizationId'],
       roles: this.getRoles(decodeToken['permissions']),
     };
     this.user.next(user);
