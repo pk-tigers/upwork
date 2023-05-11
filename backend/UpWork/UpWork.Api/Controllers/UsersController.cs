@@ -45,5 +45,14 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
+        [HttpGet("GetSupervisors")]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        public ActionResult<PaginatedResult<UserModel>> GetSupervisors(Guid organizationId, int skip = 0, int take = 10)
+        {
+            var res = _usersService.GetSupervisors(organizationId, skip, take);
+
+            return Ok(res);
+        }
+
     }
 }

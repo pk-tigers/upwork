@@ -17,6 +17,14 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
+        public PaginatedResult<UserModel> GetSupervisors(Guid organizationId, int skip, int take)
+        {
+            var users = _context.Users.Include(x => x.Permissions).Where(x => x.Permissions.Any(x => x.PermissionType == Common.Enums.PermissionType.CanSupervise));
+
+            var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
+        }
+
         public PaginatedResult<UserModel> GetUsers(int skip, int take)
         {
             var users = _context.Users;
