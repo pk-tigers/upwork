@@ -1,0 +1,34 @@
+.page-not-found-header img{
+    width:300px;
+}
+
+.page-not-found-container{
+    height: 100%;
+    flex-direction: column;
+}
+.page-not-found-container > div{
+    height: fit-content;
+}
+
+.page-not-found-body, .error-number, .error-meaning, .error-description, .page-not-found-container, .page-not-found-header, .error-description *{
+    display: flex;
+    justify-content: center;
+}
+.error-number{
+    font-size: 90px;
+    line-height: 1.2em;
+    margin-top: 20px;
+    font-weight: bold;
+}
+.error-meaning{
+    font-size: 50px;
+    line-height: 1.2em;
+}
+
+.error-description{
+    margin-top: 20px;
+    flex-direction: column;
+}
+.error-description *{
+    font-size: 20px;
+}
