@@ -9,6 +9,7 @@ namespace UpWork.Common.Interfaces
         PaginatedResult<UserModel> GetSupervisors(Guid organizationId, int skip, int take);
         PaginatedResult<UserModel> GetUsers(int skip, int take);
         PaginatedResult<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take);
+        PaginatedResult<UserWithPermissionsDto> LoadUsersWithPermissions(Guid organizationId, int skip, int take);
         PaginatedResult<UserWithSupervisorDto> UsersWithSupervisors(Guid organizationId, int skip, int take);
     }
 }

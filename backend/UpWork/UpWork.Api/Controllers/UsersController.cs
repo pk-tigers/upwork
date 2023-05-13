@@ -55,5 +55,13 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
+        [HttpGet("LoadUsersWithPermissions")]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        public ActionResult<PaginatedResult<UserWithPermissionsDto>> LoadUsersWithPermissions(Guid organizationId, int skip = 0, int take = 10)
+        {
+            PaginatedResult<UserWithPermissionsDto> res = _usersService.LoadUsersWithPermissions(organizationId, skip, take);
+            return Ok(res);
+        }
+
     }
 }
