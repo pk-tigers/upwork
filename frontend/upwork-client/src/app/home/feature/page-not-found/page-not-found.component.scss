@@ -10,7 +10,7 @@
     height: fit-content;
 }
 
-.page-not-found-body, .error-number, .error-meaning, .error-description, .page-not-found-container, .page-not-found-header, .error-description *{
+.page-not-found-body, .error-number, .error-meaning, .error-description, .page-not-found-container, .page-not-found-header{
     display: flex;
     justify-content: center;
 }
@@ -28,7 +28,17 @@
 .error-description{
     margin-top: 20px;
     flex-direction: column;
+    text-align: center;
 }
 .error-description *{
     font-size: 20px;
+}
+@media (max-width: 768px) {
+    .error-description {
+      margin-top: 10px;
+    }
+    
+    .error-description * {
+      font-size: 16px;
+    }
 }
