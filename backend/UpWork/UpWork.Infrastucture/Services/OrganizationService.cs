@@ -61,7 +61,7 @@ namespace UpWork.Infrastucture.Services
                 _userService.DeleteUser(user.Id); 
             }
 
-            _context.Organizations.Remove(organization);
+            organization.IsActive = false;
             _context.SaveChanges();
             return true;
         }

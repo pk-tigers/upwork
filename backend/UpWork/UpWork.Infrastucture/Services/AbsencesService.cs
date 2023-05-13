@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
@@ -56,6 +58,36 @@ namespace UpWork.Infrastucture.Services
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
+        }
+
+        public int GetCurrentYearAbsenceDays(Guid userId)
+        {
+
+            DateTime currentDate = DateTime.Now;
+            DateTime currentYearStart = new DateTime(currentDate.Year, 1, 1);
+            DateTime nextYearStart = currentYearStart.AddYears(1);
+
+            var absences = _context.Absences
+                .Where(a => a.UserId == userId && a.IsActive &&
+                    ((a.FromDate >= currentYearStart && a.FromDate < nextYearStart) ||
+                    (a.FromDate < currentYearStart && a.ToDate >= currentYearStart)));
+                
+
+            int absenceDays = 0;
+            foreach (var absence in absences)
+            {
+                DateTime absenceStartDate = (absence.FromDate > currentYearStart) ? absence.FromDate : currentYearStart;
+                DateTime absenceEndDate = (absence.ToDate < nextYearStart) ? absence.ToDate : nextYearStart.AddDays(-1);
+                absenceDays += (absenceEndDate - absenceStartDate).Days + 1;
+            }
+
+            return absenceDays;
+        }
+
+        public PaginatedResult<AbsenceModel> GetUserAbsences(Guid userId, int skip, int take)
+        {
+            var absences = _context.Absences.Where(x => x.UserId == userId);
+            return new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take); 
         }
     }
 }
