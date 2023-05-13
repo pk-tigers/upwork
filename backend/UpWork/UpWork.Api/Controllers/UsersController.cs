@@ -31,7 +31,8 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("{OrganizationId}")]
-        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetUsersByOrganizationId(organizationId, skip, take);
@@ -40,7 +41,8 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("UsersWithSupervisors")]
-        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<UserWithSupervisorDto>> UsersWithSupervisors(Guid organizationId, int skip = 0, int take = 10)
         {
             PaginatedResult<UserWithSupervisorDto> res = _usersService.UsersWithSupervisors(organizationId, skip, take);
@@ -49,7 +51,8 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("GetSupervisors")]
-        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetSupervisors(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetSupervisors(organizationId, skip, take);
