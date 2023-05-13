@@ -89,7 +89,7 @@ namespace UpWork.Infrastucture.Services
 
             if (user.Permissions == null) return;
             
-            var userPerms = user.Permissions.Where(x => x.GrantDate < DateTime.UtcNow && x.ExpirationDate.GetValueOrDefault(DateTime.MaxValue) > DateTime.UtcNow);
+            var userPerms = user.Permissions.Where(x => x.IsActive());
 
             foreach (var perm in userPerms)
             {

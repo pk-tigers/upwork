@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarComponent } from './home/feature/calendar/calendar.component';
@@ -27,6 +28,7 @@ import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.compo
 import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
+import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -44,6 +46,7 @@ export function tokenGetter() {
     RoleRestrictDirective,
     SharedTableComponent,
     PageNotFoundComponent,
+    PermissionsControlComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ export function tokenGetter() {
     HttpClientModule,
     MatIconModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatOptionModule,
     MatDialogModule,
     CommonModule,
@@ -67,6 +71,7 @@ export function tokenGetter() {
       timeOut: 3000,
       closeButton: true,
       preventDuplicates: true,
+      resetTimeoutOnDuplicate: true,
       progressBar: true,
       progressAnimation: 'decreasing',
     }),

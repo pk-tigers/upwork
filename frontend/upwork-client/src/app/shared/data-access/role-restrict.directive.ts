@@ -6,12 +6,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { UserService } from './user.service';
+import { Roles } from 'src/app/models/enums/roles.enum';
 
 @Directive({
   selector: '[appRoleRestrict]',
 })
 export class RoleRestrictDirective implements OnInit {
-  @Input() roleRestrict = '';
+  @Input() roleRestrict: Roles = Roles.User;
 
   constructor(
     private userService: UserService,
@@ -21,7 +22,7 @@ export class RoleRestrictDirective implements OnInit {
 
   ngOnInit(): void {
     this.userService.user$.subscribe(user => {
-      if (user?.role?.includes(this.roleRestrict)) {
+      if (user?.role == this.roleRestrict) {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
       } else {
         this.viewContainerRef.clear();
