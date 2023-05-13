@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UpWork.Api.Attributes;
 using UpWork.Api.Extensions;
 using UpWork.Common.DTO;
 using UpWork.Common.Enums;
+using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
@@ -22,6 +24,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("GetAbsencesByOrganizationId")]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByOrganizationId(organizationId, from, to, skip, take);
@@ -29,6 +32,8 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("GetAbsencesByUserId")]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByUserId(userId, from, to, skip, take);
