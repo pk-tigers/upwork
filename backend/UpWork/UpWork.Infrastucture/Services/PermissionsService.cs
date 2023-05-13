@@ -25,6 +25,7 @@ namespace UpWork.Infrastucture.Services
         {
             var user = _context.Users
                 .Where(x => x.Id == updatePermissionsDto.UserId)
+                .Where(x => x.OrganizationId == updatePermissionsDto.OrganizationId)
                 .Include(x => x.Permissions)
                 .FirstOrDefault();
 
