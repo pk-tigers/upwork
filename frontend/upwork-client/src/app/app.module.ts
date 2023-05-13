@@ -71,6 +71,7 @@ export function tokenGetter() {
       timeOut: 3000,
       closeButton: true,
       preventDuplicates: true,
+      resetTimeoutOnDuplicate: true,
       progressBar: true,
       progressAnimation: 'decreasing',
     }),

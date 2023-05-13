@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, map, switchMap } from 'rxjs';
 import { PermissionTypes } from 'src/app/models/enums/permission-types.enum';
 import { Roles } from 'src/app/models/enums/roles.enum';
@@ -35,7 +36,8 @@ export class PermissionsControlComponent {
 
   constructor(
     private permissionsService: PermissionsService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {}
 
   prevPage(): void {
@@ -77,7 +79,11 @@ export class PermissionsControlComponent {
     };
 
     this.permissionsService.updatePermissions(updatePerm).subscribe(res => {
-      console.log(res);
+      if (res) {
+        this.toastr.success('Permissions changed successfully');
+      } else {
+        this.toastr.error('Failed to change permissions');
+      }
     });
   }
 
