@@ -78,6 +78,7 @@ namespace UpWork.Infrastucture.Services
             var res = new UserWithPermissionsDto()
             {
                 Id = userModel.Id,
+                OrganizationId = userModel.OrganizationId,
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
                 Role = userModel.Role,

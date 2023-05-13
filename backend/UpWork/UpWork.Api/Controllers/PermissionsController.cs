@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UpWork.Api.Attributes;
 using UpWork.Common.Dto;
+using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 
@@ -20,7 +22,8 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost("UpdatePermissions")]
-        [Authorize(Policy = IdentityData.AdminUserPolicy)]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.GrantPermissions)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
         public ActionResult<bool> UpdatePermissions([FromBody] UpdatePermissionsDto updatePermissionsDto)
         {
             bool res = _permissionsService.UpdatePermissions(updatePermissionsDto);

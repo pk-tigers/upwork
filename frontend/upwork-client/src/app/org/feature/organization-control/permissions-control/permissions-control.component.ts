@@ -75,6 +75,7 @@ export class PermissionsControlComponent {
 
     const updatePerm: UpdatePermissions = {
       userId: user.id,
+      organizationId: user.organizationId,
       permissionTypes: user.permissionTypes,
     };
 

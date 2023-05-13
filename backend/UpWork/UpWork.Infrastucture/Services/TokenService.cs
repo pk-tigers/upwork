@@ -60,7 +60,11 @@ namespace UpWork.Infrastucture.Services
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: GetUserClaims(userModel),
+#if DEBUG
+                expires: DateTime.Now.AddHours(3),
+#else
                 expires: DateTime.Now.AddMinutes(30),
+#endif
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
@@ -76,6 +80,8 @@ namespace UpWork.Infrastucture.Services
 
             if (user.Role == Role.PageAdmin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
+            else if (user.Role == Role.OrganizationOwner)
+                claims.Add(new Claim(IdentityData.OwnerUserClaimName, "true"));
 
             AddPermissionClaims(claims, user);
             return claims;
