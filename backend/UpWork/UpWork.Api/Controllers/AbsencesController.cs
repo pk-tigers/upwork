@@ -11,7 +11,7 @@ using UpWork.Common.Models.DatabaseModels;
 
 namespace UpWork.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [Authorize]
     [ApiController]
     public class AbsencesController : ControllerBase
@@ -23,7 +23,7 @@ namespace UpWork.Api.Controllers
             _absencesService = absencesService;
         }
 
-        [HttpGet("GetAbsencesByOrganizationId")]
+        [HttpGet]
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
@@ -31,43 +31,47 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
-        [HttpGet("GetAbsencesByUserId")]
-        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
-        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip = 0, int take = 10)
+        [HttpGet]
+        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByDateForUser(DateTime from, DateTime to, int skip = 0, int take = 10)
         {
+            var userId = User.Identity.GetUserId();
             var res = _absencesService.GetAbsencesByUserId(userId, from, to, skip, take);
             return Ok(res);
         }
 
-        [HttpGet("GetPendingAbsencesRequestsBySupervisorId")]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip = 0, int take = 10)
-        {
-            var res = _absencesService.GetPendingAbsencesRequestsBySupervisorId(supervisorId, skip, take);
-            return Ok(res);
-        }
-
-        [HttpGet("GetSupervisedAbsencesRequestsBySupervisorId")]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip = 0, int take = 10)
-        {
-            var res = _absencesService.GetSupervisedAbsencesRequestsBySupervisorId(supervisorId, skip, take);
-            return Ok(res);
-        }
-
-        [HttpGet("GetCurrentYearAbsenceDays")]
-        public ActionResult<int> GetCurrentYearAbsenceDays()
+        [HttpGet]
+        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesForUser(int skip = 0, int take = 10)
         {
             var userId = User.Identity.GetUserId();
-            var res = _absencesService.GetCurrentYearAbsenceDays(userId);
+
+            var res = _absencesService.GetAbsencesForUser(userId, skip, take);
             return res;
         }
 
-        [HttpGet("GetUserAbsences")]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetUserAbsences(int skip = 0, int take = 10)
+        [HttpGet]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
+        public ActionResult<PaginatedResult<AbsenceModel>> GetPendingAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
+        {
+            var supervisorId = User.Identity.GetUserId();
+            var res = _absencesService.GetPendingAbsencesRequestsForSupervisor(supervisorId, skip, take);
+            return Ok(res);
+        }
+
+        [HttpGet]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
+        public ActionResult<PaginatedResult<AbsenceModel>> GetSupervisedAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
+        {
+            var supervisorId = User.Identity.GetUserId();
+            var res = _absencesService.GetSupervisedAbsencesRequestsForSupervisor(supervisorId, skip, take);
+            return Ok(res);
+        }
+
+        [HttpGet]
+        public ActionResult<int> GetYearAbsenceCountForUser()
         {
             var userId = User.Identity.GetUserId();
 
-            var res = _absencesService.GetUserAbsences(userId, skip, take);
+            var res = _absencesService.GetYearAbsenceCountForUser(userId);
             return res;
         }
     }

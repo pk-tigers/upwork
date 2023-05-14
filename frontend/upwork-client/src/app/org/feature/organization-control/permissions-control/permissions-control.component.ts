@@ -6,9 +6,9 @@ import { Roles } from 'src/app/models/enums/roles.enum';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { UpdatePermissions } from 'src/app/models/update-permissions.model';
 import { UserWithPermissions } from 'src/app/models/user-with-permissions.model';
-import { OrganizationService } from 'src/app/shared/data-access/organization.service';
-import { PermissionsService } from 'src/app/shared/data-access/permissions.service';
-import { UserService } from 'src/app/shared/data-access/user.service';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { PermissionsService } from 'src/app/shared/data-access/service/permissions.service';
+import { UserService } from 'src/app/shared/data-access/service/user.service';
 
 @Component({
   selector: 'app-permissions-control',

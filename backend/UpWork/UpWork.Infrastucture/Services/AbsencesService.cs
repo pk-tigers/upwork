@@ -40,17 +40,28 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
-        public PaginatedResult<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModelDto> GetPendingAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
-                .Where(x => x.ApprovalState == ApprovalState.Pending);
+                .Where(x => x.ApprovalState == ApprovalState.Pending)
+                .Include(x => x.User)
+                .Select(x => new AbsenceModelDto
+                {
+                      Id = x.Id,
+                      FromDate = x.FromDate,
+                      ToDate = x.ToDate,
+                      UserId = x.UserId,
+                      UserName = string.Join(' ', x.User.FirstName, x.User.LastName),
+                      AbsenceType = x.AbsenceType,
+                      ApprovalState = x.ApprovalState
+                });
 
-            var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
+            var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;                
         }
 
-        public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
@@ -60,7 +71,7 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
-        public int GetCurrentYearAbsenceDays(Guid userId)
+        public int GetYearAbsenceCountForUser(Guid userId)
         {
 
             DateTime currentDate = DateTime.Now;
@@ -84,7 +95,7 @@ namespace UpWork.Infrastucture.Services
             return absenceDays;
         }
 
-        public PaginatedResult<AbsenceModel> GetUserAbsences(Guid userId, int skip, int take)
+        public PaginatedResult<AbsenceModel> GetAbsencesForUser(Guid userId, int skip, int take)
         {
             var absences = _context.Absences.Where(x => x.UserId == userId);
             return new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take); 

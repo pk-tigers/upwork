@@ -5,7 +5,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { UserService } from './user.service';
+import { UserService } from '../service/user.service';
 import { Roles } from 'src/app/models/enums/roles.enum';
 
 @Directive({

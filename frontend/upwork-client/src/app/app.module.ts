@@ -25,10 +25,11 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.component';
-import { RoleRestrictDirective } from './shared/data-access/role-restrict.directive';
+import { RoleRestrictDirective } from './shared/data-access/directive/role-restrict.directive';
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
+import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -47,6 +48,7 @@ export function tokenGetter() {
     SharedTableComponent,
     PageNotFoundComponent,
     PermissionsControlComponent,
+    RequestTimeOffsComponent,
   ],
   imports: [
     BrowserModule,
