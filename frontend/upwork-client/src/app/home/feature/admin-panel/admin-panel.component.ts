@@ -15,7 +15,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { AdminService } from 'src/app/shared/data-access/admin.service';
-import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -25,7 +25,7 @@ import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/po
 export class AdminPanelComponent {
   currentPage$ = new BehaviorSubject<number>(0);
   listOfOrganization$: Observable<SharedTableData[]> = this.loadOrganizations();
-  header = ['Organizations name', 'Actions'];
+  header = ['Organizations name', 'UrlName', 'Actions'];
   totalNumberOfPages = 1;
 
   constructor(
@@ -45,6 +45,11 @@ export class AdminPanelComponent {
         value: '',
         type: 'text',
         placeholder: "Your organization's name",
+      },
+      ['UrlName']: {
+        value: '',
+        type: 'text',
+        placeholder: "Your organization's url",
       },
     };
     const buttons: ButtonPopupModel[] = [
@@ -125,7 +130,7 @@ export class AdminPanelComponent {
   createOrganization(inputs: Dictionary<InputPopupModel>): void {
     const organization: OrganizationModel = {
       name: String(inputs['OrganizationName'].value),
-      urlName: String(inputs['OrganizationName'].value)
+      urlName: String(inputs['UrlName'].value)
         .replace(/\s/g, '-')
         .replace('.', '-'),
     };
@@ -182,7 +187,7 @@ export class AdminPanelComponent {
     const results: SharedTableData[] = [];
     organizations.forEach(organization => {
       const result: SharedTableData = {
-        cols: [organization.name],
+        cols: [organization.name, organization.urlName],
         actions: [
           {
             icon: 'settings',
