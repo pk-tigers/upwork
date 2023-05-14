@@ -40,13 +40,23 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
-        public PaginatedResult<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModelDto> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
-                .Where(x => x.ApprovalState == ApprovalState.Pending);
+                .Where(x => x.ApprovalState == ApprovalState.Pending)
+                .Join(_context.Users, absences => absences.UserId, user => user.Id, (absences, user) => new AbsenceModelDto
+                {
+                      Id = absences.Id,
+                      FromDate = absences.FromDate,
+                      ToDate = absences.ToDate,
+                      UserId = absences.UserId,
+                      UserName = string.Join(' ', user.FirstName, user.LastName),
+                      AbsenceType = absences.AbsenceType,
+                      ApprovalState = absences.ApprovalState
+                });
 
-            var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
+            var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;                
         }
 
