@@ -2,7 +2,8 @@
 
 namespace UpWork.Common.Exceptions
 {
-    public class ForbiddenException : Exception, ISerializable
+    public class ForbiddenException : Exception
     {
+        protected ForbiddenException() { }
     }
 }
