@@ -21,18 +21,9 @@ export class NavigationComponent implements OnInit {
     this.organizationService.organization$.subscribe(res => {
       if (res?.urlName) {
         this.url = res?.urlName;
-        const acvitePath = window.location.pathname;
-        this.activeIndex = this.menuData.findIndex(
-          x => x.router_link == acvitePath
-        );
+        this.setActiveIndexFromActivePath();
       }
     });
-  }
-  trackByFn(
-    index: number,
-    item: { icon: string; text: string; router_link: string }
-  ) {
-    return item.router_link;
   }
 
   public onItemClick(index: number) {
@@ -68,6 +59,13 @@ export class NavigationComponent implements OnInit {
     ];
   }
 
+  trackByFn(
+    index: number,
+    item: { icon: string; text: string; router_link: string }
+  ) {
+    return item.router_link;
+  }
+
   @HostListener('window:popstate', ['$event'])
   onPopState() {
     const acvitePath = window.location.pathname;
@@ -76,5 +74,12 @@ export class NavigationComponent implements OnInit {
       this.activeIndex = this.menuData.findIndex(
         x => x.router_link == acvitePath
       );
+  }
+
+  private setActiveIndexFromActivePath() {
+    const acvitePath = window.location.pathname;
+    const newIndex = this.menuData.findIndex(x => x.router_link == acvitePath);
+    if (newIndex >= 0) this.activeIndex = newIndex;
+    this.activeIndex = 0;
   }
 }
