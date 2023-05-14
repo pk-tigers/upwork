@@ -15,7 +15,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { AdminService } from 'src/app/shared/data-access/admin.service';
-import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 
 @Component({
   selector: 'app-admin-panel',
