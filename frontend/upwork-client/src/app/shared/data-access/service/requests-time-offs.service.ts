@@ -33,7 +33,7 @@ export class RequestsTimeOffsService {
     return this.http.get<PaginatedResult<Absence>>(
       `${
         environment.apiUrl
-      }/absences/GetPendingAbsencesRequestsBySupervisorId?supervisorId=${supervisorId}&skip=${
+      }/absences/GetPendingAbsencesRequestsForSupervisor?skip=${
         skip * take
       }&take=${take}`
     );
