@@ -31,7 +31,7 @@ namespace UpWork.Infrastucture.Services
             return newOrganization;
         }
 
-        private string PurgeUrlName(string v)
+        private static string PurgeUrlName(string v)
         {
             var s = v;
             for (int i = 0; i < s.Length; i++)
