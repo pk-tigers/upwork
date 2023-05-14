@@ -1,4 +1,5 @@
 ﻿using UpWork.Common.Dto;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
@@ -98,5 +99,30 @@ namespace UpWork.Infrastucture.Services
 </body>";
             return res;
         }
+
+        public UserModel UpdateUser(UserModel existingUser, UpdateUserDto updateUserDto)
+        {
+
+
+            if (!string.IsNullOrEmpty(updateUserDto.FirstName))
+            {
+                existingUser.FirstName = updateUserDto.FirstName;
+            }
+
+            if (!string.IsNullOrEmpty(updateUserDto.LastName))
+            {
+                existingUser.LastName = updateUserDto.LastName;
+            }
+
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                existingUser.Password = _encodeService.EncodePassword(updateUserDto.Password);
+            }
+
+            _context.SaveChanges();
+
+            return existingUser;
+        }
+
     }
 }

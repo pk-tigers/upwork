@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UpWork.Api.Attributes;
 using UpWork.Api.Extensions;
 using UpWork.Common.Dto;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
@@ -64,6 +65,15 @@ namespace UpWork.Api.Controllers
         public ActionResult <bool> DeleteUser(Guid Id)
         {
             return _userService.DeleteUser(Id); 
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<UserModel> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
+        {
+            UserModel existingUser = _userService.GetUser(id);
+            UserModel updatedUser = _userService.UpdateUser(existingUser, updateUserDto);
+
+            return Ok(updatedUser);
         }
     }
 }
