@@ -204,8 +204,8 @@ export class AdminPanelComponent {
           },
           {
             icon: 'launch',
-            func: (arg: string) => {
-              this.goTo(arg);
+            func: async (arg: string) => {
+              await this.goTo(arg);
             },
             arg: organization.urlName,
           },
