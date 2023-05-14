@@ -1,31 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrganizationService } from 'src/app/shared/data-access/organization.service';
 import { UserService } from 'src/app/shared/data-access/user.service';
-
+import { HostListener } from '@angular/core';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
   public activeIndex = 0;
-  public logoutActive = false;
+  public url = '';
 
-  MENU_DATA = [
-    { icon: 'dashboard', text: 'Dashboard', router_link: '' },
-    { icon: 'person_outline', text: 'Profile', router_link: '' },
-    { icon: 'beach_access', text: 'Time off', router_link: '' },
-    { icon: 'calendar_today', text: 'Calendar', router_link: 'calendar' },
-    { icon: 'settings', text: 'Settings', router_link: '' },
-    { icon: 'event_note', text: 'Requests', router_link: '' },
-    {
-      icon: 'business',
-      text: 'Organization Control',
-      router_link: '/organization-control',
-    },
-  ];
+  constructor(
+    public userService: UserService,
+    private router: Router,
+    private organizationService: OrganizationService
+  ) {}
 
-  constructor(public userService: UserService, private router: Router) {}
+  ngOnInit(): void {
+    this.organizationService.organization$.subscribe(res => {
+      if (res?.urlName) {
+        this.url = res?.urlName;
+        const acvitePath = window.location.pathname;
+        this.activeIndex = this.menuData.findIndex(
+          x => x.router_link == acvitePath
+        );
+      }
+    });
+  }
+  trackByFn(
+    index: number,
+    item: { icon: string; text: string; router_link: string }
+  ) {
+    return item.router_link;
+  }
 
   public onItemClick(index: number) {
     this.activeIndex = index;
@@ -36,8 +45,35 @@ export class NavigationComponent {
   }
 
   public async logout(): Promise<void> {
-    this.logoutActive = true;
     this.userService.logout();
     await this.router.navigateByUrl('/login');
+  }
+
+  public get menuData() {
+    return [
+      { icon: 'dashboard', text: 'Dashboard', router_link: '' },
+      { icon: 'person_outline', text: 'Profile', router_link: '' },
+      { icon: 'beach_access', text: 'Time off', router_link: '' },
+      {
+        icon: 'calendar_today',
+        text: 'Calendar',
+        router_link: `/org/${this.url}/calendar`,
+      },
+      { icon: 'settings', text: 'Settings', router_link: '' },
+      { icon: 'event_note', text: 'Requests', router_link: '' },
+      {
+        icon: 'business',
+        text: 'Organization Control',
+        router_link: `/org/${this.url}/organization-control`,
+      },
+    ];
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState() {
+    const acvitePath = window.location.pathname;
+    this.activeIndex = this.menuData.findIndex(
+      x => x.router_link == acvitePath
+    );
   }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UpWork.Common.Dto;
 using UpWork.Common.Enums;
+using UpWork.Common.Exceptions;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
@@ -60,24 +61,29 @@ namespace UpWork.Infrastucture.Services
         {
             try
             {
-                var userPermData = _context.Users.Where(x => x.Id == userId).Select(x => new { x.Role, x.Permissions }).First();
+                var userPermData = _context.Users.Where(x => x.Id == userId).Select(x => new { x.Role, x.Permissions, x.OrganizationId }).First();
                 if (userPermData.Role is Role.PageAdmin) return true;
 
                 if (organizationId is null)
-                    throw new UnauthorizedAccessException();
+                    throw new ForbiddenException();
+
+                if (userPermData.OrganizationId != organizationId)
+                    throw new ForbiddenException();
+
+                if (userPermData.Role is Role.OrganizationOwner) return true;
 
                 var permission = userPermData.Permissions
                     .Where(x => x.PermissionType == permType 
                     && x.IsActive());
 
                 if (permission is null)
-                    throw new UnauthorizedAccessException();
+                    throw new ForbiddenException();
 
                 return true;
             }
             catch
             {
-                throw new UnauthorizedAccessException();
+                throw new ForbiddenException();
             }
         }
     }

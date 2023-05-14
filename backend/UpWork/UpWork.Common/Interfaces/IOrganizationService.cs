@@ -9,5 +9,6 @@ namespace UpWork.Common.Interfaces
         public bool DeleteOrganization(Guid Id);
         public OrganizationModel CreateOrganization(CreateOrganizationDto organizationDTO);
         public OrganizationModel GetOrganizationWithUsers(Guid Id);
+        OrganizationModel GetOrganizationByUrlName(string urlName);
     }
 }

@@ -81,5 +81,10 @@ namespace UpWork.Infrastucture.Services
             return true;
         }
 
+        public OrganizationModel GetOrganizationByUrlName(string urlName)
+        {
+            var organization = _context.Organizations.Where(x => x.UrlName == urlName).FirstOrDefault();
+            return organization;
+        }
     }
 }

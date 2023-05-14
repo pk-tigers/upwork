@@ -160,10 +160,9 @@ export class AdminPanelComponent {
     });
   }
 
-  goTo(urlName: string | undefined): void {
+  async goTo(urlName: string | undefined): Promise<void> {
     if (typeof urlName === 'undefined') return;
-    // TODO: route to correct url
-    // this.router.navigate([`/${urlName}/dashboard`]);
+    await this.router.navigate([`/org/${urlName}/calendar`]); //TODO change to dashboard
   }
 
   setPage(pageNumber: number): void {
