@@ -22,13 +22,28 @@ namespace UpWork.Infrastucture.Services
             var newOrganization = new OrganizationModel()
             {
                 Name = organizationDTO.Name,
-                UrlName= organizationDTO.UrlName
+                UrlName = PurgeUrlName(organizationDTO.UrlName.ToLower().Trim())
             };
             
             _context.Add(newOrganization);
             _context.SaveChanges();
 
             return newOrganization;
+        }
+
+        private string PurgeUrlName(string v)
+        {
+            var s = v;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] < 'A' || s[i] > 'Z' &&
+                        s[i] < 'a' || s[i] > 'z')
+                {
+                    s = s.Remove(i, 1);
+                    i--;
+                }
+            }
+            return s;
         }
 
         public OrganizationModel GetOrganizationWithUsers(Guid Id)
