@@ -51,13 +51,14 @@ namespace UpWork.Api.Controllers
         {
             OrganizationModel res = _organizationService.GetOrganizationByUrlName(urlName);
 
-            var userId = User.Identity.GetUserId();
-            _permissionsService.VerifyPermissionDatabase(userId, PermissionType.BasicRead, res.Id);
-
             if (res == null)
             {
                 return NotFound("Organization does not exist");
             }
+
+            var userId = User.Identity.GetUserId();
+            _permissionsService.VerifyPermissionDatabase(userId, PermissionType.BasicRead, res.Id);
+
 
             return Ok(res);
         }

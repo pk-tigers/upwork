@@ -71,8 +71,10 @@ export class NavigationComponent implements OnInit {
   @HostListener('window:popstate', ['$event'])
   onPopState() {
     const acvitePath = window.location.pathname;
-    this.activeIndex = this.menuData.findIndex(
-      x => x.router_link == acvitePath
-    );
+    if (acvitePath == '/admin-panel') this.activeIndex = this.menuData.length;
+    else
+      this.activeIndex = this.menuData.findIndex(
+        x => x.router_link == acvitePath
+      );
   }
 }
