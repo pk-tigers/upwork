@@ -7,6 +7,7 @@ import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.comp
 import { authGuard } from './shared/auth/auth.guard';
 import { adminGuard } from './shared/data-access/admin.guard';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
+import { organizationGuard } from './shared/data-access/organization.guard';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -18,11 +19,20 @@ const routes: Routes = [
         component: AdminPanelComponent,
         canActivate: [adminGuard],
       },
-      { path: 'calendar', component: CalendarComponent },
-      { path: 'organization-control', component: OrganizationControlComponent },
+      {
+        path: 'org/:org-url',
+        canActivate: [organizationGuard],
+        children: [
+          { path: 'calendar', component: CalendarComponent },
+          {
+            path: 'organization-control',
+            component: OrganizationControlComponent,
+          },
+        ],
+      },
     ],
   },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

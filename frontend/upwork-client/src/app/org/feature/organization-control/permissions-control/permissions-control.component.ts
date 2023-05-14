@@ -6,6 +6,7 @@ import { Roles } from 'src/app/models/enums/roles.enum';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { UpdatePermissions } from 'src/app/models/update-permissions.model';
 import { UserWithPermissions } from 'src/app/models/user-with-permissions.model';
+import { OrganizationService } from 'src/app/shared/data-access/organization.service';
 import { PermissionsService } from 'src/app/shared/data-access/permissions.service';
 import { UserService } from 'src/app/shared/data-access/user.service';
 
@@ -37,7 +38,8 @@ export class PermissionsControlComponent {
   constructor(
     private permissionsService: PermissionsService,
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private organizationService: OrganizationService
   ) {}
 
   prevPage(): void {
@@ -50,9 +52,9 @@ export class PermissionsControlComponent {
   }
 
   private loadUsersWithPermissions() {
-    return this.userService.user$.pipe(
-      switchMap(user =>
-        this.permissionsService.getUsersWithPermissions(user?.organizationId)
+    return this.organizationService.organization$.pipe(
+      switchMap(org =>
+        this.permissionsService.getUsersWithPermissions(org?.id)
       ),
       map((res: PaginatedResult<UserWithPermissions>) => {
         return res;
