@@ -56,7 +56,7 @@ namespace UpWork.Infrastucture.Services
 
         public OrganizationModel GetOrganization(Guid Id)
         {
-            var organization = _context.Organizations.Find(Id);
+            var organization = _context.Organizations.FirstOrDefault(x => x.Id == Id);
             return organization;
         }
 

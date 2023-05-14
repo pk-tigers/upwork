@@ -1,6 +1,8 @@
-﻿namespace UpWork.Common.Exceptions
+﻿using System.Runtime.Serialization;
+
+namespace UpWork.Common.Exceptions
 {
-    public class ForbiddenException : Exception
+    public class ForbiddenException : Exception, ISerializable
     {
     }
 }
