@@ -38,6 +38,7 @@ namespace UpWork.Infrastucture.Services
         public AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState, Guid supervisorId)
         {
             var absence = _context.Absences
+                .Where(x => x.IsActive)
                 .Where(x => x.Id == absenceApprovalState.AbsenceId)
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
                 .FirstOrDefault();
