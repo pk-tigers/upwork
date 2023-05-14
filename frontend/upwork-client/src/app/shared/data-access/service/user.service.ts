@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { User } from '../../models/user.model';
+import { User } from '../../../models/user.model';
 import { TokenService } from './token.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { LoginModel } from '../../models/login.model';
-import { AuthenticatedResponse } from '../../models/authenticated-response.model';
+import { LoginModel } from '../../../models/login.model';
+import { AuthenticatedResponse } from '../../../models/authenticated-response.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { OrganizationService } from './organization.service';

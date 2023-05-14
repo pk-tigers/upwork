@@ -14,7 +14,7 @@ import { OrganizationModel } from 'src/app/models/organization.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
-import { AdminService } from 'src/app/shared/data-access/admin.service';
+import { AdminService } from 'src/app/shared/data-access/service/admin.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 
 @Component({
@@ -34,10 +34,6 @@ export class AdminPanelComponent {
     private tostr: ToastrService,
     private dialog: MatDialog
   ) {}
-
-  func(arg: string) {
-    console.log('func' + arg);
-  }
 
   openCreateOrganizationPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {

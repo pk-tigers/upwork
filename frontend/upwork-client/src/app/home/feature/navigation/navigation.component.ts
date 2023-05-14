@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { OrganizationService } from 'src/app/shared/data-access/organization.service';
-import { UserService } from 'src/app/shared/data-access/user.service';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { UserService } from 'src/app/shared/data-access/service/user.service';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',

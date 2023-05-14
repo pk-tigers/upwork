@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { OrganizationService } from './organization.service';
+import { OrganizationService } from '../service/organization.service';
 import { inject } from '@angular/core';
 
 export const organizationGuard: CanActivateFn = (
