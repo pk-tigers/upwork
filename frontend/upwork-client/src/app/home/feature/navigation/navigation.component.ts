@@ -50,7 +50,11 @@ export class NavigationComponent implements OnInit {
         router_link: `/org/${this.url}/calendar`,
       },
       { icon: 'settings', text: 'Settings', router_link: '' },
-      { icon: 'event_note', text: 'Requests', router_link: '' },
+      {
+        icon: 'event_note',
+        text: 'Requests',
+        router_link: `/org/${this.url}/requests`,
+      },
       {
         icon: 'business',
         text: 'Organization Control',

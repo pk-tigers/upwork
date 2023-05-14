@@ -7,7 +7,8 @@ import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.comp
 import { authGuard } from './shared/auth/auth.guard';
 import { adminGuard } from './shared/data-access/guard/admin.guard';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
-import { organizationGuard } from './shared/data-access/organization.guard';
+import { organizationGuard } from './shared/data-access/guard/organization.guard';
+import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
             path: 'organization-control',
             component: OrganizationControlComponent,
           },
+          { path: 'requests', component: RequestTimeOffsComponent },
         ],
       },
     ],

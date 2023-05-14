@@ -29,6 +29,7 @@ import { RoleRestrictDirective } from './shared/data-access/directive/role-restr
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
+import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -47,6 +48,7 @@ export function tokenGetter() {
     SharedTableComponent,
     PageNotFoundComponent,
     PermissionsControlComponent,
+    RequestTimeOffsComponent,
   ],
   imports: [
     BrowserModule,
