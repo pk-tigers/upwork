@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/data-access/user.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class NavigationComponent {
     },
   ];
 
-  constructor(public userService: UserService) {}
+  constructor(public userService: UserService, private router: Router) {}
 
   public onItemClick(index: number) {
     this.activeIndex = index;
@@ -34,9 +35,9 @@ export class NavigationComponent {
     return this.activeIndex == index;
   }
 
-  public logout(): void {
+  public async logout(): Promise<void> {
     this.logoutActive = true;
     this.userService.logout();
-    window.location.reload();
+    await this.router.navigateByUrl('/login');
   }
 }
