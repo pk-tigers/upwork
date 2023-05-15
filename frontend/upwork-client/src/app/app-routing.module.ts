@@ -26,6 +26,7 @@ const routes: Routes = [
         path: 'org/:org-url',
         canActivate: [organizationGuard],
         children: [
+          { path: 'time-off', component: TimeOffComponent },
           { path: 'calendar', component: CalendarComponent },
           {
             path: 'organization-control',

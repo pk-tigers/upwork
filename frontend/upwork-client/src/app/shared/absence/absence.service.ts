@@ -14,25 +14,31 @@ export class AbsenceService {
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
     return this.http.post<Absence>(
-      `${this.env.apiUrl}/absence/CreateAbsenceRequest`,
+      `${this.env.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
-    ); //TODO: to be implemented on backend site
+    );
   }
 
   public getAbsencesForUser(
-    userId: string,
-    from: Date,
-    to: Date,
     pageNumber = 0,
     pageSize = 10
   ): Observable<PaginatedResult<Absence>> {
-    console.log('2');
     return this.http.get<PaginatedResult<Absence>>(
-      `${
-        this.env.apiUrl
-      }/absences/GetAbsencesByUserId?userId=${userId}&from=${from.toISOString()}&to=${to.toISOString()}&skip=${
+      `${this.env.apiUrl}/Absences/GetAbsencesForUser?skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
+    );
+  }
+
+  public cancelRequest(requestId: string): Observable<boolean> {
+    return this.http.delete<boolean>(
+      `${this.env.apiUrl}/Absence/CancelRequestForUser/${requestId}`
+    );
+  }
+
+  public getYearAbsenceCountForUser(): Observable<number> {
+    return this.http.get<number>(
+      `${this.env.apiUrl}/Absences/getYearAbsenceCountForUser`
     );
   }
 }

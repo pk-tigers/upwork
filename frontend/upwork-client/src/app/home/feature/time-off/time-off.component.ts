@@ -15,6 +15,8 @@ import { Absence } from 'src/app/models/absence.model';
 import { SharedTableComponent } from '../../../shared/ui/shared-table/shared-table.component';
 import { AbsenceTypes } from 'src/app/models/enums/absence-types.enum';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
+import { formatDate } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-time-off',
@@ -22,25 +24,28 @@ import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/po
   styleUrls: ['./time-off.component.scss'],
 })
 export class TimeOffComponent {
-  time_off_days = 21; //TODO: to be replaced with value calculated from db
+  //time_off_days = 21; //TODO: to be replaced with value calculated from db
   header = ['Time offs taken', 'Statuses'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
+  absencesYearCount$ = this.getAbsencesYearCount();
+  //listOfUsers$: Observable<PaginatedResult<UserWithPermissions>>
 
   constructor(
     private dialog: MatDialog,
-    private absenceService: AbsenceService
+    private absenceService: AbsenceService,
+    private tostr: ToastrService
   ) {}
 
+  private getAbsencesYearCount(): Observable<number> {
+    return this.absenceService.getYearAbsenceCountForUser();
+  }
+
   loadUserRequests(): Observable<SharedTableData[]> {
-    const guid = '68796C52-594E-47D0-FDAB-08DB4D65E637';
-    const from = new Date(2022, 10, 10);
-    const to = new Date(2023, 5, 10);
-    console.log('1');
     return this.currentPage$.pipe(
       switchMap(currentPage =>
-        this.absenceService.getAbsencesForUser(guid, from, to, currentPage)
+        this.absenceService.getAbsencesForUser(currentPage)
       ),
       map((res: PaginatedResult<Absence>) => {
         this.totalNumberOfPages = res.page ?? 1;
@@ -56,14 +61,58 @@ export class TimeOffComponent {
     const results: SharedTableData[] = [];
     userRequests.forEach(userRequest => {
       const result: SharedTableData = {
-        cols: [userRequest.fromDate.toISOString()],
+        cols: [
+          formatDate(userRequest.fromDate, 'dd-MM-yyyy', 'en-US') +
+            ' - ' +
+            formatDate(userRequest.toDate, 'dd-MM-yyyy', 'en-US'),
+        ],
         actions: [
-          //TODO
+          {
+            icon: 'delete',
+            func: (arg: string) => {
+              this.openCancelRequestPopup(arg);
+            },
+            arg: userRequest.id,
+          },
         ],
       };
       results.push(result);
     });
     return results;
+  }
+
+  openCancelRequestPopup(requestId: string): void {
+    const inputs: Dictionary<InputPopupModel> = {};
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Yes',
+        onClick: () => this.cancelRequest(requestId),
+      },
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'NO',
+      },
+    ];
+
+    const data: InputPopupDataModel = {
+      title: 'Cancel organization',
+      description: 'Are you sure you want to cancel your request?',
+      inputs: inputs,
+      buttons: buttons,
+    };
+    console.log('kot');
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
+    });
+  }
+
+  cancelRequest(requestId: string): void {
+    this.absenceService.cancelRequest(requestId).subscribe(isCancelled => {
+      if (!isCancelled) this.tostr.warning('Something went wrong');
+      else this.listOfUserRequests$ = this.loadUserRequests();
+    });
   }
 
   openNewRequestPopup(): void {
@@ -112,25 +161,19 @@ export class TimeOffComponent {
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
     //TODO: add logic about creating new request by user
-    for (const key in inputs) {
-      console.log(inputs[key]);
-    }
-    console.log(inputs['TimeOffBeginningDate'].value);
+
     const userRequest: Absence = {
-      id: 'kk',
       fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
-      toDate: new Date(String(inputs['TimeOffEndDate'].value))
-      //absenceTypeId: '3C672EAE-8D98-465D-7172-08DB4B302635',
-      /*
-      absenceTypeId:
+      toDate: new Date(String(inputs['TimeOffEndDate'].value)),
+      absenceType:
         AbsenceTypes[
           inputs['TimeOffOptions'].value as keyof typeof AbsenceTypes
-        ],*/
+        ],
     };
-    console.log(inputs['TimeOffOptions'].value),
-      this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
-        this.listOfUserRequests$ = this.loadUserRequests();
-      });
+
+    this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
+      this.listOfUserRequests$ = this.loadUserRequests();
+    });
   }
 
   goTo(urlName: string | undefined): void {
