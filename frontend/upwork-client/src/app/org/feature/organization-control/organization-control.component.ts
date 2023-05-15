@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupWithInputsComponent } from '../../../shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { OrganizationAdminService } from 'src/app/shared/data-access/service/organization-admin.service';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -8,6 +9,13 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { SharedTableData } from 'src/app/models/shared-table-data.model';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { PaginatedResult } from 'src/app/models/paginatedResult.model';
+import { UserWithSupervisor } from 'src/app/models/user-with-supervisor.model';
+import { RegisterModel } from 'src/app/models/register.model';
 
 @Component({
   selector: 'app-organization-control',
@@ -15,7 +23,23 @@ import { Dictionary } from 'src/app/models/dictionary.model';
   styleUrls: ['./organization-control.component.scss'],
 })
 export class OrganizationControlComponent {
-  constructor(private dialog: MatDialog) {}
+  currentPage$ = new BehaviorSubject<number>(0);
+  listOfUsers$: Observable<SharedTableData[]> = this.loadUsers();
+  header = ['First name', 'Last name', 'Current Supervisor', 'Actions'];
+  totalNumberOfPages = 1;
+
+  constructor(
+    private organizationAdminService: OrganizationAdminService,
+    private router: Router,
+    private tostr: ToastrService,
+    private dialog: MatDialog
+  ) {}
+
+  func(arg: string) {
+    console.log('func' + arg);
+  }
+
+  
 
   openAddUserPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
@@ -26,12 +50,8 @@ export class OrganizationControlComponent {
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
-        text: 'Create user',
-        onClick: () => {
-          for (const key in inputs) {
-            console.log(inputs[key]);
-          }
-        },
+        text: 'Add user',
+        onClick: () => this.addUser(inputs)
       },
       { type: ButtonTypes.SECONDARY, text: 'Cancel' },
     ];
@@ -49,9 +69,88 @@ export class OrganizationControlComponent {
     });
   }
 
-  openDeleteUserPopup() {
-    // Logika otwierania popupa dla "Delete User"
+  /*
+
+  addUser(inputs: Dictionary<InputPopupModel>): void {
+    const owner: RegisterModel = {
+      firstName: String(inputs['firstname']?.value),
+      lastName: String(inputs['lastname']?.value),
+      email: String(inputs['email']?.value),
+    };
+    this.organizationAdminService.addUser(owner).subscribe(res => {
+      if (res) {
+        this.tostr.success('Successfully added organizations owner');
+      }
+    });
   }
+  */
+
+
+  addUser(inputs: Dictionary<InputPopupModel>): void {
+    //TODO
+  }
+
+
+  private loadUsers(): Observable<SharedTableData[]> {
+    return this.currentPage$.pipe(
+      switchMap(currentPage => this.organizationAdminService.getUsersWithSupervisors(currentPage)),
+      map((res: PaginatedResult<UserWithSupervisor>) => {
+        this.totalNumberOfPages = res.page ?? 1;
+        if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
+          this.currentPage$.next(this.currentPage$.value - 1);
+        return this.mapData(res);
+      })
+    );
+  }
+
+  private mapData(data: PaginatedResult<UserWithSupervisor>): SharedTableData[] {
+    const users = data.data;
+    const results: SharedTableData[] = [];
+    users.forEach(user => {
+      const result: SharedTableData = {
+        cols: [user.firstName || "", user.lastName || "", ((user.supervisorFirstName || '') + (user.supervisorLastName || '')) || 'undefined'],
+        actions: [
+          {
+            icon: 'password',
+            func: (arg: string) => {
+              this.openResetPasswordPopup();
+            },
+            arg: user?.id,
+          },
+          {
+            icon: 'lock',
+            func: (arg: string) => {
+              this.openBlockUserPopup();
+            },
+            arg: user?.id,
+          },
+          {
+            icon: 'supervisor_account',
+            func: (arg: string) => {
+              this.openSetSupervisorPopup();
+            },
+            arg: user?.id,
+          },
+          {
+            icon: 'delete',
+            func: (arg: string) => {
+              this.openDeleteUserPopup(user.id);
+            },
+            arg: user?.id,
+          },
+        ],
+      };
+      results.push(result);
+    });
+    return results;
+  }
+
+  setPage(pageNumber: number): void {
+    this.currentPage$.next(pageNumber);
+  }
+
+
+
 
   openBlockUserPopup() {
     // Logika otwierania popupa dla "Block User"
@@ -69,66 +168,84 @@ export class OrganizationControlComponent {
     // Logika otwierania popupa dla "Set Supervisor"
   }
 
-  openOrganizationSettingsPopup() {
-    const dialogRef = this.dialog.open(PopupWithInputsComponent, {
-      data: {
-        popupTitle: 'Organization Settings',
-        popupInfo: 'Please, choose an option:',
-        buttons: [
-          {
-            text: 'Change organization name',
-            action: () => {
-              this.openOrganizationNameChange();
-            },
-          },
-          {
-            text: 'Delete organization',
-            action: () => {
-              this.openDeleteOrganization();
-            },
-          },
-        ],
-        btnSecondaryText: 'Cancel',
-      },
-    });
+/*
 
-    dialogRef.afterClosed().subscribe(result => {
-      // Obsługa zamknięcia popupa
+  openDeleteUserPopup(user?: UserWithSupervisor): void {
+    const inputs: Dictionary<InputPopupModel> = {
+    };
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Delete user',
+        onClick: () => {
+        },
+      },
+      { type: ButtonTypes.SECONDARY, text: 'Cancel' },
+    ];
+
+    const data: InputPopupDataModel = {
+      title: 'Delete user',
+      description: 'Are you sure you want to delete user: ' + user?.firstName + ' ' + user?.lastName + '?',
+      inputs: inputs,
+      buttons: buttons,
+    };
+
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
     });
   }
 
-  openDeleteOrganization() {
-    const dialogRef = this.dialog.open(PopupWithInputsComponent, {
-      data: {
-        popupTitle: 'Delete Organization',
-        popupInfo: 'Do you want to confirm this operation?',
-        btnPrimaryText: 'Confirm',
-        btnSecondaryText: 'Cancel',
-      },
-    });
+  */
 
-    dialogRef.afterClosed().subscribe(result => {
-      // Obsługa zamknięcia popupa
+  deleteOrganization(guid: string): void {
+    this.organizationAdminService.deleteUser(guid).subscribe(isDeleted => {
+      if (!isDeleted) this.tostr.warning('Something went wrong');
+      else this.listOfUsers$ = this.loadUsers();
     });
   }
+
+
+  openDeleteUserPopup(guid: string | undefined): void {
+    if (typeof guid === 'undefined') return;
+    const inputs: Dictionary<InputPopupModel> = {};
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Yes',
+        onClick: () => this.deleteUser(),
+      },
+      {
+        type: ButtonTypes.SECONDARY,
+        text: 'NO',
+      },
+    ];
+
+    const data: InputPopupDataModel = {
+      title: 'Delete organization',
+      description: 'Are you sure you want to delete this organization',
+      inputs: inputs,
+      buttons: buttons,
+    };
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
+    });
+  }
+  deleteUser() {
+    throw new Error('Method not implemented.');
+  }
+
+
+
 
   openOrganizationNameChange() {
-    const dialogRef = this.dialog.open(PopupWithInputsComponent, {
-      data: {
-        popupTitle: 'Change Organization Name',
-        popupInfo: 'Enter:',
-        inputs: [{ placeholder: 'New organization name', value: '' }],
-        btnPrimaryText: 'Continue',
-        btnSecondaryText: 'Cancel',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // Obsługa zamknięcia popupa
-    });
+    /*
+     * 
+     * 
+     * 
+     */
   }
 
-  handleAddUser(): void {
-    // Logika dodawania użytkownika
-  }
+
 }
