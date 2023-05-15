@@ -61,9 +61,9 @@ namespace UpWork.Infrastucture.Services
                 audience: _configuration["JwtSettings:Audience"],
                 claims: GetUserClaims(userModel),
 #if DEBUG
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.UtcNow.AddHours(3),
 #else
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.UtcNow.AddMinutes(30),
 #endif
                 signingCredentials: signinCredentials
             );
