@@ -21,10 +21,10 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesForCallendar(DateTime? fromDate, DateTime? toDate, int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<AbsenceModel>> GetCalendarAbsencesForUser(DateTime? fromDate, DateTime? toDate, int skip = 0, int take = 10)
         {
             Guid userId = User.Identity.GetUserId();
-            var res = _callendarService.GetAbsencesForCallendar(userId, skip, take, fromDate, toDate);
+            var res = _callendarService.GetCalendarAbsencesByUserId(userId, skip, take, fromDate, toDate);
             if (res.Count == 0)
             {
                 return NotFound();

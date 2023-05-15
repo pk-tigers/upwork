@@ -6,7 +6,7 @@ namespace UpWork.Common.Interfaces
 {
     public interface ICallendarService
     {
-        public PaginatedResult<AbsenceModel> GetAbsencesForCallendar(Guid userId, int skip, int take, DateTime? fromDate = null, DateTime? toDate = null);
+        public PaginatedResult<AbsenceModel> GetCalendarAbsencesByUserId(Guid userId, int skip, int take, DateTime? fromDate = null, DateTime? toDate = null);
 
     }
 }
