@@ -11,27 +11,11 @@ export class NavigationComponent implements OnInit {
   public activeIndex = 0;
   public url = '';
 
-<<<<<<< HEAD
-  MENU_DATA = [
-    { icon: 'dashboard', text: 'Dashboard', router_link: '' },
-    { icon: 'person_outline', text: 'Profile', router_link: '' },
-    { icon: 'beach_access', text: 'Time off', router_link: 'time-off' },
-    { icon: 'calendar_today', text: 'Calendar', router_link: 'calendar' },
-    { icon: 'settings', text: 'Settings', router_link: '' },
-    { icon: 'event_note', text: 'Requests', router_link: '' },
-    {
-      icon: 'business',
-      text: 'Organization Control',
-      router_link: '/organization-control',
-    },
-  ];
-=======
   constructor(
     public userService: UserService,
     private router: Router,
     private organizationService: OrganizationService
   ) {}
->>>>>>> dev
 
   ngOnInit(): void {
     this.organizationService.organization$.subscribe(res => {

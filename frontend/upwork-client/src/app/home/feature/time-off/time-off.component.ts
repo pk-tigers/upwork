@@ -9,12 +9,12 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
-import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
 import { AbsenceService } from '../../../shared/absence/absence.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { AbsenceModel } from 'src/app/models/absence.model';
+import { Absence } from 'src/app/models/absence.model';
 import { SharedTableComponent } from '../../../shared/ui/shared-table/shared-table.component';
 import { AbsenceTypes } from 'src/app/models/enums/absence-types.enum';
+import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 
 @Component({
   selector: 'app-time-off',
@@ -42,7 +42,7 @@ export class TimeOffComponent {
       switchMap(currentPage =>
         this.absenceService.getAbsencesForUser(guid, from, to, currentPage)
       ),
-      map((res: PaginatedResult<AbsenceModel>) => {
+      map((res: PaginatedResult<Absence>) => {
         this.totalNumberOfPages = res.page ?? 1;
         if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
@@ -51,7 +51,7 @@ export class TimeOffComponent {
     );
   }
 
-  private mapData(data: PaginatedResult<AbsenceModel>): SharedTableData[] {
+  private mapData(data: PaginatedResult<Absence>): SharedTableData[] {
     const userRequests = data.data;
     const results: SharedTableData[] = [];
     userRequests.forEach(userRequest => {
@@ -116,10 +116,11 @@ export class TimeOffComponent {
       console.log(inputs[key]);
     }
     console.log(inputs['TimeOffBeginningDate'].value);
-    const userRequest: AbsenceModel = {
+    const userRequest: Absence = {
+      id: 'kk',
       fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
-      toDate: new Date(String(inputs['TimeOffEndDate'].value)),
-      absenceTypeId: '3C672EAE-8D98-465D-7172-08DB4B302635',
+      toDate: new Date(String(inputs['TimeOffEndDate'].value))
+      //absenceTypeId: '3C672EAE-8D98-465D-7172-08DB4B302635',
       /*
       absenceTypeId:
         AbsenceTypes[

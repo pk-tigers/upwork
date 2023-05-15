@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { AbsenceModel } from 'src/app/models/absence.model';
+import { Absence } from 'src/app/models/absence.model';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 
@@ -12,8 +12,8 @@ export class AbsenceService {
   private env = environment;
   constructor(private http: HttpClient) {}
 
-  public createAbsenceRequest(absence: AbsenceModel): Observable<AbsenceModel> {
-    return this.http.post<AbsenceModel>(
+  public createAbsenceRequest(absence: Absence): Observable<Absence> {
+    return this.http.post<Absence>(
       `${this.env.apiUrl}/absence/CreateAbsenceRequest`,
       absence
     ); //TODO: to be implemented on backend site
@@ -25,9 +25,9 @@ export class AbsenceService {
     to: Date,
     pageNumber = 0,
     pageSize = 10
-  ): Observable<PaginatedResult<AbsenceModel>> {
+  ): Observable<PaginatedResult<Absence>> {
     console.log('2');
-    return this.http.get<PaginatedResult<AbsenceModel>>(
+    return this.http.get<PaginatedResult<Absence>>(
       `${
         this.env.apiUrl
       }/absences/GetAbsencesByUserId?userId=${userId}&from=${from.toISOString()}&to=${to.toISOString()}&skip=${
