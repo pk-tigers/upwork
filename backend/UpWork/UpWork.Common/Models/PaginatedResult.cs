@@ -13,6 +13,12 @@ namespace UpWork.Common.Models
             Count = count;
             Page = (int)Math.Ceiling((decimal)count / (decimal)take);
         }
+        public PaginatedResult()
+        {
+            Data = new List<T>();
+            Count = 0;
+            Page = 0;
+        }
     }
 }
 
