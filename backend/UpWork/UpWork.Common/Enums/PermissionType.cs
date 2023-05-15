@@ -3,7 +3,11 @@
     public enum PermissionType
     {
         None = 0,
-        BasicRead,
-        CreateUser
+        BasicRead = 1,
+        CreateUser = 2,
+        ModifyUser = 3,
+        DeleteUser = 4,
+        CanSupervise = 5,
+        GrantPermissions = 6,
     }
 }

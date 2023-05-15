@@ -28,8 +28,8 @@ namespace UpWork.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AbsenceTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("AbsenceType")
+                        .HasColumnType("int");
 
                     b.Property<int>("ApprovalState")
                         .HasColumnType("int");
@@ -40,7 +40,7 @@ namespace UpWork.Database.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("TimeOffSupervisorId")
+                    b.Property<Guid?>("TimeOffSupervisorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ToDate")
@@ -51,8 +51,6 @@ namespace UpWork.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AbsenceTypeId");
-
                     b.HasIndex("TimeOffSupervisorId");
 
                     b.HasIndex("UserId");
@@ -60,39 +58,14 @@ namespace UpWork.Database.Migrations
                     b.ToTable("Absences");
                 });
 
-            modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.AbsenceTypeModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("NeedApproval")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrganizationId");
-
-                    b.ToTable("AbsencesType");
-                });
-
             modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.OrganizationModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -184,17 +157,10 @@ namespace UpWork.Database.Migrations
 
             modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.AbsenceModel", b =>
                 {
-                    b.HasOne("UpWork.Common.Models.DatabaseModels.AbsenceTypeModel", "AbsenceType")
-                        .WithMany("Absences")
-                        .HasForeignKey("AbsenceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("UpWork.Common.Models.DatabaseModels.UserModel", "TimeOffSupervisor")
                         .WithMany("AbsencesSupervised")
                         .HasForeignKey("TimeOffSupervisorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("UpWork.Common.Models.DatabaseModels.UserModel", "User")
                         .WithMany("Absences")
@@ -202,22 +168,9 @@ namespace UpWork.Database.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("AbsenceType");
-
                     b.Navigation("TimeOffSupervisor");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.AbsenceTypeModel", b =>
-                {
-                    b.HasOne("UpWork.Common.Models.DatabaseModels.OrganizationModel", "Organization")
-                        .WithMany("AbsenceTypes")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.PermissionModel", b =>
@@ -246,15 +199,8 @@ namespace UpWork.Database.Migrations
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.AbsenceTypeModel", b =>
-                {
-                    b.Navigation("Absences");
-                });
-
             modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.OrganizationModel", b =>
                 {
-                    b.Navigation("AbsenceTypes");
-
                     b.Navigation("Users");
                 });
 

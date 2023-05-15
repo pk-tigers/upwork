@@ -3,6 +3,7 @@
     public static class IdentityData
     {
         public const string AdminUserClaimName = "admin";
+        public const string OwnerUserClaimName = "owner";
         public const string UserIdClaimName = "userId";
         public const string OrganizationIdClaimName = "organizationId";
         public const string PermissionsClaimName = "permissions";

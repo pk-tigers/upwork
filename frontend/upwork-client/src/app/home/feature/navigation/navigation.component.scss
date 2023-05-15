@@ -1,6 +1,5 @@
 @import '../../../../_variables.scss';
 
-
 .navigation-container {
   height: 100%;
   width: 100%;
@@ -9,12 +8,12 @@
 
 .custom-navbar {
   overflow-y: auto;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
 
-.custom-navbar::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+.custom-navbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .content-container {
@@ -66,6 +65,8 @@
 }
 
 .nav-item-div {
+  list-style-type: none;
+  padding: 0;
   width: 90%;
   margin: 5px 0;
 }
@@ -88,9 +89,9 @@ li.active {
 }
 
 li.active::before {
-  content: "";
+  content: '';
   position: absolute;
-  
+
   background-color: transparent;
   top: -36px;
   right: 0;
@@ -101,9 +102,9 @@ li.active::before {
 }
 
 li.active::after {
-  content: "";
+  content: '';
   position: absolute;
-  
+
   background-color: transparent;
   bottom: -36px;
   right: 0;
@@ -112,7 +113,6 @@ li.active::after {
   border-top-right-radius: 18px;
   box-shadow: 0 -18px 0 0 $light-blue;
 }
-
 
 .nav-ng-container {
   display: flex;
@@ -127,9 +127,8 @@ li.active::after {
 }
 
 @media screen and (max-width: 768px) {
-
   .nav-text-link {
-      display: none;
+    display: none;
   }
 
   .nav-link > mat-icon {

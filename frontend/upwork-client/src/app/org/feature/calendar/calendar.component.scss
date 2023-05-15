@@ -5,8 +5,9 @@ mwl-calendar-month-view {
   color: $dark-blue;
 }
 
-.btn-group {
-  gap: 10px;
+::ng-deep .cal-month-view .cal-day-number {
+  color: $black;
+  opacity: 1;
 }
 
 ::ng-deep .cal-month-view .cal-open-day-events {

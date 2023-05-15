@@ -1,11 +1,13 @@
-import { AbsenceTypes } from './enums/absence-types.enum';
+import { AbsenceType } from './enums/absence-type.enum';
+import { ApprovalState } from './enums/approval-state.enum';
 
-export interface AbsenceModel {
-  id?: string;
+export interface Absence {
+  id: string;
   fromDate: Date;
   toDate: Date;
-  isActive?: boolean;
-  absenceTypeId?: string; //AbsenceTypes;
-  approvalState?: number;
+  absenceType: AbsenceType;
+  userId: string;
+  userName?: string;
+  approvalState: ApprovalState;
   timeOffSupervisorId?: string;
 }

@@ -1,4 +1,5 @@
-﻿using UpWork.Common.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using UpWork.Common.Dto;
 using UpWork.Common.DTO;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
@@ -15,13 +16,16 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public bool CancelRequestIfNotStarted(Guid requestId)
+        public bool CancelRequestForUser(Guid requestId, Guid userId)
         {
-            AbsenceModel request = _context.Absences.FirstOrDefault(a => a.Id == requestId && !a.IsActive && a.FromDate > DateTime.Now);
+            AbsenceModel request = _context.Absences
+                .Where(x => x.UserId == userId)
+                .Where(a => a.Id == requestId && a.IsActive && a.FromDate >= DateTime.Now)
+                .FirstOrDefault();
 
             if (request != null)
             {
-                _context.Absences.Remove(request);
+                request.IsActive = false;
                 _context.SaveChanges();
                 return true;
             }
@@ -31,10 +35,12 @@ namespace UpWork.Infrastucture.Services
             }
         }
 
-        public AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState)
+        public AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState, Guid supervisorId)
         {
             var absence = _context.Absences
+                .Where(x => x.IsActive)
                 .Where(x => x.Id == absenceApprovalState.AbsenceId)
+                .Where(x => x.TimeOffSupervisorId == supervisorId)
                 .FirstOrDefault();
 
             if (absence == default) return default;
@@ -45,16 +51,20 @@ namespace UpWork.Infrastucture.Services
             return absence;
         }
 
-        public AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto)
+        public AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto)
         {
+            var superVisiorId = _context.Users?.First(u => u.Id == userId).CurrentTimeOffSupervisorId;
+
+
             AbsenceModel newAbsence = new AbsenceModel
             {
                 Id = Guid.NewGuid(),
                 FromDate = requestDto.FromDate,
                 ToDate = requestDto.ToDate,
                 IsActive = true,
-                AbsenceTypeId = requestDto.AbsenceTypeId,
-                UserId = userId
+                AbsenceType = requestDto.AbsenceType,
+                UserId = userId,
+                TimeOffSupervisorId = superVisiorId
             };
 
             _context.Add(newAbsence);

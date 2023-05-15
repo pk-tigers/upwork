@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './home/feature/login/login.component';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
-import { CalendarComponent } from './home/feature/calendar/calendar.component';
-import { AdminPanelComponent } from './org/feature/admin-panel/admin-panel.component';
+import { CalendarComponent } from './org/feature/calendar/calendar.component';
+import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.component';
 import { authGuard } from './shared/auth/auth.guard';
-import { adminGuard } from './shared/data-access/admin.guard';
-import { TimeOffComponent } from './home/feature/time-off/time-off.component';
-
+import { adminGuard } from './shared/data-access/guard/admin.guard';
+import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
+import { organizationGuard } from './shared/data-access/guard/organization.guard';
+import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -19,11 +20,21 @@ const routes: Routes = [
         component: AdminPanelComponent,
         canActivate: [adminGuard],
       },
-      { path: 'calendar', component: CalendarComponent },
-      { path: 'organization-control', component: OrganizationControlComponent },
-      { path: 'time-off', component: TimeOffComponent },
+      {
+        path: 'org/:org-url',
+        canActivate: [organizationGuard],
+        children: [
+          { path: 'calendar', component: CalendarComponent },
+          {
+            path: 'organization-control',
+            component: OrganizationControlComponent,
+          },
+          { path: 'requests', component: RequestTimeOffsComponent },
+        ],
+      },
     ],
   },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

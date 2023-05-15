@@ -1,0 +1,48 @@
+<div class="upwork-default-content-heading">Permissions</div>
+<div class="upwork-default-content-data">
+  <div class="upwork-table-wrapper mt-2">
+    <table class="upwork-table">
+      <caption>
+        {{
+          caption
+        }}
+      </caption>
+      <thead class="upwork-table-header">
+        <tr>
+          <th *ngFor="let header of headers">{{ header }}</th>
+          <th *ngFor="let header of permissionTypesHeaders">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody class="upwork-table-body">
+        <tr *ngFor="let row of (listOfUsers$ | async)?.data ?? []; index as i">
+          <td>
+            <div class="name-email-container">
+              <span>{{ row.firstName }} {{ row.lastName }}</span>
+              <span class="smaller-span">{{ row.email }}</span>
+              <span class="smaller-span">{{ getRoleString(row.role) }}</span>
+            </div>
+          </td>
+          <td *ngFor="let enumVal of permissionTypesValues">
+            <mat-checkbox
+              class="upwork-checkbox"
+              [color]="'primary'"
+              [checked]="inputSelected(row, enumVal)"
+              [disabled]="inputDisabled(row.role)"
+              (change)="
+                setInputVal(row, enumVal, $event.checked)
+              "></mat-checkbox>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="upwork-table-foot">
+      <mat-icon class="upwork-icon" (click)="prevPage()">chevron_left</mat-icon>
+      {{ currentPage + 1 }}
+      of
+      {{ totalNumberOfPages }}
+      <mat-icon class="upwork-icon" (click)="nextPage()"
+        >chevron_right</mat-icon
+      >
+    </div>
+  </div>
+</div>
