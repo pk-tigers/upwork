@@ -11,11 +11,11 @@ namespace UpWork.Api.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class CallendarController : ControllerBase
+    public class CalendarController : ControllerBase
     {
-        private readonly ICallendarService _callendarService;
+        private readonly ICalendarService _callendarService;
 
-        public CallendarController(ICallendarService callendarService)
+        public CalendarController(ICalendarService callendarService)
         {
             _callendarService = callendarService;
         }

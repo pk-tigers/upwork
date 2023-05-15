@@ -7,11 +7,11 @@ using UpWork.Database;
 
 namespace UpWork.Infrastucture.Services
 {
-    public class CallendarService : ICallendarService
+    public class CalendarService : ICalendarService
     {
         private readonly ApplicationDbContext _context;
 
-        public CallendarService(ApplicationDbContext context)
+        public CalendarService(ApplicationDbContext context)
         {
             _context = context;
         }
