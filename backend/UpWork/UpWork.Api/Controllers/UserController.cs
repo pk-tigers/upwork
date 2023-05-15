@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UpWork.Api.Attributes;
 using UpWork.Api.Extensions;
 using UpWork.Common.Dto;
 using UpWork.Common.Enums;
@@ -24,6 +25,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CreateUser)]
         [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
         public ActionResult<UserModel> CreateUser([FromBody] RegisterDto registerDto)
         {

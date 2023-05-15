@@ -10,11 +10,10 @@ namespace UpWork.Common.Models.DatabaseModels
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public bool IsActive { get; set; }
         [Required]
         public string UrlName { get; set; }
         [JsonIgnore]
         public virtual ICollection<UserModel> Users { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<AbsenceTypeModel> AbsenceTypes { get; set; }
     }
 }

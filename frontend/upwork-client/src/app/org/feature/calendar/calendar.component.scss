@@ -5,8 +5,14 @@ mwl-calendar-month-view {
   color: $dark-blue;
 }
 
+<<<<<<< HEAD:frontend/upwork-client/src/app/home/feature/calendar/calendar.component.scss
 .btn-group {
   gap: 10px;
+=======
+::ng-deep .cal-month-view .cal-day-number {
+  color: $black;
+  opacity: 1;
+>>>>>>> dev:frontend/upwork-client/src/app/org/feature/calendar/calendar.component.scss
 }
 
 ::ng-deep .cal-month-view .cal-open-day-events {

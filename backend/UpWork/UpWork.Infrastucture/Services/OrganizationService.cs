@@ -22,13 +22,28 @@ namespace UpWork.Infrastucture.Services
             var newOrganization = new OrganizationModel()
             {
                 Name = organizationDTO.Name,
-                UrlName= organizationDTO.UrlName
+                UrlName = PurgeUrlName(organizationDTO.UrlName.ToLower().Trim())
             };
             
             _context.Add(newOrganization);
             _context.SaveChanges();
 
             return newOrganization;
+        }
+
+        private static string PurgeUrlName(string v)
+        {
+            var s = v;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] < 'A' || s[i] > 'Z' &&
+                        s[i] < 'a' || s[i] > 'z')
+                {
+                    s = s.Remove(i, 1);
+                    i--;
+                }
+            }
+            return s;
         }
 
         public OrganizationModel GetOrganizationWithUsers(Guid Id)
@@ -41,7 +56,7 @@ namespace UpWork.Infrastucture.Services
 
         public OrganizationModel GetOrganization(Guid Id)
         {
-            var organization = _context.Organizations.Find(Id);
+            var organization = _context.Organizations.FirstOrDefault(x => x.Id == Id);
             return organization;
         }
 
@@ -61,10 +76,15 @@ namespace UpWork.Infrastucture.Services
                 _userService.DeleteUser(user.Id); 
             }
 
-            _context.Organizations.Remove(organization);
+            organization.IsActive = false;
             _context.SaveChanges();
             return true;
         }
 
+        public OrganizationModel GetOrganizationByUrlName(string urlName)
+        {
+            var organization = _context.Organizations.Where(x => x.UrlName == urlName).FirstOrDefault();
+            return organization;
+        }
     }
 }

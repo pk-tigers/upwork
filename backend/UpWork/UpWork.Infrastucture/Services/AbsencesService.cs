@@ -23,7 +23,8 @@ namespace UpWork.Infrastucture.Services
             var absences = _context.Absences
                 .Include(x => x.User)
                 .Where(x => x.User.OrganizationId == organizationId)
-                .Where(x => (from >= x.FromDate && from <= x.ToDate) || to >= x.FromDate && to <= x.ToDate);
+                .Where(x => x.IsActive)
+                .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to);
 
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
@@ -34,43 +35,76 @@ namespace UpWork.Infrastucture.Services
         {
             var absences = _context.Absences
                 .Where(x => x.UserId == userId)
-                .Where(x => (from >= x.FromDate && from <= x.ToDate) || to >= x.FromDate && to <= x.ToDate);
+                .Where(x => x.IsActive)
+                .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to);
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
         }
 
-        public PaginatedResult<AbsenceModel> GetPendingAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModelDto> GetPendingAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
-                .Where(x => x.ApprovalState == ApprovalState.Pending);
+                .Where(x => x.ApprovalState == ApprovalState.Pending)
+                .Where(x => x.IsActive)
+                .Include(x => x.User)
+                .Select(x => new AbsenceModelDto
+                {
+                      Id = x.Id,
+                      FromDate = x.FromDate,
+                      ToDate = x.ToDate,
+                      UserId = x.UserId,
+                      UserName = string.Join(' ', x.User.FirstName, x.User.LastName),
+                      AbsenceType = x.AbsenceType,
+                      ApprovalState = x.ApprovalState
+                });
 
+<<<<<<< HEAD
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
+=======
+            var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
+            return res;                
+>>>>>>> dev
         }
 
-        public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsBySupervisorId(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
+                .Where(x => x.IsActive)
                 .Where(x => x.ApprovalState != ApprovalState.Pending);
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
         }
 
+<<<<<<< HEAD
         public int GetCurrentYearAbsenceDays(Guid userId)
         {
+=======
+        public int GetYearAbsenceCountForUser(Guid userId)
+        {
+
+>>>>>>> dev
             DateTime currentDate = DateTime.Now;
             DateTime currentYearStart = new DateTime(currentDate.Year, 1, 1);
             DateTime nextYearStart = currentYearStart.AddYears(1);
 
             var absences = _context.Absences
+<<<<<<< HEAD
                 .Where(a => a.UserId == userId && a.IsActive &&
                     ((a.FromDate >= currentYearStart && a.FromDate < nextYearStart) ||
                     (a.FromDate < currentYearStart && a.ToDate >= currentYearStart)))
                 .ToList();
+=======
+                .Where(x => x.IsActive)
+                .Where(a => a.UserId == userId && a.IsActive &&
+                    ((a.FromDate >= currentYearStart && a.FromDate < nextYearStart) ||
+                    (a.FromDate < currentYearStart && a.ToDate >= currentYearStart)));
+                
+>>>>>>> dev
 
             int absenceDays = 0;
             foreach (var absence in absences)
@@ -83,6 +117,7 @@ namespace UpWork.Infrastucture.Services
             return absenceDays;
         }
 
+<<<<<<< HEAD
         public AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto)
         {
             AbsenceModel newAbsence = new AbsenceModel
@@ -117,5 +152,14 @@ namespace UpWork.Infrastucture.Services
             return new PaginatedResult<AbsenceTypeModel>(res.Skip(skip).Take(take), res.Count(), take);
         }
 
+=======
+        public PaginatedResult<AbsenceModel> GetAbsencesForUser(Guid userId, int skip, int take)
+        {
+            var absences = _context.Absences
+                .Where(x => x.IsActive)
+                .Where(x => x.UserId == userId);
+            return new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take); 
+        }
+>>>>>>> dev
     }
 }

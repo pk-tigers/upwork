@@ -32,8 +32,10 @@ namespace UpWork.Api.Requirements.Handlers
                 context.Fail();
                 return;
             }
-
-            var requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+            request.EnableBuffering();
+            var reader = new StreamReader(request.Body);
+            var requestBody = await reader.ReadToEndAsync();
+            reader.BaseStream.Position = 0;
 
             var organizationDto = JsonConvert.DeserializeObject<DefaultOrganizationAccessDto>(requestBody);
 
