@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-=======
 using UpWork.Api.Attributes;
->>>>>>> dev
 using UpWork.Api.Extensions;
 using UpWork.Common.DTO;
 using UpWork.Common.Enums;
@@ -69,26 +66,6 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
-<<<<<<< HEAD
-        [HttpGet("GetCurrentYearAbsenceDays")]
-        public ActionResult<int> GetCurrentYearAbsenceDays()
-        {
-            var userId = User.Identity.GetUserId();
-            var res = _absencesService.GetCurrentYearAbsenceDays(userId);
-            return res;
-        }
-
-        [HttpGet("GetAbsenceTypesByOrganizationId")]
-        public ActionResult<PaginatedResult<AbsenceTypeModel>> GetAbsenceTypes(int skip = 0, int take = 10)
-        {
-            var userId = User.Identity.GetUserId();
-
-            var res = _absencesService.GetAbsenceTypes(userId, skip, take);
-            return res;
-        }
-
-
-=======
         [HttpGet]
         public ActionResult<int> GetYearAbsenceCountForUser()
         {
@@ -97,6 +74,5 @@ namespace UpWork.Api.Controllers
             var res = _absencesService.GetYearAbsenceCountForUser(userId);
             return res;
         }
->>>>>>> dev
     }
 }

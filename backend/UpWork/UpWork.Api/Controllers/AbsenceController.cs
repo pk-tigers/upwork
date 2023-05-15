@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-=======
 using UpWork.Api.Attributes;
->>>>>>> dev
 using UpWork.Api.Extensions;
 using UpWork.Common.Dto;
 using UpWork.Common.DTO;
@@ -38,21 +35,6 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
-<<<<<<< HEAD
-        [HttpPost("CreateAbsenceRequest")]
-        public ActionResult<AbsenceModel> CreateAbsenceRequest([FromBody] CreateAbsenceRequestDto requestDto)
-        {
-            Guid userId = User.Identity.GetUserId();
-
-            AbsenceModel createdRequest = _absenceService.CreateAbsenceRequest(userId, requestDto);
-            return Ok(createdRequest);
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult<bool> CancelRequest(Guid id)
-        {
-            bool isCancelled = _absenceService.CancelRequestIfNotStarted(id);
-=======
         [HttpPost]
         public ActionResult<AbsenceModel> CreateAbsenceRequestForUser([FromBody] CreateAbsenceRequestDto requestDto)
         {
@@ -68,7 +50,6 @@ namespace UpWork.Api.Controllers
             var userId = User.Identity.GetUserId();
 
             bool isCancelled = _absenceService.CancelRequestForUser(absenceId, userId);
->>>>>>> dev
 
             if (isCancelled)
                 return Ok(true);
