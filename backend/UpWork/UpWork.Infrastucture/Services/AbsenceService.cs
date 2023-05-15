@@ -16,9 +16,12 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public bool CancelRequestIfNotStarted(Guid requestId)
+        public bool CancelRequestForUser(Guid requestId, Guid userId)
         {
-            AbsenceModel request = _context.Absences.FirstOrDefault(a => a.Id == requestId && a.IsActive && a.FromDate > DateTime.Now);
+            AbsenceModel request = _context.Absences
+                .Where(x => x.UserId == userId)
+                .Where(a => a.Id == requestId && a.IsActive && a.FromDate >= DateTime.Now)
+                .FirstOrDefault();
 
             if (request != null)
             {
@@ -32,10 +35,12 @@ namespace UpWork.Infrastucture.Services
             }
         }
 
-        public AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState)
+        public AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState, Guid supervisorId)
         {
             var absence = _context.Absences
+                .Where(x => x.IsActive)
                 .Where(x => x.Id == absenceApprovalState.AbsenceId)
+                .Where(x => x.TimeOffSupervisorId == supervisorId)
                 .FirstOrDefault();
 
             if (absence == default) return default;
@@ -46,7 +51,7 @@ namespace UpWork.Infrastucture.Services
             return absence;
         }
 
-        public AbsenceModel CreateAbsenceRequest(Guid userId, CreateAbsenceRequestDto requestDto)
+        public AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto)
         {
             var superVisiorId = _context.Users?.First(u => u.Id == userId).CurrentTimeOffSupervisorId;
 

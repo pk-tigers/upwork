@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using UpWork.Common.Dto;
+using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
 using UpWork.Common.Models.DatabaseModels;
@@ -19,7 +20,9 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<UserModel> GetSupervisors(Guid organizationId, int skip, int take)
         {
-            var users = _context.Users.Include(x => x.Permissions).Where(x => x.Permissions.Any(x => x.PermissionType == Common.Enums.PermissionType.CanSupervise));
+            var users = _context.Users.Include(x => x.Permissions).Where(x => x.Permissions.Any(x => 
+            x.PermissionType == PermissionType.CanSupervise
+            && x.IsActive()));
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -41,6 +44,19 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
+        public PaginatedResult<UserWithPermissionsDto> LoadUsersWithPermissions(Guid organizationId, int skip, int take)
+        {
+            var users = _context.Users
+                .Where(x => x.OrganizationId == organizationId)
+                .OrderBy(x => x.LastName)
+                .ThenBy(x => x.FirstName)
+                .Include(x => x.Permissions)
+                .Select(x => MapUserWithPermissionsFromUserModel(x));
+
+            var res = new PaginatedResult<UserWithPermissionsDto>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
+        }
+
         public PaginatedResult<UserWithSupervisorDto> UsersWithSupervisors(Guid organizationId, int skip, int take)
         {
             var users = _context.Users.Where(x => x.OrganizationId == organizationId).Include(x => x.CurrentTimeOffSupervisor)
@@ -54,6 +70,27 @@ namespace UpWork.Infrastucture.Services
                 }); ;
 
             var res = new PaginatedResult<UserWithSupervisorDto>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
+        }
+
+        private static UserWithPermissionsDto MapUserWithPermissionsFromUserModel(UserModel userModel)
+        {
+            var res = new UserWithPermissionsDto()
+            {
+                Id = userModel.Id,
+                OrganizationId = userModel.OrganizationId,
+                FirstName = userModel.FirstName,
+                LastName = userModel.LastName,
+                Role = userModel.Role,
+                Email = userModel.Email
+            };
+
+            var currentPermissions = userModel.Permissions
+                .Where(x => x.IsActive())
+                .Select(x => x.PermissionType);
+
+            res.PermissionTypes = currentPermissions;
+
             return res;
         }
     }

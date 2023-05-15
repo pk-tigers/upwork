@@ -12,5 +12,11 @@ namespace UpWork.Common.Models.DatabaseModels
         public PermissionType PermissionType { get; set; }
         public DateTime GrantDate { get; set; } = DateTime.UtcNow;
         public DateTime? ExpirationDate { get; set; }
+
+
+        public bool IsActive()
+        {
+            return GrantDate < DateTime.UtcNow && ExpirationDate.GetValueOrDefault(DateTime.MaxValue) > DateTime.UtcNow;
+        }
     }
 }

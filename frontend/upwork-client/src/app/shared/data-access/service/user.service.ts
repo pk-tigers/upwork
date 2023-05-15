@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { User } from '../../models/user.model';
+import { User } from '../../../models/user.model';
 import { TokenService } from './token.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { LoginModel } from '../../models/login.model';
-import { AuthenticatedResponse } from '../../models/authenticated-response.model';
+import { LoginModel } from '../../../models/login.model';
+import { AuthenticatedResponse } from '../../../models/authenticated-response.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { OrganizationService } from './organization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private tokenService: TokenService,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
+    private organizationService: OrganizationService
   ) {
     const token = this.tokenService.getToken();
     if (!!token && !this.jwtHelper.isTokenExpired(token))
@@ -40,8 +42,8 @@ export class UserService {
       .pipe(
         map((res: AuthenticatedResponse) => {
           if (!res) return false;
-          this.setUser(res);
           this.tokenService.setToken(res);
+          this.setUser(res);
           return true;
         })
       );
@@ -61,6 +63,7 @@ export class UserService {
       roles: this.getRoles(decodeToken['permissions']),
     };
     this.user.next(user);
+    this.organizationService.initOrganization(user);
     if (decodeToken['admin']) this.isAdmin.next(true);
   }
 
@@ -73,5 +76,6 @@ export class UserService {
   private clearUser() {
     this.user.next(null);
     this.isAdmin.next(false);
+    this.organizationService.clearOrganization();
   }
 }

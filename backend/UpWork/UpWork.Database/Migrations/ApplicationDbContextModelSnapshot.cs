@@ -58,29 +58,6 @@ namespace UpWork.Database.Migrations
                     b.ToTable("Absences");
                 });
 
-            modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.AbsenceTypeModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("NeedApproval")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AbsencesType");
-                });
-
             modelBuilder.Entity("UpWork.Common.Models.DatabaseModels.OrganizationModel", b =>
                 {
                     b.Property<Guid>("Id")

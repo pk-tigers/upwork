@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PopupWithInputsComponent } from '../../../shared/ui/popup_with_inputs/popup-with-inputs.component';
 import { OrganizationAdminService } from 'src/app/shared/data-access/service/organization-admin.service';
+import { PopupWithInputsComponent } from '../../../shared/ui/popup-with-inputs/popup-with-inputs.component';
 import {
   ButtonPopupModel,
   ButtonTypes,

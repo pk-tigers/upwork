@@ -60,7 +60,11 @@ namespace UpWork.Infrastucture.Services
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: GetUserClaims(userModel),
-                expires: DateTime.Now.AddMinutes(30),
+#if DEBUG
+                expires: DateTime.UtcNow.AddHours(3),
+#else
+                expires: DateTime.UtcNow.AddMinutes(30),
+#endif
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
@@ -76,6 +80,8 @@ namespace UpWork.Infrastucture.Services
 
             if (user.Role == Role.PageAdmin)
                 claims.Add(new Claim(IdentityData.AdminUserClaimName, "true"));
+            else if (user.Role == Role.OrganizationOwner)
+                claims.Add(new Claim(IdentityData.OwnerUserClaimName, "true"));
 
             AddPermissionClaims(claims, user);
             return claims;
@@ -89,7 +95,7 @@ namespace UpWork.Infrastucture.Services
 
             if (user.Permissions == null) return;
             
-            var userPerms = user.Permissions.Where(x => x.GrantDate < DateTime.UtcNow && x.ExpirationDate.GetValueOrDefault(DateTime.MaxValue) > DateTime.UtcNow);
+            var userPerms = user.Permissions.Where(x => x.IsActive());
 
             foreach (var perm in userPerms)
             {

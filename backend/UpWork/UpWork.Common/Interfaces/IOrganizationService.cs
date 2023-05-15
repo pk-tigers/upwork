@@ -5,9 +5,10 @@ namespace UpWork.Common.Interfaces
 {
     public interface IOrganizationService
     {
-        public OrganizationModel GetOrganization(Guid Id);
-        public bool DeleteOrganization(Guid Id);
-        public OrganizationModel CreateOrganization(CreateOrganizationDto organizationDTO);
-        public OrganizationModel GetOrganizationWithUsers(Guid Id);
+        OrganizationModel GetOrganization(Guid Id);
+        bool DeleteOrganization(Guid Id);
+        OrganizationModel CreateOrganization(CreateOrganizationDto organizationDTO);
+        OrganizationModel GetOrganizationWithUsers(Guid Id);
+        OrganizationModel GetOrganizationByUrlName(string urlName);
     }
 }

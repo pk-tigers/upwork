@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UpWork.Api.Attributes;
 using UpWork.Api.Extensions;
 using UpWork.Common.Dto;
 using UpWork.Common.DTO;
 using UpWork.Common.Enums;
+using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
 
 namespace UpWork.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [Authorize]
     [ApiController]
     public class AbsenceController : ControllerBase
@@ -23,26 +25,31 @@ namespace UpWork.Api.Controllers
             _absenceService = absenceService;
         }
 
-        [HttpPost("SetAbsenceApprovalState")]
-        public ActionResult<AbsenceModel> SetAbsenceApprovalState([FromBody] AbsenceApprovalStateDto absenceApprovalState)
+        [HttpPost]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
+        public ActionResult<AbsenceModel> SetAbsenceApprovalStateForSupervisor([FromBody] AbsenceApprovalStateDto absenceApprovalState)
         {
-            var res = _absenceService.SetAbsenceApprovalState(absenceApprovalState);
+            var supervisorId = User.Identity.GetUserId();
+
+            var res = _absenceService.SetAbsenceApprovalState(absenceApprovalState, supervisorId);
             return Ok(res);
         }
 
-        [HttpPost("CreateAbsenceRequest")]
-        public ActionResult<AbsenceModel> CreateAbsenceRequest([FromBody] CreateAbsenceRequestDto requestDto)
+        [HttpPost]
+        public ActionResult<AbsenceModel> CreateAbsenceRequestForUser([FromBody] CreateAbsenceRequestDto requestDto)
         {
             Guid userId = User.Identity.GetUserId();
 
-            AbsenceModel createdRequest = _absenceService.CreateAbsenceRequest(userId, requestDto);
+            AbsenceModel createdRequest = _absenceService.CreateAbsenceRequestForUser(userId, requestDto);
             return Ok(createdRequest);
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult<bool> CancelRequest(Guid id)
+        [HttpDelete]
+        public ActionResult<bool> CancelRequestForUser(Guid absenceId)
         {
-            bool isCancelled = _absenceService.CancelRequestIfNotStarted(id);
+            var userId = User.Identity.GetUserId();
+
+            bool isCancelled = _absenceService.CancelRequestForUser(absenceId, userId);
 
             if (isCancelled)
                 return Ok(true);
