@@ -84,6 +84,7 @@ namespace UpWork.Api.Extensions
             services.AddScoped<IAbsenceService, AbsenceService>();
             services.AddScoped<IAbsencesService, AbsencesService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ICallendarService, CallendarService>();
         }
 
         public static void AddCustomCors(this IServiceCollection services, IConfiguration config)
