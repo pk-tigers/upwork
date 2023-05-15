@@ -24,7 +24,7 @@ namespace UpWork.Infrastucture.Services
                 .Include(x => x.User)
                 .Where(x => x.User.OrganizationId == organizationId)
                 .Where(x => x.IsActive)
-                .Where(x => (from >= x.FromDate && from <= x.ToDate) || to >= x.FromDate && to <= x.ToDate);
+                .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to);
 
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
@@ -36,7 +36,7 @@ namespace UpWork.Infrastucture.Services
             var absences = _context.Absences
                 .Where(x => x.UserId == userId)
                 .Where(x => x.IsActive)
-                .Where(x => (from >= x.FromDate && from <= x.ToDate) || to >= x.FromDate && to <= x.ToDate);
+                .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to);
 
             var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
