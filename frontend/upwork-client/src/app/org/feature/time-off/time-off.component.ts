@@ -25,7 +25,7 @@ import { AbsenceService } from 'src/app/shared/data-access/service/absence.servi
   styleUrls: ['./time-off.component.scss'],
 })
 export class TimeOffComponent {
-  header = ['Time offs taken', 'Time off type', 'Statuses'];
+  header = ['From date', 'To date', 'Type', 'Status'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
@@ -36,59 +36,6 @@ export class TimeOffComponent {
     private absenceService: AbsenceService,
     private tostr: ToastrService
   ) {}
-
-  private getAbsencesYearCount(): Observable<number> {
-    return this.absenceService.getYearAbsenceCountForUser();
-  }
-
-  loadUserRequests(): Observable<SharedTableData[]> {
-    return this.currentPage$.pipe(
-      switchMap(currentPage =>
-        this.absenceService.getAbsencesForUser(currentPage)
-      ),
-      map((res: PaginatedResult<Absence>) => {
-        this.totalNumberOfPages = res.page ?? 1;
-        if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
-          this.currentPage$.next(this.currentPage$.value - 1);
-        return this.mapData(res);
-      })
-    );
-  }
-
-  private mapData(data: PaginatedResult<Absence>): SharedTableData[] {
-    const userRequests = data.data;
-    const results: SharedTableData[] = [];
-    userRequests.forEach(userRequest => {
-      const result: SharedTableData = {
-        cols: [
-          formatDate(userRequest.fromDate, 'dd-MM-yyyy', 'en-US') +
-            ' - ' +
-            formatDate(userRequest.toDate, 'dd-MM-yyyy', 'en-US'),
-          AbsenceType[Number(userRequest.absenceType.toString())].replace(
-            /([A-Z])/g,
-            ' $1'
-          ),
-        ],
-        actions: [],
-      };
-
-      if (new Date(userRequest.fromDate) > new Date()) {
-        result.actions?.push({
-          icon: 'delete',
-          func: (arg: string) => {
-            this.openCancelRequestPopup(arg);
-          },
-          arg: userRequest.id,
-        });
-      } else {
-        result.cols?.push(
-          ApprovalState[Number(userRequest.approvalState?.toString())]
-        );
-      }
-      results.push(result);
-    });
-    return results;
-  }
 
   openCancelRequestPopup(requestId: string): void {
     const inputs: Dictionary<InputPopupModel> = {};
@@ -110,7 +57,6 @@ export class TimeOffComponent {
       inputs: inputs,
       buttons: buttons,
     };
-    console.log('kot');
     this.dialog.open(PopupWithInputsComponent, {
       data: data,
       panelClass: 'upwork-popup',
@@ -119,11 +65,12 @@ export class TimeOffComponent {
 
   cancelRequest(requestId: string): void {
     this.absenceService.cancelRequest(requestId).subscribe(isCancelled => {
-      if (!isCancelled) this.tostr.warning('Something went wrong');
-      else {
+      if (isCancelled) {
         this.tostr.success('Time Off request cancelled successfully');
-        this.listOfUserRequests$ = this.loadUserRequests();
+      } else {
+        this.tostr.warning('Something went wrong');
       }
+      this.listOfUserRequests$ = this.loadUserRequests();
     });
   }
 
@@ -151,6 +98,7 @@ export class TimeOffComponent {
           })),
       },
     };
+
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
@@ -158,13 +106,14 @@ export class TimeOffComponent {
         onClick: () => this.createTimeOffRequest(inputs),
       },
     ];
-    console.log(inputs);
+
     const data: InputPopupDataModel = {
       title: 'New time off request',
       description: 'Fill basic data about your request:',
       inputs: inputs,
       buttons: buttons,
     };
+
     this.dialog.open(PopupWithInputsComponent, {
       data: data,
       panelClass: 'upwork-popup',
@@ -183,17 +132,71 @@ export class TimeOffComponent {
         AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
     };
 
-    this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
-      this.tostr.success('New Time Off request created successfully');
-      this.listOfUserRequests$ = this.loadUserRequests();
-    });
-  }
-
-  goTo(urlName: string | undefined): void {
-    if (typeof urlName === 'undefined') return;
+    this.absenceService
+      .createAbsenceRequest(userRequest)
+      .subscribe(isSuccess => {
+        if (isSuccess) {
+          this.tostr.success('New Time Off request created successfully');
+        } else {
+          this.tostr.success('Something went wrong');
+        }
+        this.listOfUserRequests$ = this.loadUserRequests();
+      });
   }
 
   setPage(pageNumber: number): void {
     this.currentPage$.next(pageNumber);
+  }
+
+  private getAbsencesYearCount(): Observable<number> {
+    return this.absenceService.getYearAbsenceCountForUser();
+  }
+
+  private loadUserRequests(): Observable<SharedTableData[]> {
+    return this.currentPage$.pipe(
+      switchMap(currentPage =>
+        this.absenceService.getAbsencesForUser(currentPage)
+      ),
+      map((res: PaginatedResult<Absence>) => {
+        this.totalNumberOfPages = res.page ?? 1;
+        if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
+          this.currentPage$.next(this.currentPage$.value - 1);
+        return this.mapData(res);
+      })
+    );
+  }
+
+  private mapData(data: PaginatedResult<Absence>): SharedTableData[] {
+    const userRequests = data.data;
+    const results: SharedTableData[] = [];
+    userRequests.forEach(userRequest => {
+      const result: SharedTableData = {
+        cols: [
+          formatDate(userRequest.fromDate, 'dd/MM/yyyy', 'en-US'),
+          formatDate(userRequest.toDate, 'dd/MM/yyyy', 'en-US'),
+          AbsenceType[Number(userRequest.absenceType.toString())].replace(
+            /([A-Z])/g,
+            ' $1'
+          ),
+        ],
+        actions: [],
+      };
+
+      if (new Date(userRequest.fromDate) > new Date()) {
+        result.actions?.push({
+          icon: 'delete',
+          func: (arg: string) => {
+            this.openCancelRequestPopup(arg);
+          },
+          arg: userRequest.id,
+        });
+      } else {
+        result.cols?.push(
+          ApprovalState[Number(userRequest.approvalState?.toString())]
+        );
+      }
+      results.push(result);
+    });
+    return results;
   }
 }

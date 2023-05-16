@@ -5,7 +5,7 @@ import { OrganizationControlComponent } from './org/feature/organization-control
 import { CalendarComponent } from './org/feature/calendar/calendar.component';
 import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.component';
 import { authGuard } from './shared/auth/auth.guard';
-import { TimeOffComponent } from './home/feature/time-off/time-off.component';
+import { TimeOffComponent } from './org/feature/time-off/time-off.component';
 import { adminGuard } from './shared/data-access/guard/admin.guard';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { organizationGuard } from './shared/data-access/guard/organization.guard';
