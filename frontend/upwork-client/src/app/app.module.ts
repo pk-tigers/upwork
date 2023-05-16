@@ -14,8 +14,8 @@ import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
-import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarComponent } from './org/feature/calendar/calendar.component';
 import { CommonModule } from '@angular/common';
@@ -50,11 +50,11 @@ export function tokenGetter() {
     OrganizationControlComponent,
     AdminPanelComponent,
     RoleRestrictDirective,
-    TimeOffComponent,
     SharedTableComponent,
     PageNotFoundComponent,
     PermissionsControlComponent,
     RequestTimeOffsComponent,
+    TimeOffComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,10 +70,6 @@ export function tokenGetter() {
     MatDialogModule,
     CommonModule,
     NgbModalModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -99,7 +95,6 @@ export function tokenGetter() {
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
   bootstrap: [AppComponent],
 })
