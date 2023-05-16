@@ -20,7 +20,7 @@ namespace UpWork.Infrastucture.Services
         {
             AbsenceModel request = _context.Absences
                 .Where(x => x.UserId == userId)
-                .Where(a => a.Id == requestId && a.IsActive && a.FromDate >= DateTime.Now)
+                .Where(a => a.Id == requestId)
                 .FirstOrDefault();
 
             if (request != null)

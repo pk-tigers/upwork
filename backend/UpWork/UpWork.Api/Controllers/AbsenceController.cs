@@ -44,12 +44,13 @@ namespace UpWork.Api.Controllers
             return Ok(createdRequest);
         }
 
-        [HttpDelete]
-        public ActionResult<bool> CancelRequestForUser(Guid absenceId)
+
+        [HttpDelete("{id}")]
+        public ActionResult<bool> CancelRequestForUser(Guid id)
         {
             var userId = User.Identity.GetUserId();
 
-            bool isCancelled = _absenceService.CancelRequestForUser(absenceId, userId);
+            bool isCancelled = _absenceService.CancelRequestForUser(id, userId);
 
             if (isCancelled)
                 return Ok(true);
