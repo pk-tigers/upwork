@@ -15,7 +15,7 @@ import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { TimeConverter } from 'src/app/shared/web-utiities/time-converter';
+import { TimeConverter } from 'src/app/shared/web-utilities/time-converter';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
 
