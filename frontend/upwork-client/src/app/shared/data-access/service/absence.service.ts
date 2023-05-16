@@ -13,6 +13,7 @@ export class AbsenceService {
   constructor(private http: HttpClient) {}
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
+    console.log(absence);
     return this.http.post<Absence>(
       `${this.env.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
@@ -30,9 +31,9 @@ export class AbsenceService {
     );
   }
 
-  public cancelRequest(requestId: string): Observable<boolean> {
+  public cancelRequest(id: string): Observable<boolean> {
     return this.http.delete<boolean>(
-      `${this.env.apiUrl}/Absence/CancelRequestForUser/${requestId}`
+      `${this.env.apiUrl}/Absence/CancelRequestForUser/${id}`
     );
   }
 

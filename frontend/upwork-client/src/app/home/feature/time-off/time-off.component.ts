@@ -9,14 +9,15 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
-import { AbsenceService } from '../../../shared/absence/absence.service';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { Absence } from 'src/app/models/absence.model';
-import { SharedTableComponent } from '../../../shared/ui/shared-table/shared-table.component';
-import { AbsenceTypes } from 'src/app/models/enums/absence-types.enum';
+import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { TimeConverter } from 'src/app/shared/web-utiities/time-converter';
+import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
+import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
 
 @Component({
   selector: 'app-time-off',
@@ -24,13 +25,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./time-off.component.scss'],
 })
 export class TimeOffComponent {
-  //time_off_days = 21; //TODO: to be replaced with value calculated from db
-  header = ['Time offs taken', 'Statuses'];
+  header = ['Time offs taken', 'Time off type', 'Statuses'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
   absencesYearCount$ = this.getAbsencesYearCount();
-  //listOfUsers$: Observable<PaginatedResult<UserWithPermissions>>
 
   constructor(
     private dialog: MatDialog,
@@ -65,17 +64,26 @@ export class TimeOffComponent {
           formatDate(userRequest.fromDate, 'dd-MM-yyyy', 'en-US') +
             ' - ' +
             formatDate(userRequest.toDate, 'dd-MM-yyyy', 'en-US'),
+          AbsenceType[Number(userRequest.absenceType.toString())].replace(
+            /([A-Z])/g,
+            ' $1'
+          ),
         ],
-        actions: [
-          {
-            icon: 'delete',
-            func: (arg: string) => {
-              this.openCancelRequestPopup(arg);
-            },
-            arg: userRequest.id,
-          },
-        ],
+        actions: [],
       };
+      if (userRequest.approvalState === ApprovalState.Pending) {
+        result.actions?.push({
+          icon: 'delete',
+          func: (arg: string) => {
+            this.openCancelRequestPopup(arg);
+          },
+          arg: userRequest.id,
+        });
+      } else {
+        result.cols?.push(
+          ApprovalState[Number(userRequest.approvalState?.toString())]
+        );
+      }
       results.push(result);
     });
     return results;
@@ -131,8 +139,7 @@ export class TimeOffComponent {
         value: '',
         type: 'select',
         placeholder: 'Select type of Time off',
-        //TODO: to be replaced with values from API - specific absence types for organization
-        selectOptions: Object.keys(AbsenceTypes)
+        selectOptions: Object.keys(AbsenceType)
           .filter(key => isNaN(Number(key)))
           .map(key => ({
             value: key,
@@ -160,15 +167,15 @@ export class TimeOffComponent {
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
-    //TODO: add logic about creating new request by user
-
     const userRequest: Absence = {
-      fromDate: new Date(String(inputs['TimeOffBeginningDate'].value)),
-      toDate: new Date(String(inputs['TimeOffEndDate'].value)),
+      fromDate: TimeConverter.createDateAsUTC(
+        new Date(String(inputs['TimeOffBeginningDate'].value))
+      ),
+      toDate: TimeConverter.createDateAsUTC(
+        new Date(String(inputs['TimeOffEndDate'].value))
+      ),
       absenceType:
-        AbsenceTypes[
-          inputs['TimeOffOptions'].value as keyof typeof AbsenceTypes
-        ],
+        AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
     };
 
     this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
@@ -178,8 +185,6 @@ export class TimeOffComponent {
 
   goTo(urlName: string | undefined): void {
     if (typeof urlName === 'undefined') return;
-    // TODO: route to correct url
-    // this.router.navigate([`/${urlName}/dashboard`]);
   }
 
   setPage(pageNumber: number): void {
