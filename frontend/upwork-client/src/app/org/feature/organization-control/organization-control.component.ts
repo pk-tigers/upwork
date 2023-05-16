@@ -9,13 +9,16 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
-import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, take, of } from 'rxjs';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { UserWithSupervisor } from 'src/app/models/user-with-supervisor.model';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { RegisterModel } from 'src/app/models/register.model';
+import { User } from 'src/app/models/user.model';
+import { OrganizationModel } from 'src/app/models/organization.model';
+
 
 @Component({
   selector: 'app-organization-control',
@@ -24,19 +27,24 @@ import { RegisterModel } from 'src/app/models/register.model';
 })
 export class OrganizationControlComponent {
   currentPage$ = new BehaviorSubject<number>(0);
-  listOfUsers$: Observable<SharedTableData[]> = this.loadUsers();
+  listOfUsers$: Observable<SharedTableData[]> = this.loadUsersWithSupervisors();
   header = ['First name', 'Last name', 'Current Supervisor', 'Actions'];
   totalNumberOfPages = 1;
+  organization: OrganizationModel | undefined;
 
   constructor(
     private organizationAdminService: OrganizationAdminService,
-    private router: Router,
     private tostr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private organizationService: OrganizationService
   ) {}
 
-  func(arg: string) {
-    console.log('func' + arg);
+    ngOnInit(): void {
+      this.organizationService.organization$.subscribe((org: OrganizationModel | null) => {
+        if (org) {
+          this.organization = org;
+        }
+      });
   }
 
   
@@ -69,46 +77,55 @@ export class OrganizationControlComponent {
     });
   }
 
-  /*
-
-  addUser(inputs: Dictionary<InputPopupModel>): void {
-    const owner: RegisterModel = {
-      firstName: String(inputs['firstname']?.value),
-      lastName: String(inputs['lastname']?.value),
-      email: String(inputs['email']?.value),
-    };
-    this.organizationAdminService.addUser(owner).subscribe(res => {
-      if (res) {
-        this.tostr.success('Successfully added organizations owner');
-      }
-    });
-  }
-  */
 
 
-  addUser(inputs: Dictionary<InputPopupModel>): void {
-    //TODO
-  }
+addUser(inputs: Dictionary<InputPopupModel>): void {
+  this.organizationService.organization$.pipe(
+    map(organization => organization?.id),
+    take(1),
+    switchMap(organizationId => {
+      const user: RegisterModel = {
+        firstName: String(inputs['firstname']?.value),
+        lastName: String(inputs['lastname']?.value),
+        email: String(inputs['email']?.value),
+        organizationId: organizationId || ''
+      };
+      
+      return this.organizationAdminService.addUser(user);
+    })
+  ).subscribe(res => {
+    if (res) {
+      this.listOfUsers$ = this.loadUsersWithSupervisors();
+      this.tostr.success('Successfully added organization user');
+    }
+  });
+}
 
 
-  private loadUsers(): Observable<SharedTableData[]> {
-    return this.currentPage$.pipe(
-      switchMap(currentPage => this.organizationAdminService.getUsersWithSupervisors(currentPage)),
-      map((res: PaginatedResult<UserWithSupervisor>) => {
-        this.totalNumberOfPages = res.page ?? 1;
-        if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
-          this.currentPage$.next(this.currentPage$.value - 1);
-        return this.mapData(res);
-      })
-    );
-  }
+
+  private loadUsersWithSupervisors() {
+  return this.organizationService.organization$.pipe(
+    switchMap(org =>
+      this.organizationAdminService.getUsersWithSupervisors(org?.id).pipe(
+        map((res: PaginatedResult<UserWithSupervisor>) => {
+          return this.mapData(res);
+        })
+      )
+    )
+  );
+}
+
+
+
+
+
 
   private mapData(data: PaginatedResult<UserWithSupervisor>): SharedTableData[] {
     const users = data.data;
     const results: SharedTableData[] = [];
     users.forEach(user => {
       const result: SharedTableData = {
-        cols: [user.firstName || "", user.lastName || "", ((user.supervisorFirstName || '') + (user.supervisorLastName || '')) || 'undefined'],
+        cols: [user.firstName || "", user.lastName || "", ((user.supervisorFirstName || '') + " " + (user.supervisorLastName || '')) || 'undefined'],
         actions: [
           {
             icon: 'password',
@@ -134,7 +151,7 @@ export class OrganizationControlComponent {
           {
             icon: 'delete',
             func: (arg: string) => {
-              this.openDeleteUserPopup(user.id);
+              this.openDeleteUserPopup(user);
             },
             arg: user?.id,
           },
@@ -160,17 +177,14 @@ export class OrganizationControlComponent {
     // Logika otwierania popupa dla "Reset User's Password"
   }
 
-  openGrantPermissionsPopup() {
-    // Logika otwierania popupa dla "Grant Permissions"
-  }
 
   openSetSupervisorPopup() {
     // Logika otwierania popupa dla "Set Supervisor"
   }
 
-/*
 
-  openDeleteUserPopup(user?: UserWithSupervisor): void {
+
+  openDeleteUserPopup(user: UserWithSupervisor): void {
     const inputs: Dictionary<InputPopupModel> = {
     };
     const buttons: ButtonPopupModel[] = [
@@ -178,6 +192,11 @@ export class OrganizationControlComponent {
         type: ButtonTypes.PRIMARY,
         text: 'Delete user',
         onClick: () => {
+          if(user.id) {
+            this.deleteUser(user.id);
+          } else {
+            console.log("ups");
+          }
         },
       },
       { type: ButtonTypes.SECONDARY, text: 'Cancel' },
@@ -196,47 +215,20 @@ export class OrganizationControlComponent {
     });
   }
 
-  */
 
-  deleteOrganization(guid: string): void {
-    this.organizationAdminService.deleteUser(guid).subscribe(isDeleted => {
-      if (!isDeleted) this.tostr.warning('Something went wrong');
-      else this.listOfUsers$ = this.loadUsers();
+  deleteUser(guid: string): void {
+    this.organizationAdminService.deleteUser(guid).pipe(
+      switchMap(isDeleted => {
+        if (!isDeleted) {
+          this.tostr.warning('Something went wrong');
+        } else {this.tostr.success('User has been deleted');}
+        return this.loadUsersWithSupervisors();
+      })
+    ).subscribe(updatedUsers => {
+      this.listOfUsers$ = of(updatedUsers);
     });
   }
-
-
-  openDeleteUserPopup(guid: string | undefined): void {
-    if (typeof guid === 'undefined') return;
-    const inputs: Dictionary<InputPopupModel> = {};
-    const buttons: ButtonPopupModel[] = [
-      {
-        type: ButtonTypes.PRIMARY,
-        text: 'Yes',
-        onClick: () => this.deleteUser(),
-      },
-      {
-        type: ButtonTypes.SECONDARY,
-        text: 'NO',
-      },
-    ];
-
-    const data: InputPopupDataModel = {
-      title: 'Delete organization',
-      description: 'Are you sure you want to delete this organization',
-      inputs: inputs,
-      buttons: buttons,
-    };
-    this.dialog.open(PopupWithInputsComponent, {
-      data: data,
-      panelClass: 'upwork-popup',
-    });
-  }
-  deleteUser() {
-    throw new Error('Method not implemented.');
-  }
-
-
+  
 
 
   openOrganizationNameChange() {
