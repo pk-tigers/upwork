@@ -71,7 +71,8 @@ export class TimeOffComponent {
         ],
         actions: [],
       };
-      if (userRequest.fromDate > new Date()) {
+
+      if (new Date(userRequest.fromDate) > new Date()) {
         result.actions?.push({
           icon: 'delete',
           func: (arg: string) => {
