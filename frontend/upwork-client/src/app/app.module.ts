@@ -30,6 +30,7 @@ import { SharedTableComponent } from './shared/ui/shared-table/shared-table.comp
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
 import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
+import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel-popup/admin-panel-popup.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -49,6 +50,7 @@ export function tokenGetter() {
     PageNotFoundComponent,
     PermissionsControlComponent,
     RequestTimeOffsComponent,
+    AdminPanelPopupComponent,
   ],
   imports: [
     BrowserModule,

@@ -63,6 +63,19 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
+        [HttpGet("GetOrganizationWithUsers")]
+        public ActionResult<OrganizationModel> GetOrganizationWithUsers([FromQuery]Guid organizationId)
+        {
+            var res = _organizationService.GetOrganizationWithUsers(organizationId);
+
+            if (res is null)
+            {
+                return NotFound("Organization does not exist");
+            }
+
+            return Ok(res);
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<bool> DeleteOrganization(Guid id)
