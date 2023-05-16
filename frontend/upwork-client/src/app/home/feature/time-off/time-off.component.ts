@@ -71,7 +71,7 @@ export class TimeOffComponent {
         ],
         actions: [],
       };
-      if (userRequest.approvalState === ApprovalState.Pending) {
+      if (userRequest.fromDate > new Date()) {
         result.actions?.push({
           icon: 'delete',
           func: (arg: string) => {
@@ -157,6 +157,7 @@ export class TimeOffComponent {
         onClick: () => this.createTimeOffRequest(inputs),
       },
     ];
+    console.log(inputs);
     const data: InputPopupDataModel = {
       title: 'New time off request',
       description: 'Fill basic data about your request:',
