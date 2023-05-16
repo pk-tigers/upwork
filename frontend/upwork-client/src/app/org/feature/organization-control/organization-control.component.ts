@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PopupWithInputsComponent } from '../../../shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { PopupWithInputsComponent } from '../../../shared/ui/popup-with-inputs/popup-with-inputs.component';
 import {
   ButtonPopupModel,
   ButtonTypes,

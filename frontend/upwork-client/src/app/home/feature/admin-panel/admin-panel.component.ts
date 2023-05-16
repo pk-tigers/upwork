@@ -14,8 +14,8 @@ import { OrganizationModel } from 'src/app/models/organization.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
-import { AdminService } from 'src/app/shared/data-access/admin.service';
-import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/popup-with-inputs.component';
+import { AdminService } from 'src/app/shared/data-access/service/admin.service';
+import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -25,7 +25,7 @@ import { PopupWithInputsComponent } from 'src/app/shared/ui/popup_with_inputs/po
 export class AdminPanelComponent {
   currentPage$ = new BehaviorSubject<number>(0);
   listOfOrganization$: Observable<SharedTableData[]> = this.loadOrganizations();
-  header = ['Organizations name', 'Actions'];
+  header = ['Organizations name', 'UrlName', 'Actions'];
   totalNumberOfPages = 1;
 
   constructor(
@@ -35,16 +35,17 @@ export class AdminPanelComponent {
     private dialog: MatDialog
   ) {}
 
-  func(arg: string) {
-    console.log('func' + arg);
-  }
-
   openCreateOrganizationPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
       ['OrganizationName']: {
         value: '',
         type: 'text',
         placeholder: "Your organization's name",
+      },
+      ['UrlName']: {
+        value: '',
+        type: 'text',
+        placeholder: "Your organization's url",
       },
     };
     const buttons: ButtonPopupModel[] = [
@@ -112,7 +113,7 @@ export class AdminPanelComponent {
 
     const data: InputPopupDataModel = {
       title: 'Delete organization',
-      description: 'Are you sure you want to delete this organization',
+      description: 'Are you sure you want to delete this organization?',
       inputs: inputs,
       buttons: buttons,
     };
@@ -125,7 +126,7 @@ export class AdminPanelComponent {
   createOrganization(inputs: Dictionary<InputPopupModel>): void {
     const organization: OrganizationModel = {
       name: String(inputs['OrganizationName'].value),
-      urlName: String(inputs['OrganizationName'].value)
+      urlName: String(inputs['UrlName'].value)
         .replace(/\s/g, '-')
         .replace('.', '-'),
     };
@@ -155,10 +156,9 @@ export class AdminPanelComponent {
     });
   }
 
-  goTo(urlName: string | undefined): void {
+  async goTo(urlName: string | undefined): Promise<void> {
     if (typeof urlName === 'undefined') return;
-    // TODO: route to correct url
-    // this.router.navigate([`/${urlName}/dashboard`]);
+    await this.router.navigate([`/org/${urlName}/calendar`]); //TODO change to dashboard
   }
 
   setPage(pageNumber: number): void {
@@ -182,7 +182,7 @@ export class AdminPanelComponent {
     const results: SharedTableData[] = [];
     organizations.forEach(organization => {
       const result: SharedTableData = {
-        cols: [organization.name],
+        cols: [organization.name, organization.urlName],
         actions: [
           {
             icon: 'settings',
@@ -200,8 +200,8 @@ export class AdminPanelComponent {
           },
           {
             icon: 'launch',
-            func: (arg: string) => {
-              this.goTo(arg);
+            func: async (arg: string) => {
+              await this.goTo(arg);
             },
             arg: organization.urlName,
           },

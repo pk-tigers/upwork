@@ -5,6 +5,11 @@ mwl-calendar-month-view {
   color: $dark-blue;
 }
 
+::ng-deep .cal-month-view .cal-day-number {
+  color: $black;
+  opacity: 1;
+}
+
 ::ng-deep .cal-month-view .cal-open-day-events {
   background-color: $light-grey;
   box-shadow: none;
@@ -15,15 +20,6 @@ mwl-calendar-month-view {
   background-color: $dark-blue;
 }
 
-.custom-cal-event {
-  font-size: 12px;
-  height: 27px;
-  width: 27px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color:$white;
-  font-weight: 500;
-  margin: 1px;
+.btn-group{
+  gap: 10px;
 }

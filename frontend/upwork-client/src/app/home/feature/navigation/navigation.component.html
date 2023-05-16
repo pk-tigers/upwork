@@ -1,61 +1,62 @@
 <div class="navigation-container">
   <nav
-    class="navbar navbar-expand-lg navbar-light"
+    class="navbar navbar-expand-lg navbar-light custom-navbar"
     *ngIf="userService.isUserAuthenticated">
     <a class="upwork-nav-brand" routerLink="">
       <img alt="logo" src="../../../assets/images/logo.svg" width="160px" />
     </a>
     <div class="nav-ng-container">
       <div class="nav-items-container">
-        <ul class="navbar-nav">
-          <div
-            class="nav-item-div"
-            *ngFor="let element of MENU_DATA; let i = index">
-            <li
-              class="nav-item"
-              (click)="onItemClick(i)"
-              [class.active]="isMenuActive(i)">
-              <div *ngIf="isMenuActive(i)"></div>
-              <a class="nav-link" routerLink="{{ element.router_link }}"
-                ><mat-icon>{{ element.icon }}</mat-icon
-                ><span class="nav-text-link">{{ element.text }}</span></a
-              >
-              <!-- <div class="rounding-bottom" *ngIf="isMenuActive(i)"></div> -->
-            </li>
-          </div>
-          <div class="nav-item-div" *ngIf="userService.isAdmin$ | async">
-            <li
-              class="nav-item"
-              (click)="onItemClick(MENU_DATA.length)"
-              [class.active]="isMenuActive(MENU_DATA.length)">
-              <p *ngIf="isMenuActive(MENU_DATA.length)"></p>
-              <a class="nav-link" routerLink="admin-panel"
-                ><mat-icon>settings</mat-icon
-                ><span class="nav-text-link">Admin Panel</span></a
-              >
-              <p
-                class="rounding-bottom"
-                *ngIf="isMenuActive(MENU_DATA.length)"></p>
-            </li>
-          </div>
-        </ul>
+        <div class="navbar-nav">
+          <ul class="nav-item-div">
+            <ng-container *ngIf="url">
+              <li
+                *ngFor="
+                  let element of menuData;
+                  trackBy: trackByFn;
+                  let i = index
+                "
+                class="nav-item my-3"
+                (click)="onItemClick(i)"
+                [class.active]="isMenuActive(i)">
+                <div *ngIf="isMenuActive(i)"></div>
+                <a class="nav-link" routerLink="{{ element.router_link }}"
+                  ><mat-icon>{{ element.icon }}</mat-icon
+                  ><span class="nav-text-link">{{ element.text }}</span></a
+                >
+                <!-- <div class="rounding-bottom" *ngIf="isMenuActive(i)"></div> -->
+              </li>
+            </ng-container>
+
+            <ng-container *ngIf="userService.isAdmin$ | async">
+              <li
+                class="nav-item"
+                (click)="onItemClick(menuData.length)"
+                [class.active]="isMenuActive(menuData.length)">
+                <p *ngIf="isMenuActive(menuData.length)"></p>
+                <a class="nav-link" routerLink="admin-panel"
+                  ><mat-icon>settings</mat-icon
+                  ><span class="nav-text-link">Admin Panel</span></a
+                >
+                <p
+                  class="rounding-bottom"
+                  *ngIf="isMenuActive(menuData.length)"></p>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
       </div>
       <div class="nav-items-container logout-container">
-        <ul class="navbar-nav">
-          <div class="nav-item-div">
-            <li
-              class="nav-item"
-              (click)="logout()"
-              [class.active]="logoutActive">
-              <p *ngIf="logoutActive"></p>
+        <div class="navbar-nav">
+          <ul class="nav-item-div">
+            <li class="nav-item" (click)="logout()">
               <a class="nav-link" routerLink="#"
                 ><mat-icon>logout</mat-icon
                 ><span class="nav-text-link">Logout</span></a
               >
-              <p class="rounding-bottom" *ngIf="logoutActive"></p>
             </li>
-          </div>
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>

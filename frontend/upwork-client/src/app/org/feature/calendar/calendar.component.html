@@ -8,14 +8,9 @@
           <div class="col-md-6">
             <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}</h2>
           </div>
-          <div class="col-md-4">
-            <div
-              class="btn-group display-flex flex-row justify-content-space-between">
-              <div
-                class="upwork-btn upwork-btn-primary"
-                mwlCalendarPreviousView
-                [view]="view"
-                [(viewDate)]="viewDate"
+          <div class="col-md-4 test">
+            <div class="btn-group display-flex flex-row justify-content-space-between">
+              <div class="upwork-btn upwork-btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
                 (viewDateChange)="closeOpenMonthViewDay()">
                 Previous
               </div>
