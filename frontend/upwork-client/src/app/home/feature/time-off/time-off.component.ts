@@ -119,7 +119,10 @@ export class TimeOffComponent {
   cancelRequest(requestId: string): void {
     this.absenceService.cancelRequest(requestId).subscribe(isCancelled => {
       if (!isCancelled) this.tostr.warning('Something went wrong');
-      else this.listOfUserRequests$ = this.loadUserRequests();
+      else {
+        this.tostr.success('Time Off request cancelled successfully');
+        this.listOfUserRequests$ = this.loadUserRequests();
+      }
     });
   }
 
@@ -179,6 +182,7 @@ export class TimeOffComponent {
     };
 
     this.absenceService.createAbsenceRequest(userRequest).subscribe(() => {
+      this.tostr.success('New Time Off request created successfully');
       this.listOfUserRequests$ = this.loadUserRequests();
     });
   }
