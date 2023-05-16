@@ -26,9 +26,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { TimeOffComponent } from './home/feature/time-off/time-off.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.component';
 import { RoleRestrictDirective } from './shared/data-access/directive/role-restrict.directive';
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
@@ -70,6 +67,7 @@ export function tokenGetter() {
     MatDialogModule,
     CommonModule,
     NgbModalModule,
+    MatDatepickerModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
