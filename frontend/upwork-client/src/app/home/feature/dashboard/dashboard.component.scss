@@ -1,0 +1,65 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+.time-off-container{
+    width: 100%;
+    font-size: 20px;
+}
+.week-time-off, .today-time-off{
+    width:50%;
+}
+
+/* .time-off-users{
+    overflow: auto;
+} */
+
+.time-off-header{
+    text-align: center;
+}
+.time-off-container > div{
+    width: 100%;
+}
+.show-all-btn{
+    width: 50%;
+    max-width: 400px;
+    border-radius: 20px;
+}
+.info-popup{
+    position: absolute;
+    top:-60px;
+    width: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+app-avatar:hover + .info-popup{
+    visibility: visible;
+    opacity: 1;
+}
+.users-container{
+    position: relative;
+}
+.users-container:first-child{
+    margin-left: auto;
+}
+.users-container:last-child{
+    margin-right: auto;
+}
+.dashboard-header{
+    font-size: 32px;
+}
+.fixed-wrapper {
+    position: absolute;
+}
+.time-off-users{
+    justify-content: center;
+}
+.icon-display{
+    transform: scale(2);
+}

@@ -28,8 +28,8 @@ export class RequestsTimeOffsService {
     supervisorId: string | undefined,
     skip = 0,
     take = 10
-  ): Observable<PaginatedResult<Absence>> | Observable<undefined> {
-    if (typeof supervisorId == 'undefined') return of(undefined);
+  ): Observable<PaginatedResult<Absence>>  {
+    //if (typeof supervisorId == 'undefined') return of(undefined);
     return this.http.get<PaginatedResult<Absence>>(
       `${
         environment.apiUrl
