@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AbsenceApprovalState } from 'src/app/models/absence-approval.state.model';
 import { Absence } from 'src/app/models/absence.model';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
@@ -29,7 +29,6 @@ export class RequestsTimeOffsService {
     skip = 0,
     take = 10
   ): Observable<PaginatedResult<Absence>>  {
-    //if (typeof supervisorId == 'undefined') return of(undefined);
     return this.http.get<PaginatedResult<Absence>>(
       `${
         environment.apiUrl

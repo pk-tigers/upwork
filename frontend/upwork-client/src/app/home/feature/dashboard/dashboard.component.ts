@@ -4,13 +4,9 @@ import { AbsencesService } from 'src/app/shared/data-access/service/absences.ser
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { RequestsTimeOffsService } from 'src/app/shared/data-access/service/requests-time-offs.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { Absence } from 'src/app/models/absence.model';
 import { Router } from '@angular/router';
-import {TooltipPosition} from '@angular/material/tooltip';
-import {FormControl} from '@angular/forms';
-import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { AvatarComponent } from 'src/app/home/feature/avatar/avatar.component';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -73,13 +69,25 @@ export class DashboardComponent {
     
    }
   navigateToCalendar() {
-    this.router.navigate([`/org/${this.url}/calendar`]);
+    this.router.navigate([`/org/${this.url}/calendar`])
+    .then(() => {
+      // Navigation successful
+    })
+    .catch((error) => {
+      // Handle the error if needed
+    });
   }
   navigateToRequests() {
-    this.router.navigate([`/org/${this.url}/requests`]);
+    this.router.navigate([`/org/${this.url}/requests`])
+    .then(() => {
+      
+    })
+    .catch((error) => {
+      // Handle the error if needed
+    });
   }
   navigateToTimeOff() {
-    this.router.navigate([``]);
+    //this.router.navigate([``]);
   }
 
   ngOnInit(): void {

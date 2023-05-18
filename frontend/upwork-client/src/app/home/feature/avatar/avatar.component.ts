@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { has } from 'cypress/types/lodash';
+import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-avatar',

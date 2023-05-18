@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Absence } from 'src/app/models/absence.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { RegisterModel } from 'src/app/models/register.model';
-import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
