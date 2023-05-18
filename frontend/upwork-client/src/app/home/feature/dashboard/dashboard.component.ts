@@ -87,7 +87,13 @@ export class DashboardComponent {
     });
   }
   navigateToTimeOff() {
-    
+    this.router.navigate([`/org/${this.url}/time-off`])
+    .then(() => {
+      
+    })
+    .catch((error) => {
+      // Handle the error if needed
+    });
   }
 
   ngOnInit(): void {
