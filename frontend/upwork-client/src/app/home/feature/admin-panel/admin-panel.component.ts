@@ -113,7 +113,7 @@ export class AdminPanelComponent {
 
     const data: InputPopupDataModel = {
       title: 'Delete organization',
-      description: 'Are you sure you want to delete this organization',
+      description: 'Are you sure you want to delete this organization?',
       inputs: inputs,
       buttons: buttons,
     };
