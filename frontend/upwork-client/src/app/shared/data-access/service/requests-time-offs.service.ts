@@ -25,10 +25,9 @@ export class RequestsTimeOffsService {
   }
 
   public getListOfRequests(
-    supervisorId: string | undefined,
     skip = 0,
     take = 10
-  ): Observable<PaginatedResult<Absence>>  {
+  ): Observable<PaginatedResult<Absence>> {
     return this.http.get<PaginatedResult<Absence>>(
       `${
         environment.apiUrl
