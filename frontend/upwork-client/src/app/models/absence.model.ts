@@ -7,7 +7,8 @@ export interface Absence {
   toDate: Date;
   absenceType: AbsenceType;
   userId?: string;
-  userName?: string;
+  userFirstName?: string;
+  userLastName?: string;
   approvalState?: ApprovalState;
   timeOffSupervisorId?: string;
 }

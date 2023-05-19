@@ -55,7 +55,8 @@ namespace UpWork.Infrastucture.Services
                       FromDate = x.FromDate,
                       ToDate = x.ToDate,
                       UserId = x.UserId,
-                      UserName = string.Join(' ', x.User.FirstName, x.User.LastName),
+                      UserFirstName = x.User.FirstName,
+                      UserLastName = x.User.LastName,
                       AbsenceType = x.AbsenceType,
                       ApprovalState = x.ApprovalState
                 });
