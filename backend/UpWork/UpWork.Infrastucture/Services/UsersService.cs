@@ -20,9 +20,11 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<UserModel> GetSupervisors(Guid organizationId, int skip, int take)
         {
-            var users = _context.Users.Include(x => x.Permissions).Where(x => x.Permissions.Any(x => 
-            x.PermissionType == PermissionType.CanSupervise
-            && x.IsActive()));
+            var users = _context.Users
+                .Where(x => x.IsActive)
+                .Include(x => x.Permissions)
+                .Where(x => x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise 
+                && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow)));
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
