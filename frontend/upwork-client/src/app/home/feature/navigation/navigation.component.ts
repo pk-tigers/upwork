@@ -43,7 +43,11 @@ export class NavigationComponent implements OnInit {
     return [
       { icon: 'dashboard', text: 'Dashboard', router_link: '' },
       { icon: 'person_outline', text: 'Profile', router_link: '' },
-      { icon: 'beach_access', text: 'Time off', router_link: '' },
+      {
+        icon: 'beach_access',
+        text: 'Time off',
+        router_link: `/org/${this.url}/time-off`,
+      },
       {
         icon: 'calendar_today',
         text: 'Calendar',
