@@ -59,7 +59,7 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<UserWithSupervisorDto> UsersWithSupervisors(Guid organizationId, int skip, int take)
         {
-            var users = _context.Users.Where(x => x.OrganizationId == organizationId).Include(x => x.CurrentTimeOffSupervisor)
+            var users = _context.Users.Where(x => x.OrganizationId == organizationId && x.IsActive).Include(x => x.CurrentTimeOffSupervisor)
                 .Select(x => new UserWithSupervisorDto()
                 {
                     Id = x.Id,
