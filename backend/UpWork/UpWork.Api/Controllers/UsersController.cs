@@ -30,7 +30,7 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
-        [HttpGet("{OrganizationId}")]
+        [HttpGet("GetUsersByOrganizationId")]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetUsersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
