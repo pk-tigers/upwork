@@ -30,7 +30,7 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<UserModel> GetUsers(int skip, int take)
         {
-            var users = _context.Users;
+            var users = _context.Users.Where(x => x.IsActive);
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -38,7 +38,7 @@ namespace UpWork.Infrastucture.Services
 
         public PaginatedResult<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take)
         {
-            var users = _context.Users.Where(x => x.OrganizationId == OrganizationId);
+            var users = _context.Users.Where(x => x.OrganizationId == OrganizationId && x.IsActive);
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -47,7 +47,7 @@ namespace UpWork.Infrastucture.Services
         public PaginatedResult<UserWithPermissionsDto> LoadUsersWithPermissions(Guid organizationId, int skip, int take)
         {
             var users = _context.Users
-                .Where(x => x.OrganizationId == organizationId)
+                .Where(x => x.OrganizationId == organizationId && x.IsActive)
                 .OrderBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
                 .Include(x => x.Permissions)
