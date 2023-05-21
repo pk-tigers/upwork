@@ -85,25 +85,6 @@
 }
 
 @media screen and (max-width: 1024px) {
-  <<<<<<< HEAD .upwork-default-container {
-    align-items: unset;
-    justify-content: unset;
-  }
-
-  .upwork-default-content-container {
-    min-width: 300px;
-    width: 100%;
-    filter: drop-shadow(20px 20px 20px rgba(0, 0, 0, 0.25));
-  }
-
-  .upwork-popup-inputs-container {
-    width: 95%;
-  }
-
-  ======= .upwork-default-content-container {
-    min-width: 90%;
-  }
-
   .upwork-default-container {
     align-items: unset;
     justify-content: unset;
@@ -116,14 +97,6 @@
   }
 
   .upwork-popup-inputs-container {
-    width: 95%;
-  }
-
-  .upwork-popup-inputs-container {
-    width: 95%;
-  }
-
-  >>>>>>>dev .upwork-popup-buttons-container {
     width: 95%;
   }
 }
