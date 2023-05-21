@@ -6,5 +6,5 @@ export interface SharedTableData {
 export interface SharedTableDataFunc {
   icon: string;
   func: CallableFunction;
-  arg: string | undefined;
+  arg: string | object | undefined;
 }

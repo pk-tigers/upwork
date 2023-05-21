@@ -101,6 +101,12 @@
   border-radius: 0 5px 5px 0;
 }
 
+mat-form-field .mat-mdc-select-arrow svg {
+  height: 56px;
+  width: 36px;
+  margin-left: 5px;
+}
+
 .mat-mdc-option {
   min-height: 38px !important;
 }
