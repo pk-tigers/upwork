@@ -61,6 +61,6 @@ export class AdminService {
   }
 
   public deleteUser(userId: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${environment.apiUrl}/user?id=${userId}`);
+    return this.http.delete<boolean>(`${environment.apiUrl}/${userId}`);
   }
 }

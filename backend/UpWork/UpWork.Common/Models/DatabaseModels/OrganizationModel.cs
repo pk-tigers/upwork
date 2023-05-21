@@ -13,7 +13,7 @@ namespace UpWork.Common.Models.DatabaseModels
         public bool IsActive { get; set; }
         [Required]
         public string UrlName { get; set; }
-        //[JsonIgnore]
+        [JsonIgnore]
         public virtual ICollection<UserModel> Users { get; set; }
     }
 }
