@@ -41,8 +41,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet("GetOwnersByOrganizationId")]
-        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
-        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
+        [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult<PaginatedResult<UserModel>> GetOwnersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
         {
             var res = _usersService.GetOwnersByOrganizationId(organizationId, skip, take);
