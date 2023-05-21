@@ -33,9 +33,17 @@ export class AdminService {
     );
   }
 
-  public getOrganizationWithUsers(guid: string): Observable<OrganizationModel> {
-    return this.http.get<OrganizationModel>(
-      `${environment.apiUrl}/organization/GetOrganizationWithUsers?organizationId=${guid}`
+  public getOrganizationOwners(
+    guid: string,
+    pageNumber = 0,
+    pageSize = 10
+  ): Observable<PaginatedResult<User>> {
+    return this.http.get<PaginatedResult<User>>(
+      `${
+        environment.apiUrl
+      }/users/GetOwnersByOrganizationId?organizationId=${guid}&skip=${
+        pageNumber * pageSize
+      }&take=${pageSize}`
     );
   }
 
