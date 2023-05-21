@@ -40,6 +40,16 @@ namespace UpWork.Api.Controllers
             return Ok(res);
         }
 
+        [HttpGet("GetOwnersByOrganizationId")]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
+        public ActionResult<PaginatedResult<UserModel>> GetOwnersByOrganizationId(Guid organizationId, int skip = 0, int take = 10)
+        {
+            var res = _usersService.GetOwnersByOrganizationId(organizationId, skip, take);
+
+            return Ok(res);
+        }
+
         [HttpGet("UsersWithSupervisors")]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
