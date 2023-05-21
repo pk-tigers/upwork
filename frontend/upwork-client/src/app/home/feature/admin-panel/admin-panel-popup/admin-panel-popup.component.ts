@@ -86,6 +86,7 @@ export class AdminPanelPopupComponent {
     this.adminService.deleteUser(userId).subscribe(isDeleted => {
       if (isDeleted) this.toatrService.success('Successfully deleted');
       else this.toatrService.error('Something went wrong');
+      this.listOfOwners$ = this.loadOwners();
     });
   }
 
@@ -142,7 +143,11 @@ export class AdminPanelPopupComponent {
       email: String(inputs['email'].value),
       organizationId: this.organizationId,
     };
-    this.adminService.createOwner(owner).subscribe();
+    this.adminService.createOwner(owner).subscribe(user => {
+      if (user) this.toatrService.success('Created successfully');
+      else this.toatrService.error('Cannot create owner');
+      this.listOfOwners$ = this.loadOwners();
+    });
   }
 
   private goto(userId: string) {
