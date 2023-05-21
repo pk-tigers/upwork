@@ -21,7 +21,6 @@ import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { User } from 'src/app/models/user.model';
 import { AdminService } from 'src/app/shared/data-access/service/admin.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
-import { EmailCreator } from 'src/app/shared/web-utilities/email-creator';
 
 @Component({
   selector: 'app-admin-panel-popup',
@@ -102,6 +101,11 @@ export class AdminPanelPopupComponent {
         type: 'text',
         placeholder: 'last name',
       },
+      ['email']: {
+        value: '',
+        type: 'text',
+        placeholder: 'email',
+      },
     };
 
     const buttons: ButtonPopupModel[] = [
@@ -132,12 +136,10 @@ export class AdminPanelPopupComponent {
   }
 
   private createUser(inputs: Dictionary<InputPopupModel>): void {
-    const firstName = String(inputs['firstName'].value);
-    const lastName = String(inputs['lastName'].value);
     const owner: RegisterModel = {
-      firstName: firstName,
-      lastName: lastName,
-      email: EmailCreator.createEmail(firstName, lastName, this.data.name),
+      firstName: String(inputs['firstName'].value),
+      lastName: String(inputs['lastName'].value),
+      email: String(inputs['email'].value),
       organizationId: this.organizationId,
     };
     this.adminService.createOwner(owner).subscribe();
