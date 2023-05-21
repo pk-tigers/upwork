@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { Dictionary } from 'cypress/types/lodash';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
-import { Roles } from 'src/app/models/enums/roles.enum';
 import {
   ButtonPopupModel,
   ButtonTypes,
