@@ -44,6 +44,14 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
+        public PaginatedResult<UserModel> GetOwnersByOrganizationId(Guid OrganizationId, int skip, int take)
+        {
+            var users = _context.Users.Where(x => x.OrganizationId == OrganizationId && x.Role == Role.OrganizationOwner && x.IsActive);
+
+            var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
+            return res;
+        }
+
         public PaginatedResult<UserWithPermissionsDto> LoadUsersWithPermissions(Guid organizationId, int skip, int take)
         {
             var users = _context.Users

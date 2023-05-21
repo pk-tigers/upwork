@@ -34,7 +34,7 @@ namespace UpWork.Infrastucture.Services
                     IsActive = true,
                     CurrentTimeOffSupervisorId = registerDto.SupervisorId,
                     OrganizationId = registerDto.OrganizationId,
-                    Role = Common.Enums.Role.User,
+                    Role = role,
                     Password = _encodeService.EncodePassword(generatedPassword)
                 };
 

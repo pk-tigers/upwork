@@ -95,6 +95,6 @@ export class PermissionsControlComponent {
   }
 
   inputDisabled(role: Roles): boolean {
-    return role == Roles.OwneOrganizationOwnerr || role == Roles.PageAdmin;
+    return role == Roles.OrganizationOwner || role == Roles.PageAdmin;
   }
 }
