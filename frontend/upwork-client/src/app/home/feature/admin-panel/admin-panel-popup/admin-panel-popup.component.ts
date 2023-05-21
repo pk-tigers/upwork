@@ -141,7 +141,6 @@ export class AdminPanelPopupComponent {
       email: EmailCreator.createEmail(firstName, lastName, this.data.name),
       organizationId: this.organizationId,
     };
-    console.log(owner);
     this.adminService.createOwner(owner).subscribe();
   }
 
