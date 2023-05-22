@@ -31,6 +31,26 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
+        public IEnumerable<UserAbsenceModel> GetUsersAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to)
+        {
+            var absences = _context.Absences
+                .Include(x => x.User)
+                .Where(x => x.User.OrganizationId == organizationId)
+                .Where(x => x.IsActive)
+                .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to)
+                .Select(x => new UserAbsenceModel
+                {
+                    Id = x.User.Id,
+                    OrganizationId = (Guid)x.User.OrganizationId,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    FromDate = x.FromDate,
+                    ToDate = x.ToDate,
+                    AbsenceType = x.AbsenceType
+                });
+            return absences;
+        }
+
         public PaginatedResult<AbsenceModel> GetAbsencesByUserId(Guid userId, DateTime from, DateTime to, int skip, int take)
         {
             var absences = _context.Absences

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import '../../../../_variables.scss';
 import {
   Component,
@@ -6,16 +5,15 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
-import {
-  startOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-} from 'date-fns';
+import { isSameDay, isSameMonth } from 'date-fns';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
+import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { Observable, map, switchMap } from 'rxjs';
+import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
+import { UserAbsence } from 'src/app/models/UserAbsence.model';
+import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 
 const colors: Record<string, EventColor> = {
   blue: {
@@ -41,56 +39,109 @@ const colors: Record<string, EventColor> = {
 export class CalendarComponent {
   @ViewChild('modalContent', { static: true })
   modalContent!: TemplateRef<unknown>;
-
   view: CalendarView = CalendarView.Month;
-
-  CalendarView = CalendarView;
-
+  activeDayIsOpen = false;
+  calendarView = CalendarView;
   viewDate: Date = new Date();
-
   modalData!: {
     action: string;
     event: CalendarEvent;
   };
+  from: Date = TimeUtilities.getFirstDayOfMonth(new Date());
+  to: Date = TimeUtilities.getLastDayOfMonth(new Date());
+  events: Observable<CalendarEvent[]> = this.loadAbsences();
+  diffInMonths = 0;
 
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 2),
-      title: 'A 4 day blue event',
-      color: { ...colors['blue'] },
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 10),
-      title: 'A long event that spans 2 months and is beige',
-      color: { ...colors['beige'] },
-      allDay: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'A orange event',
-      color: { ...colors['orange'] },
-    },
-  ];
-
-  activeDayIsOpen: boolean = false;
+  constructor(
+    private absenceService: AbsenceService,
+    private organizationService: OrganizationService
+  ) {}
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
+    if (!isSameMonth(date, this.viewDate)) return;
+    if (
+      (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+      events.length === 0
+    )
+      this.activeDayIsOpen = false;
+    else this.activeDayIsOpen = true;
+
+    this.viewDate = date;
   }
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  presentMonth() {
+    this.diffInMonths = 0;
+    this.from = TimeUtilities.getFirstDayOfMonth(new Date());
+    this.to = TimeUtilities.getLastDayOfMonth(new Date());
+    this.events = this.loadAbsences();
+  }
+
+  nextMonth() {
+    this.diffInMonths--;
+    this.from = TimeUtilities.getFirstDayOfMonth(
+      TimeUtilities.getDateDifferentByMonths(this.diffInMonths)
+    );
+    this.to = TimeUtilities.getLastDayOfMonth(
+      TimeUtilities.getDateDifferentByMonths(this.diffInMonths)
+    );
+    this.events = this.loadAbsences();
+  }
+
+  prevMonth() {
+    this.diffInMonths++;
+    this.from = TimeUtilities.getFirstDayOfMonth(
+      TimeUtilities.getDateDifferentByMonths(this.diffInMonths)
+    );
+    this.to = TimeUtilities.getLastDayOfMonth(
+      TimeUtilities.getDateDifferentByMonths(this.diffInMonths)
+    );
+    this.events = this.loadAbsences();
+  }
+
+  private loadAbsences(): Observable<CalendarEvent[]> {
+    return this.organizationService.organization$.pipe(
+      switchMap(organization =>
+        this.absenceService.getAbsencesMonthly(
+          organization?.id,
+          this.from,
+          this.to
+        )
+      ),
+      map(res => this.mapData(res))
+    );
+  }
+
+  private mapData(data: UserAbsence[]): CalendarEvent[] {
+    const events: CalendarEvent[] = [];
+    data.forEach(absence => {
+      const event: CalendarEvent = {
+        start: new Date(absence.fromDate),
+        end: new Date(absence.toDate),
+        title: this.getAbsenceTypeTitle(absence.absenceType),
+        color: this.getAbsenceTypeColor(absence.absenceType),
+      };
+      events.push(event);
+    });
+    console.log(events);
+    return events;
+  }
+
+  private getAbsenceTypeTitle(absenceType: AbsenceType): string {
+    const absenceTypeStrings = [
+      'Paid time off',
+      'Unpaid leave',
+      'Sick leave',
+      'Maternity leave',
+    ];
+    return absenceTypeStrings[absenceType];
+  }
+
+  private getAbsenceTypeColor(absenceType: AbsenceType): EventColor {
+    const absenceTypeStrings = ['orange', 'blue', 'beige', 'beige'];
+    return { ...colors[absenceTypeStrings[absenceType]] };
   }
 }

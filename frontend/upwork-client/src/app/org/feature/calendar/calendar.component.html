@@ -9,15 +9,22 @@
             <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}</h2>
           </div>
           <div class="col-md-4 test">
-            <div class="btn-group display-flex flex-row justify-content-space-between">
-              <div class="upwork-btn upwork-btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()">
+            <div
+              class="btn-group display-flex flex-row justify-content-space-between">
+              <div
+                class="upwork-btn upwork-btn-primary"
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+                (click)="prevMonth()">
                 Previous
               </div>
               <div
                 class="upwork-btn upwork-btn-secondary"
                 mwlCalendarToday
-                [(viewDate)]="viewDate">
+                [(viewDate)]="viewDate"
+                (click)="presentMonth()">
                 Today
               </div>
               <div
@@ -25,7 +32,8 @@
                 mwlCalendarNextView
                 [view]="view"
                 [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()">
+                (viewDateChange)="closeOpenMonthViewDay()"
+                (click)="nextMonth()">
                 Next
               </div>
             </div>
@@ -96,7 +104,7 @@
         <div [ngSwitch]="view">
           <mwl-calendar-month-view
             [viewDate]="viewDate"
-            [events]="events"
+            [events]="(events | async) ?? []"
             [weekStartsOn]="1"
             [activeDayIsOpen]="activeDayIsOpen"
             [cellTemplate]="customCellTemplate"
