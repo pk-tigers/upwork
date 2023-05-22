@@ -1,12 +1,10 @@
-﻿using UpWork.Common.DTO;
-using UpWork.Common.Models;
-using UpWork.Common.Models.DatabaseModels;
+﻿using UpWork.Common.Models;
 
 namespace UpWork.Common.Interfaces
 {
     public interface ICalendarService
     {
-        public PaginatedResult<AbsenceModel> GetCalendarAbsencesByUserId(Guid userId, int skip, int take, DateTime? fromDate = null, DateTime? toDate = null);
+        public IEnumerable<UserAbsenceModel> GetCalendarAbsencesByUserId(Guid userId, DateTime fromDate, DateTime toDate);
 
     }
 }

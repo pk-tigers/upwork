@@ -16,7 +16,7 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public PaginatedResult<AbsenceModel> GetCalendarAbsencesByUserId(Guid userId, int skip, int take, DateTime? fromDate = null, DateTime? toDate = null)
+        public IEnumerable<UserAbsenceModel> GetCalendarAbsencesByUserId(Guid userId, DateTime fromDate, DateTime toDate)
         {
             var user = _context.Users.Where(x => x.Id == userId).First();
 
@@ -31,14 +31,22 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.UserId == user.Id || x.TimeOffSupervisorId == userId);
 
             var absences = orgAcceptedAbsences.Concat(ownAndSupervisedAbsences)
-                .Where(x => (x.FromDate >= fromDate.GetValueOrDefault(DateTime.MinValue) && x.FromDate <= toDate.GetValueOrDefault(DateTime.MaxValue))
-                || x.ToDate >= fromDate.GetValueOrDefault(DateTime.MinValue) && x.ToDate <= toDate.GetValueOrDefault(DateTime.MaxValue))
+                .Where(x => (x.FromDate >= fromDate && x.FromDate <= toDate)
+                || x.ToDate >= fromDate && x.ToDate <= toDate)
                 .OrderBy(x => x.FromDate)
-                .Distinct();
+                .Distinct()
+                .Select(x => new UserAbsenceModel
+                {
+                    Id = x.User.Id,
+                    OrganizationId = x.User.OrganizationId,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    FromDate = x.FromDate,
+                    ToDate = x.ToDate,
+                    AbsenceType = x.AbsenceType
+                });
 
-
-            var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
-            return res;
+            return absences;
         }
 
     }

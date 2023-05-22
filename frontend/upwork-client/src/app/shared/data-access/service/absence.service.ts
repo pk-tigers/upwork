@@ -45,7 +45,7 @@ export class AbsenceService {
     return this.http.get<UserAbsence[]>(
       `${
         environment.apiUrl
-      }/Absences/GetUsersAbsencesByOrganizationId?organizationId=${organizationId}&from=${this.datePipe.transform(
+      }/Calendar/GetCalendarAbsencesForUser?from=${this.datePipe.transform(
         from,
         'yyyy-MM-dd'
       )}&to=${this.datePipe.transform(to, 'yyyy-MM-dd')}`

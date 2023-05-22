@@ -32,14 +32,6 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
-        public ActionResult<IEnumerable<object>> GetUsersAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to)
-        {
-            var res = _absencesService.GetUsersAbsencesByOrganizationId(organizationId, from, to);
-            return Ok(res);
-        }
-
-        [HttpGet]
         public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByDateForUser(DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var userId = User.Identity.GetUserId();
