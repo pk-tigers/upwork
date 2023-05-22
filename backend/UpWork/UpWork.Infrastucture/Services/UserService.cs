@@ -1,5 +1,4 @@
 ﻿using UpWork.Common.Dto;
-using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
