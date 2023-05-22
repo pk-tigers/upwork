@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   async ngOnInit() {
     if (this.userService.isUserAuthenticated) {
-      this.organizationService.organization$.subscribe(async res => {
+      this.organizationService.organization$.subscribe(res => async () => {
         if (res?.urlName) {
           const url = res.urlName;
           await this.router.navigate([`/org/${url}/dashboard`]);
@@ -42,10 +42,11 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     };
+
     this.userService.login(credentials).subscribe(loggedIn => {
       (async () => {
         if (loggedIn) {
-          this.organizationService.organization$.subscribe(async res => {
+          this.organizationService.organization$.subscribe(res => async () => {
             if (res?.urlName) {
               const url = res.urlName;
               await this.router.navigate([`/org/${url}/dashboard`]);
