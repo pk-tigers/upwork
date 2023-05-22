@@ -119,7 +119,7 @@ export class CalendarComponent {
         end: new Date(absence.toDate),
         title: `${absence.firstName} ${
           absence.lastName
-        } ${this.getAbsenceTypeTitle(absence.absenceType)}`,
+        } - ${this.getAbsenceTypeTitle(absence.absenceType)}`,
         color: this.getAbsenceTypeColor(absence.absenceType),
         meta:
           absence.firstName[0].toUpperCase() +
