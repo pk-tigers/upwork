@@ -24,7 +24,7 @@ export class DashboardComponent {
     type: string;
     header: string;
     items: { today: Absence[]; week: Absence[] } | undefined;
-    buttonAction: () => void;
+    buttonAction: () => Promise<void>;
   }[] = [];
   constructor(
     private absencesService: AbsencesService,
