@@ -20,6 +20,19 @@ mwl-calendar-month-view {
   background-color: $dark-blue;
 }
 
-.btn-group{
+.btn-group {
   gap: 10px;
+}
+
+.custom-cal-event {
+  font-size: 12px;
+  height: 27px;
+  width: 27px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $white;
+  font-weight: 500;
+  margin: 1px;
 }

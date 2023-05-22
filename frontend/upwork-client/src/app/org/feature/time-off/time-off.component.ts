@@ -15,7 +15,7 @@ import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { TimeConverter } from 'src/app/shared/web-utilities/time-converter';
+import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
 
@@ -122,10 +122,10 @@ export class TimeOffComponent {
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
     const userRequest: Absence = {
-      fromDate: TimeConverter.createDateAsUTC(
+      fromDate: TimeUtilities.createDateAsUTC(
         new Date(String(inputs['TimeOffBeginningDate'].value))
       ),
-      toDate: TimeConverter.createDateAsUTC(
+      toDate: TimeUtilities.createDateAsUTC(
         new Date(String(inputs['TimeOffEndDate'].value))
       ),
       absenceType:
