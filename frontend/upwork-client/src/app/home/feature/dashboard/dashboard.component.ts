@@ -41,7 +41,7 @@ export class DashboardComponent {
     const week=new Date();
     week.setDate(week.getDate()+7);
     const weekDate=week.toLocaleString('en-CA', options);
-    this.requestsTimeOffsService.getListOfRequests('a',0,10).subscribe((res: { data: Absence[] | undefined; })=>{
+    this.requestsTimeOffsService.getListOfRequests(0,10).subscribe((res: { data: Absence[] | undefined; })=>{
       if (res) {
         this.timeOffRequests=res.data;
       }

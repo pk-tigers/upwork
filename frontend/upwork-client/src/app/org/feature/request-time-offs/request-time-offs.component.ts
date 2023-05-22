@@ -106,9 +106,7 @@ export class RequestTimeOffsComponent {
 
   private loadRequests() {
     return this.userService.user$.pipe(
-      switchMap(currentUser =>
-        this.requestTimeOffsService.getListOfRequests(currentUser?.id)
-      ),
+      switchMap(currentUser => this.requestTimeOffsService.getListOfRequests()),
       map(res => {
         this.totalNumberOfPages = res?.page ?? 1;
         if (res?.data.length === 0 && this.currentPage$.value - 1 >= 0)
@@ -129,7 +127,9 @@ export class RequestTimeOffsComponent {
       const toDate = new Date(request.toDate);
       const result: SharedTableData = {
         cols: [
-          request?.userName ?? '',
+          request?.userFirstName?.toString() +
+            ' ' +
+            request?.userLastName?.toString(),
           this.absenceTypeString[request.absenceType],
           fromDate.getDay() +
             '/' +
