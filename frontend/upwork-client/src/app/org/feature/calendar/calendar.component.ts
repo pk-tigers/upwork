@@ -12,23 +12,9 @@ import { AbsenceService } from 'src/app/shared/data-access/service/absence.servi
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { Observable, map, switchMap } from 'rxjs';
 import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
-import { UserAbsence } from 'src/app/models/UserAbsence.model';
+import { UserAbsence } from 'src/app/models/user-absence.model';
 import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
-
-const colors: Record<string, EventColor> = {
-  blue: {
-    primary: '#92a7ff',
-    secondary: '#d6dcff',
-  },
-  orange: {
-    primary: '#f8c48c',
-    secondary: '#fcebd9',
-  },
-  beige: {
-    primary: '#a39999',
-    secondary: '#dedcdc',
-  },
-};
+import { colors } from 'src/app/models/colors/color';
 
 @Component({
   selector: 'app-calendar',

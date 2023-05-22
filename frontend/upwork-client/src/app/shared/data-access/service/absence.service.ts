@@ -5,7 +5,7 @@ import { Absence } from 'src/app/models/absence.model';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
-import { UserAbsence } from 'src/app/models/UserAbsence.model';
+import { UserAbsence } from 'src/app/models/user-absence.model';
 
 @Injectable({
   providedIn: 'root',
