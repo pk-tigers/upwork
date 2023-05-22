@@ -11,14 +11,13 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AdminService {
-  private env = environment;
   constructor(private http: HttpClient) {}
 
   public createOrganization(
     organization: OrganizationModel
   ): Observable<OrganizationModel> {
     return this.http.post<OrganizationModel>(
-      `${this.env.apiUrl}/organization`,
+      `${environment.apiUrl}/organization`,
       organization
     );
   }
@@ -28,17 +27,40 @@ export class AdminService {
     pageSize = 10
   ): Observable<PaginatedResult<OrganizationModel>> {
     return this.http.get<PaginatedResult<OrganizationModel>>(
-      `${this.env.apiUrl}/organizations?skip=${
+      `${environment.apiUrl}/organizations?skip=${
+        pageNumber * pageSize
+      }&take=${pageSize}`
+    );
+  }
+
+  public getOrganizationOwners(
+    guid: string,
+    pageNumber = 0,
+    pageSize = 10
+  ): Observable<PaginatedResult<User>> {
+    return this.http.get<PaginatedResult<User>>(
+      `${
+        environment.apiUrl
+      }/users/GetOwnersByOrganizationId?organizationId=${guid}&skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
     );
   }
 
   public deleteOrganization(guid: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.env.apiUrl}/organization/${guid}`);
+    return this.http.delete<boolean>(
+      `${environment.apiUrl}/organization/${guid}`
+    );
   }
 
   public createOwner(owner: RegisterModel): Observable<User> {
-    return this.http.post<User>(`${this.env.apiUrl}/user/createOwner`, owner);
+    return this.http.post<User>(
+      `${environment.apiUrl}/user/createOwner`,
+      owner
+    );
+  }
+
+  public deleteUser(userId: string): Observable<boolean> {
+    return this.http.delete<boolean>(`${environment.apiUrl}/user/${userId}`);
   }
 }

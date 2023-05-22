@@ -12,10 +12,10 @@ import {
 } from 'src/app/models/input-popup-data.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { RegisterModel } from 'src/app/models/register.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { AdminService } from 'src/app/shared/data-access/service/admin.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
+import { AdminPanelPopupComponent } from './admin-panel-popup/admin-panel-popup.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -67,33 +67,8 @@ export class AdminPanelComponent {
     });
   }
 
-  openManageOrganizationPopup(guid: string | undefined): void {
-    if (typeof guid === 'undefined') return;
-    const inputs: Dictionary<InputPopupModel> = {
-      ['firstname']: { value: '', type: 'text', placeholder: 'Firstname' },
-      ['lastname']: { value: '', type: 'text', placeholder: 'Lastname' },
-      ['email']: { value: '', type: 'text', placeholder: 'E-mail' },
-    };
-    const buttons: ButtonPopupModel[] = [
-      {
-        type: ButtonTypes.PRIMARY,
-        text: 'Create user',
-        onClick: () => this.manageOrganization(inputs, guid),
-      },
-      { type: ButtonTypes.SECONDARY, text: 'Cancel' },
-    ];
-
-    const data: InputPopupDataModel = {
-      title: 'Add owner',
-      description: 'Fill basic data:',
-      inputs: inputs,
-      buttons: buttons,
-    };
-
-    this.dialog.open(PopupWithInputsComponent, {
-      data: data,
-      panelClass: 'upwork-popup',
-    });
+  openManageOrganizationPopup(organization: OrganizationModel): void {
+    this.dialog.open(AdminPanelPopupComponent, { data: organization });
   }
 
   openDeleteOrganizationPopup(guid: string | undefined): void {
@@ -135,20 +110,6 @@ export class AdminPanelComponent {
     });
   }
 
-  manageOrganization(inputs: Dictionary<InputPopupModel>, orgId: string): void {
-    const owner: RegisterModel = {
-      firstName: String(inputs['firstname']?.value),
-      lastName: String(inputs['lastname']?.value),
-      email: String(inputs['email']?.value),
-      organizationId: orgId,
-    };
-    this.adminService.createOwner(owner).subscribe(res => {
-      if (res) {
-        this.tostr.success('Successfully added organizations owner');
-      }
-    });
-  }
-
   deleteOrganization(guid: string): void {
     this.adminService.deleteOrganization(guid).subscribe(isDeleted => {
       if (!isDeleted) this.tostr.warning('Something went wrong');
@@ -186,10 +147,10 @@ export class AdminPanelComponent {
         actions: [
           {
             icon: 'settings',
-            func: (arg: string) => {
+            func: (arg: OrganizationModel) => {
               this.openManageOrganizationPopup(arg);
             },
-            arg: organization?.id,
+            arg: organization,
           },
           {
             icon: 'delete',

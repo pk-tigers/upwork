@@ -13,7 +13,6 @@ export class AbsenceService {
   constructor(private http: HttpClient) {}
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
-    console.log(absence);
     return this.http.post<Absence>(
       `${this.env.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
