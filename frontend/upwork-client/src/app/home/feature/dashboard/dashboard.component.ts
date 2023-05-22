@@ -108,24 +108,24 @@ export class DashboardComponent {
           type: 'time',
           header: 'Upcoming time off',
           items: { today: this.todayAbsences, week: this.weekAbsences },
-          buttonAction: () => {
-            this.router.navigate([`/org/${this.url}/calendar`]);
+          buttonAction: async () => {
+            await this.router.navigate([`/org/${this.url}/calendar`]);
           },
         },
         {
           type: 'time',
           header: 'Your time off',
           items: { today: this.userTodayAbsences, week: this.userWeekAbsences },
-          buttonAction: () => {
-            this.router.navigate([`/org/${this.url}/time-off`]);
+          buttonAction: async () => {
+            await this.router.navigate([`/org/${this.url}/time-off`]);
           },
         },
         {
           type: 'requests',
           header: 'Employee’s time off requests',
           items: { today: this.timeOffRequests, week: [] },
-          buttonAction: () => {
-            this.router.navigate([`/org/${this.url}/requests`]);
+          buttonAction: async () => {
+            await this.router.navigate([`/org/${this.url}/requests`]);
           },
         },
       ];

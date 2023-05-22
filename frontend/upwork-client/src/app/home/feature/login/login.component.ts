@@ -12,7 +12,7 @@ import { OrganizationService } from 'src/app/shared/data-access/service/organiza
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -27,11 +27,10 @@ export class LoginComponent implements OnInit {
 
   async ngOnInit() {
     if (this.userService.isUserAuthenticated) {
-      
-      this.organizationService.organization$.subscribe(res => {
+      this.organizationService.organization$.subscribe(async res => {
         if (res?.urlName) {
           const url = res.urlName;
-          this.router.navigate([`/org/${url}/dashboard`]);
+          await this.router.navigate([`/org/${url}/dashboard`]);
         }
       });
     }
@@ -46,10 +45,10 @@ export class LoginComponent implements OnInit {
     this.userService.login(credentials).subscribe(loggedIn => {
       (async () => {
         if (loggedIn) {
-          this.organizationService.organization$.subscribe(res => {
+          this.organizationService.organization$.subscribe(async res => {
             if (res?.urlName) {
               const url = res.urlName;
-              this.router.navigate([`/org/${url}/dashboard`]);
+              await this.router.navigate([`/org/${url}/dashboard`]);
             }
           });
         }

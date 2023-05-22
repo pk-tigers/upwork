@@ -16,7 +16,6 @@
 }
 .info-popup {
   position: absolute;
-  width: 150px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.8);
@@ -28,6 +27,8 @@
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   z-index: 10;
+  text-align: center;
+  width: fit-content;
 }
 app-avatar:hover + .info-popup {
   visibility: visible;
@@ -52,10 +53,7 @@ app-avatar:hover + .info-popup {
 .icon-display {
   transform: scale(2);
 }
-.info-popup {
-  text-align: center;
-  width: fit-content;
-}
+
 @media (max-width: 768px) {
   .time-off-container > div {
     flex-direction: column;

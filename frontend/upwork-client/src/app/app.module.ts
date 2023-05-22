@@ -18,7 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarComponent } from './org/feature/calendar/calendar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe  } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -38,7 +38,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
 import { AvatarComponent } from './home/feature/avatar/avatar.component';
-import { DatePipe } from '@angular/common';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
