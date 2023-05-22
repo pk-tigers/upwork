@@ -5,7 +5,6 @@ import { Absence } from 'src/app/models/absence.model';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
-import { UserAbsence } from 'src/app/models/user-absence.model';
 
 @Injectable({
   providedIn: 'root',
@@ -41,8 +40,8 @@ export class AbsenceService {
     organizationId: string | undefined,
     from: Date,
     to: Date
-  ): Observable<UserAbsence[]> {
-    return this.http.get<UserAbsence[]>(
+  ): Observable<Absence[]> {
+    return this.http.get<Absence[]>(
       `${
         environment.apiUrl
       }/Calendar/GetCalendarAbsencesForUser?from=${this.datePipe.transform(

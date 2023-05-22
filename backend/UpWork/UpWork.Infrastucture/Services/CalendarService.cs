@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
@@ -16,7 +17,7 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public IEnumerable<UserAbsenceModel> GetCalendarAbsencesByUserId(Guid userId, DateTime fromDate, DateTime toDate)
+        public IEnumerable<AbsenceModelDto> GetCalendarAbsencesByUserId(Guid userId, DateTime fromDate, DateTime toDate)
         {
             var user = _context.Users.Where(x => x.Id == userId).First();
 
@@ -35,16 +36,7 @@ namespace UpWork.Infrastucture.Services
                 || x.ToDate >= fromDate && x.ToDate <= toDate)
                 .OrderBy(x => x.FromDate)
                 .Distinct()
-                .Select(x => new UserAbsenceModel
-                {
-                    Id = x.User.Id,
-                    OrganizationId = x.User.OrganizationId,
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    FromDate = x.FromDate,
-                    ToDate = x.ToDate,
-                    AbsenceType = x.AbsenceType
-                });
+                .Select(x => new AbsenceModelDto(x));
 
             return absences;
         }

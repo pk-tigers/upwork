@@ -4,6 +4,7 @@ using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Common.Models;
 using UpWork.Api.Extensions;
+using UpWork.Common.DTO;
 
 namespace UpWork.Api.Controllers
 {
@@ -20,7 +21,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UserAbsenceModel>> GetCalendarAbsencesForUser(DateTime from, DateTime to)
+        public ActionResult<IEnumerable<AbsenceModelDto>> GetCalendarAbsencesForUser(DateTime from, DateTime to)
         {
             Guid userId = User.Identity.GetUserId();
             var res = _callendarService.GetCalendarAbsencesByUserId(userId, from, to);

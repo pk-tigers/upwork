@@ -12,9 +12,9 @@ import { AbsenceService } from 'src/app/shared/data-access/service/absence.servi
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { Observable, map, switchMap } from 'rxjs';
 import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
-import { UserAbsence } from 'src/app/models/user-absence.model';
 import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { colors } from 'src/app/models/colors/color';
+import { Absence } from 'src/app/models/absence.model';
 
 @Component({
   selector: 'app-calendar',
@@ -97,19 +97,17 @@ export class CalendarComponent {
     );
   }
 
-  private mapData(data: UserAbsence[]): CalendarEvent[] {
+  private mapData(data: Absence[]): CalendarEvent[] {
     const events: CalendarEvent[] = [];
     data.forEach(absence => {
       const event: CalendarEvent = {
         start: new Date(absence.fromDate),
         end: new Date(absence.toDate),
-        title: `${absence.firstName} ${
-          absence.lastName
+        title: `${absence.userFirstName} ${
+          absence.userLastName
         } - ${this.getAbsenceTypeTitle(absence.absenceType)}`,
         color: this.getAbsenceTypeColor(absence.absenceType),
-        meta:
-          absence.firstName[0].toUpperCase() +
-          absence.lastName[0].toUpperCase(),
+        meta: this.getInitials(absence),
       };
       events.push(event);
     });
@@ -129,5 +127,15 @@ export class CalendarComponent {
   private getAbsenceTypeColor(absenceType: AbsenceType): EventColor {
     const absenceTypeStrings = ['orange', 'blue', 'beige', 'beige'];
     return { ...colors[absenceTypeStrings[absenceType]] };
+  }
+
+  private getInitials(absence: Absence): string {
+    let res = '';
+    if (absence?.userFirstName != null && absence.userFirstName.length > 0)
+      res += absence.userFirstName[0];
+    if (absence?.userLastName != null && absence.userLastName.length > 0)
+      res += absence.userLastName[0];
+
+    return res;
   }
 }
