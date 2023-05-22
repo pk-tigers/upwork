@@ -61,7 +61,7 @@ namespace UpWork.Infrastucture.Services
         {
             try
             {
-                var userPermData = _context.Users.Where(x => x.Id == userId).Select(x => new { x.Role, x.Permissions, x.OrganizationId }).First();
+                var userPermData = _context.Users.Where(x => x.Id == userId && x.IsActive).Select(x => new { x.Role, x.Permissions, x.OrganizationId }).First();
                 if (userPermData.Role is Role.PageAdmin) return true;
 
                 if (organizationId is null)

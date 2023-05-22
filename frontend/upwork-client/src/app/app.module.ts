@@ -32,6 +32,7 @@ import { SharedTableComponent } from './shared/ui/shared-table/shared-table.comp
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
 import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
+import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel-popup/admin-panel-popup.component';
 import { MatCommonModule } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
@@ -56,6 +57,7 @@ export function tokenGetter() {
     PageNotFoundComponent,
     PermissionsControlComponent,
     RequestTimeOffsComponent,
+    AdminPanelPopupComponent,
     TimeOffComponent,
     DashboardComponent,
     AvatarComponent,
