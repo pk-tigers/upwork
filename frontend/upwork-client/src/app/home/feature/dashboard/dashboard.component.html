@@ -1,110 +1,156 @@
-<div class="upwork-default-container">
-  <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading dashboard-header">Upcoming time off</div>
-    <div class="upwork-default-content-data  flex-column d-flex justify-content-around">
-      <div class="p-0">
-        <div class="d-flex justify-content-center time-off-container">
-          <div class="d-flex justify-content-between">
-            <div class="today-time-off d-flex justify-content-center flex-column">
-              
-              <div class="time-off-header m-2">
-                Today's time offs
-              </div>
-              <div class="time-off-users d-flex">
-                <div class="users-container" *ngFor="let item of todayAbsences"><app-avatar [photoUrl] = "" [name]="item.userId" (mouseenter)="showName = true" (mouseleave)="showName = false"></app-avatar> 
-                  <div *ngIf="showName" class="info-popup">{{item.id}}</div>
-                </div>
-                <div *ngIf="todayAbsences && todayAbsences.length == 0" class="d-flex justify-content-center"><mat-icon color="primary" class="icon-display">remove</mat-icon></div>
-              </div>
-            </div>
-            <div class="week-time-off d-flex justify-content-center flex-column">
-              <div class="time-off-header m-2">
-                This week's time offs
-              </div>
-              <div class="time-off-users d-flex">
-                <div class="users-container" *ngFor="let item of weekAbsences"><app-avatar [photoUrl] = "" [name]="item.userId" (mouseenter)="showName = true" (mouseleave)="showName = false"></app-avatar> 
-                  <div *ngIf="showName" class="info-popup">{{item.id}}</div>
-                </div>
-                <div *ngIf="weekAbsences && weekAbsences.length == 0" class="d-flex justify-content-center"><mat-icon color="primary" class="icon-display">remove</mat-icon></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="d-flex justify-content-center">
-        <div (click)="navigateToCalendar()" class="upwork-btn upwork-btn-primary show-all-btn">Show all</div>
-      </div>
-    </div>
-  </div>
-</div> 
-
-<div class="upwork-default-container">
-  <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading dashboard-header">Your time off</div>
-    <div class="upwork-default-content-data  flex-column d-flex justify-content-around">
-      <div class="p-0">
-        <div class="d-flex justify-content-center time-off-container">
-          <div class="d-flex justify-content-between">
-            <div class="today-time-off d-flex justify-content-center flex-column">
-              
-              <div class="time-off-header m-2">
-                Today's time offs
-              </div>
-              <div class="time-off-users d-flex">
-                <div  class="users-container" *ngFor="let item of userTodayAbsences"><app-avatar [photoUrl] = "" [name]="item.userId" (mouseenter)="showName = true" (mouseleave)="showName = false"></app-avatar> 
-                  <div *ngIf="showName" class="info-popup">{{item.id}}</div>
-                </div>
-                <div *ngIf="userTodayAbsences && userTodayAbsences.length == 0" class="d-flex justify-content-center"><mat-icon  color="primary"  class="icon-display" >remove</mat-icon></div>
-              </div>
-            </div>
-            <div class="week-time-off d-flex justify-content-center flex-column">
-              <div class="time-off-header m-2">
-                This week's time offs
-              </div>
-              <div class="time-off-users d-flex">
-                <div class="users-container" *ngFor="let item of userWeekAbsences"><app-avatar [photoUrl] = "" [name]="item.userId" (mouseenter)="showName = true" (mouseleave)="showName = false"></app-avatar> 
-                  <div *ngIf="showName" class="info-popup">{{item.id}}</div>
-                </div>
-                <div *ngIf="userWeekAbsences && userWeekAbsences.length == 0" class="d-flex justify-content-center"><mat-icon color="primary" class="icon-display">remove</mat-icon></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        
-
-      </div>
-      <div class="d-flex justify-content-center">
-        <div (click)="navigateToTimeOff()" class="upwork-btn upwork-btn-primary show-all-btn">Show all</div>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="timeOffRequests && timeOffRequests.length > 0" class="upwork-default-container">
+<ng-template #containerTemplate let-container>
+  <div
+    *ngIf="
+      container.type === 'time' ||
+      (container.items.today && container.items.today.length > 0)
+    "
+    class="upwork-default-container">
     <div class="upwork-default-content-container">
-      <div class="upwork-default-content-heading dashboard-header">Employee’s time off requests</div>
-      <div class="upwork-default-content-data  flex-column d-flex justify-content-around">
+      <div class="upwork-default-content-heading dashboard-header">
+        {{ container.header }}
+      </div>
+      <div
+        class="upwork-default-content-data flex-column d-flex justify-content-around">
         <div class="p-0">
           <div class="d-flex justify-content-center time-off-container">
             <div class="d-flex justify-content-center">
-              <div class="d-flex justify-content-center flex-column">
-                
+              <div
+                *ngIf="container.type == 'time'"
+                class="today-time-off d-flex justify-content-center flex-column">
+                <div class="time-off-header m-2">Today's time offs</div>
                 <div class="time-off-users d-flex">
-                  <div  class="users-container" *ngFor="let item of timeOffRequests"><app-avatar [photoUrl] = "" [name]="item.userId" (mouseenter)="showName = true" (mouseleave)="showName = false"></app-avatar> 
-                    <div *ngIf="showName" class="info-popup">{{item.id}}</div>
+                  <ng-container
+                    *ngIf="
+                      container.items.today && container.items.today.length > 0;
+                      else noTimeOff
+                    ">
+                    <div
+                      *ngFor="let item of container.items.today"
+                      class="users-container">
+                      <app-avatar
+                        [photoUrl]=""
+                        [firstName]="item.userFirstName"
+                        [lastName]="item.userLastName"
+                        (mouseenter)="showName = true"
+                        (mouseleave)="showName = false"></app-avatar>
+                      <div *ngIf="showName" class="info-popup">
+                        {{
+                          (item.userFirstName
+                            ? item.userFirstName
+                            : item.userLastName
+                            ? ''
+                            : 'Unknown') +
+                            ' ' +
+                            (item.userLastName
+                              ? item.userLastName
+                              : item.userFirstName
+                              ? ''
+                              : 'User')
+                        }}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #noTimeOff>
+                    <div class="d-flex justify-content-center">
+                      <mat-icon color="primary" class="icon-display"
+                        >remove</mat-icon
+                      >
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div
+                *ngIf="container.type == 'time'"
+                class="week-time-off d-flex justify-content-center flex-column">
+                <div class="time-off-header m-2">This week's time offs</div>
+                <div class="time-off-users d-flex">
+                  <ng-container
+                    *ngIf="
+                      container.items.week && container.items.week.length > 0;
+                      else noTimeOff
+                    ">
+                    <div
+                      *ngFor="let item of container.items.week"
+                      class="users-container">
+                      <app-avatar
+                        [photoUrl]=""
+                        [firstName]="item.userFirstName"
+                        [lastName]="item.userLastName"
+                        (mouseenter)="showName = true"
+                        (mouseleave)="showName = false"></app-avatar>
+                      <div *ngIf="showName" class="info-popup">
+                        {{
+                          (item.userFirstName
+                            ? item.userFirstName
+                            : item.userLastName
+                            ? ''
+                            : 'Unknown') +
+                            ' ' +
+                            (item.userLastName
+                              ? item.userLastName
+                              : item.userFirstName
+                              ? ''
+                              : 'User')
+                        }}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #noTimeOff>
+                    <div class="d-flex justify-content-center">
+                      <mat-icon color="primary" class="icon-display"
+                        >remove</mat-icon
+                      >
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div
+                *ngIf="container.type == 'requests'"
+                class="employee-time-off d-flex justify-content-center flex-column">
+                <div class="time-off-users d-flex">
+                  <div
+                    class="users-container"
+                    *ngFor="let item of container.items.today">
+                    <app-avatar
+                      [photoUrl]=""
+                      [firstName]="item.userFirstName"
+                      [lastName]="item.userLastName"
+                      (mouseenter)="showName = true"
+                      (mouseleave)="showName = false"></app-avatar>
+                    <div *ngIf="showName" class="info-popup">
+                      {{
+                        (item.userFirstName
+                          ? item.userFirstName
+                          : item.userLastName
+                          ? ''
+                          : 'Unknown') +
+                          ' ' +
+                          (item.userLastName
+                            ? item.userLastName
+                            : item.userFirstName
+                            ? ''
+                            : 'User')
+                      }}
+                    </div>
                   </div>
                 </div>
-                
-                
               </div>
-              
             </div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
-          <div (click)="navigateToRequests()" class="upwork-btn upwork-btn-primary show-all-btn">Show all</div>
+          <div
+            (click)="container.buttonAction()"
+            class="upwork-btn upwork-btn-primary show-all-btn">
+            Show all
+          </div>
         </div>
       </div>
     </div>
-  </div> 
-</div> 
+  </div>
+</ng-template>
+
+<ng-container
+  *ngFor="let container of containers"
+  [ngTemplateOutlet]="containerTemplate"
+  [ngTemplateOutletContext]="{ $implicit: container }"></ng-container>

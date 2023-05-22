@@ -33,12 +33,13 @@ const routes: Routes = [
             component: OrganizationControlComponent,
           },
           { path: 'requests', component: RequestTimeOffsComponent },
+          { path: 'dashboard', component:DashboardComponent},
           
         ],
       },
     ],
   },
-  {path:'dashboard',component:DashboardComponent},
+  
   { path: '**', component: PageNotFoundComponent },
 ];
 

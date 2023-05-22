@@ -38,7 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
 import { AvatarComponent } from './home/feature/avatar/avatar.component';
-
+import { DatePipe } from '@angular/common';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -105,6 +105,7 @@ export function tokenGetter() {
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DatePipe
   ],
   bootstrap: [AppComponent],
 })

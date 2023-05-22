@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UserService } from 'src/app/shared/data-access/service/user.service';
 import { AbsencesService } from 'src/app/shared/data-access/service/absences.service';
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { RequestsTimeOffsService } from 'src/app/shared/data-access/service/requests-time-offs.service';
@@ -10,98 +9,144 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
   organizationId: string | undefined;
-  todayAbsences:Absence[] | undefined;
-  weekAbsences:Absence[] | undefined;
-  userTodayAbsences:Absence[] | undefined;
-  userWeekAbsences:Absence[] | undefined;
+  todayAbsences: Absence[] | undefined;
+  weekAbsences: Absence[] | undefined;
+  userTodayAbsences: Absence[] | undefined;
+  userWeekAbsences: Absence[] | undefined;
   timeOffRequests: Absence[] | undefined;
   public showName = false;
   public url = '';
-  constructor(private userService: UserService, 
-    private absencesService: AbsencesService, 
-    private tostr: ToastrService, 
+  containers: {
+    type: string;
+    header: string;
+    items: { today: Absence[]; week: Absence[] } | undefined;
+    buttonAction: () => void;
+  }[] = [];
+  constructor(
+    private absencesService: AbsencesService,
+    private tostr: ToastrService,
     private router: Router,
     private organizationService: OrganizationService,
-    private requestsTimeOffsService: RequestsTimeOffsService) {
-    this.userService.user$.subscribe((user) => {
-      if (user) {
-        this.organizationId = user.organizationId;
-      }
-    });
-    
-    const options:Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const todayDate = new Date().toLocaleString('en-CA', options);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDate=tomorrow.toLocaleString('en-CA', options);
-    const week=new Date();
-    week.setDate(week.getDate()+7);
-    const weekDate=week.toLocaleString('en-CA', options);
-    this.requestsTimeOffsService.getListOfRequests(0,10).subscribe((res: { data: Absence[] | undefined; })=>{
+    private requestsTimeOffsService: RequestsTimeOffsService
+  ) {
+    this.organizationService.organization$.subscribe(res => {
       if (res) {
-        this.timeOffRequests=res.data;
+        this.organizationId = res.id;
+        this.url = res?.urlName;
+        this.fetchData();
       }
-    });
-    this.absencesService.getAbsencesByOrganizationId(this.organizationId,tomorrowDate,weekDate,0,10).subscribe((res)=>{
-      if (res) {
-        this.weekAbsences=res.data;
-      }
-    });
-    this.absencesService.getAbsencesByOrganizationId(this.organizationId,todayDate,tomorrowDate,0,10).subscribe((res)=>{
-      if (res) {
-        this.todayAbsences=res.data;
-      }
-    });
-    this.absencesService.getAbsencesForUser(todayDate,tomorrowDate,0,10).subscribe((res)=>{
-      if (res) {
-        this.userTodayAbsences=res.data;
-      }
-    });
-    this.absencesService.getAbsencesForUser(tomorrowDate,weekDate,0,10).subscribe((res)=>{
-      if (res) {
-        this.userWeekAbsences=res.data;
-      }
-    });
-    
-   }
-  navigateToCalendar() {
-    this.router.navigate([`/org/${this.url}/calendar`])
-    .then(() => {
-      // Navigation successful
-    })
-    .catch((error) => {
-      // Handle the error if needed
-    });
-  }
-  navigateToRequests() {
-    this.router.navigate([`/org/${this.url}/requests`])
-    .then(() => {
-      
-    })
-    .catch((error) => {
-      // Handle the error if needed
-    });
-  }
-  navigateToTimeOff() {
-    this.router.navigate([`/org/${this.url}/time-off`])
-    .then(() => {
-      
-    })
-    .catch((error) => {
-      // Handle the error if needed
     });
   }
 
-  ngOnInit(): void {
-    this.organizationService.organization$.subscribe(res => {
-      if (res?.urlName) {
-        this.url = res?.urlName;
-        
+  fetchData(): void {
+    const todayDate = new Date();
+    const tomorrowDate = new Date();
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    const weekDate = new Date();
+    weekDate.setDate(weekDate.getDate() + 7);
+
+    this.requestsTimeOffsService
+      .getListOfRequests(0, 10)
+      .subscribe((res: { data: Absence[] | undefined }) => {
+        if (res) {
+          this.timeOffRequests = res.data;
+          this.updateContainers();
+        }
+      });
+
+    this.absencesService
+      .getAbsencesByOrganizationId(
+        this.organizationId,
+        todayDate,
+        weekDate,
+        0,
+        10
+      )
+      .subscribe(res => {
+        if (res) {
+          const { today, week } = this.categorizeAbsencesByDate(
+            res.data,
+            todayDate,
+            weekDate
+          );
+          this.todayAbsences = today;
+          this.weekAbsences = week;
+          this.updateContainers();
+        }
+      });
+
+    this.absencesService
+      .getAbsencesForUser(tomorrowDate, weekDate, 0, 10)
+      .subscribe(res => {
+        if (res) {
+          const { today, week } = this.categorizeAbsencesByDate(
+            res.data,
+            todayDate,
+            weekDate
+          );
+          this.userTodayAbsences = today;
+          this.userWeekAbsences = week;
+          this.updateContainers();
+        }
+      });
+  }
+
+  updateContainers(): void {
+    if (
+      this.todayAbsences &&
+      this.weekAbsences &&
+      this.userTodayAbsences &&
+      this.userWeekAbsences &&
+      this.timeOffRequests
+    ) {
+      this.containers = [
+        {
+          type: 'time',
+          header: 'Upcoming time off',
+          items: { today: this.todayAbsences, week: this.weekAbsences },
+          buttonAction: () => {
+            this.router.navigate([`/org/${this.url}/calendar`]);
+          },
+        },
+        {
+          type: 'time',
+          header: 'Your time off',
+          items: { today: this.userTodayAbsences, week: this.userWeekAbsences },
+          buttonAction: () => {
+            this.router.navigate([`/org/${this.url}/time-off`]);
+          },
+        },
+        {
+          type: 'requests',
+          header: 'Employee’s time off requests',
+          items: { today: this.timeOffRequests, week: [] },
+          buttonAction: () => {
+            this.router.navigate([`/org/${this.url}/requests`]);
+          },
+        },
+      ];
+    }
+  }
+
+  categorizeAbsencesByDate(
+    absences: Absence[],
+    tomorrowDate: Date,
+    weekDate: Date
+  ): { today: Absence[]; week: Absence[] } {
+    const today: Absence[] = [];
+    const week: Absence[] = [];
+
+    absences.forEach(absence => {
+      if (new Date(absence.fromDate) === tomorrowDate) {
+        today.push(absence);
+      } else if (new Date(absence.fromDate) <= weekDate) {
+        week.push(absence);
       }
     });
+    return { today, week };
   }
 }
