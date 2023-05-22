@@ -42,7 +42,6 @@ export class AbsenceService {
     from: Date,
     to: Date
   ): Observable<UserAbsence[]> {
-    console.log(from, to);
     return this.http.get<UserAbsence[]>(
       `${
         environment.apiUrl

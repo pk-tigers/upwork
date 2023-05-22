@@ -43,13 +43,9 @@ export class CalendarComponent {
   activeDayIsOpen = false;
   calendarView = CalendarView;
   viewDate: Date = new Date();
-  modalData!: {
-    action: string;
-    event: CalendarEvent;
-  };
   from: Date = TimeUtilities.getFirstDayOfMonth(new Date());
   to: Date = TimeUtilities.getLastDayOfMonth(new Date());
-  events: Observable<CalendarEvent[]> = this.loadAbsences();
+  events: Observable<CalendarEvent<string>[]> = this.loadAbsences();
   diffInMonths = 0;
 
   constructor(
@@ -121,12 +117,16 @@ export class CalendarComponent {
       const event: CalendarEvent = {
         start: new Date(absence.fromDate),
         end: new Date(absence.toDate),
-        title: this.getAbsenceTypeTitle(absence.absenceType),
+        title: `${absence.firstName} ${
+          absence.lastName
+        } ${this.getAbsenceTypeTitle(absence.absenceType)}`,
         color: this.getAbsenceTypeColor(absence.absenceType),
+        meta:
+          absence.firstName[0].toUpperCase() +
+          absence.lastName[0].toUpperCase(),
       };
       events.push(event);
     });
-    console.log(events);
     return events;
   }
 
