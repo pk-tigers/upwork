@@ -12,8 +12,8 @@
       </tr>
     </thead>
     <tbody class="upwork-table-body">
-      <tr *ngFor="let row of data; index as i">
-        <td>{{ i + 1 }}.</td>
+      <tr *ngFor="let row of data; let i = index">
+        <td>{{ getStartRowIndex() + i }}.</td>
         <td *ngFor="let col of row?.cols">{{ col }}</td>
         <td>
           <mat-icon
