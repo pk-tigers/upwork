@@ -25,7 +25,7 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<AbsenceModelDto>> GetAbsencesByOrganizationId(Guid organizationId, DateTime from, DateTime to, int skip = 0, int take = 10)
         {
             var res = _absencesService.GetAbsencesByOrganizationId(organizationId, from, to, skip, take);
             return Ok(res);
@@ -50,7 +50,7 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetPendingAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<AbsenceModelDto>> GetPendingAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
         {
             var supervisorId = User.Identity.GetUserId();
             var res = _absencesService.GetPendingAbsencesRequestsForSupervisor(supervisorId, skip, take);

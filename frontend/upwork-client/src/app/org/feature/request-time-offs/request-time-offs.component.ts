@@ -129,7 +129,9 @@ export class RequestTimeOffsComponent {
       const toDate = new Date(request.toDate);
       const result: SharedTableData = {
         cols: [
-          request?.userName ?? '',
+          request?.userFirstName?.toString() +
+            ' ' +
+            request?.userLastName?.toString(),
           this.absenceTypeString[request.absenceType],
           fromDate.getDay() +
             '/' +

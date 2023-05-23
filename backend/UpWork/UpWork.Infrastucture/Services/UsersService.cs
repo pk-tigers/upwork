@@ -22,8 +22,9 @@ namespace UpWork.Infrastucture.Services
         {
             var users = _context.Users
                 .Where(x => x.IsActive)
+                .Where(x => x.OrganizationId == organizationId)
                 .Include(x => x.Permissions)
-                .Where(x => x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise 
+                .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise 
                 && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow)));
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);

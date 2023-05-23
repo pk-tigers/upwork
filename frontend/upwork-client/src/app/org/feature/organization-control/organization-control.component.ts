@@ -9,7 +9,7 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
-import { BehaviorSubject, Observable, map, switchMap, take, of, mergeMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, take, of } from 'rxjs';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { ToastrService } from 'ngx-toastr';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
@@ -219,6 +219,8 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
       panelClass: 'upwork-popup',
     });
   }
+  
+
 
 
   setSupervisor(inputs: Dictionary<InputPopupModel>, user: UserWithSupervisor) {
