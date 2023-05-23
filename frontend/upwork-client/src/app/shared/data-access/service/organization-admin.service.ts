@@ -13,9 +13,7 @@ import { environment } from 'src/environments/environment';
 export class OrganizationAdminService {
   private env = environment;
 
-
   constructor(private http: HttpClient) {}
-
 
   public getUsersWithSupervisors(
     organizationId?: string,
@@ -31,7 +29,6 @@ export class OrganizationAdminService {
     );
   }
   
-
   public deleteUser(guid: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.env.apiUrl}/user/${guid}`);
   }
@@ -39,6 +36,7 @@ export class OrganizationAdminService {
   public addUser(user: RegisterModel): Observable<User> {
     return this.http.post<User>(`${this.env.apiUrl}/user`, user);
   }
+
 
 
 }

@@ -9,15 +9,18 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
-import { BehaviorSubject, Observable, map, switchMap, take, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, take, of, mergeMap } from 'rxjs';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { ToastrService } from 'ngx-toastr';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { UserWithSupervisor } from 'src/app/models/user-with-supervisor.model';
+import { UpdateSupervisor } from 'src/app/models/update-supervisor.model';
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { SupervisorService } from 'src/app/shared/data-access/service/supervisor.service';
 import { RegisterModel } from 'src/app/models/register.model';
 import { User } from 'src/app/models/user.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
+import { first } from 'cypress/types/lodash';
 
 
 @Component({
@@ -28,6 +31,7 @@ import { OrganizationModel } from 'src/app/models/organization.model';
 export class OrganizationControlComponent {
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUsers$: Observable<SharedTableData[]> = this.loadUsersWithSupervisors();
+  listOfSupervisors: User[] = [];
   header = ['First name', 'Last name', 'Current Supervisor', 'Actions'];
   totalNumberOfPages = 1;
   organization: OrganizationModel | undefined;
@@ -36,18 +40,52 @@ export class OrganizationControlComponent {
     private organizationAdminService: OrganizationAdminService,
     private tostr: ToastrService,
     private dialog: MatDialog,
-    private organizationService: OrganizationService
+    private organizationService: OrganizationService,
+    private supervisorService: SupervisorService,
   ) {}
 
     ngOnInit(): void {
+      this.getSupervisors();
       this.organizationService.organization$.subscribe((org: OrganizationModel | null) => {
         if (org) {
           this.organization = org;
         }
       });
+
   }
 
-  
+  private loadUsersWithSupervisors() {
+    return this.organizationService.organization$.pipe(
+      switchMap(org =>
+        this.organizationAdminService.getUsersWithSupervisors(org?.id).pipe(
+          map((res: PaginatedResult<UserWithSupervisor>) => {
+            return  this.mapData(res);
+          })
+        )
+      )
+    );
+  }
+
+  getSupervisors(): void {
+    this.organizationService.organization$.pipe(
+      switchMap(org => this.supervisorService.getSupervisors(org?.id)),
+      take(1)
+    ).subscribe((result: PaginatedResult<User>) => {
+      this.listOfSupervisors = result.data;
+    });
+    this.sortSupervisorsByFirstNameAndLastName(this.listOfSupervisors);
+  }
+
+  sortSupervisorsByFirstNameAndLastName(users: User[]): void {
+    users.sort((a, b) => {
+      const firstNameComparison = (a.firstName || '').localeCompare(b.firstName || '');
+      if (firstNameComparison !== 0) {
+        return firstNameComparison;
+      }
+      return (a.lastName || '').localeCompare(b.lastName || '');
+    });
+  }
+
 
   openAddUserPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
@@ -78,7 +116,6 @@ export class OrganizationControlComponent {
   }
 
 
-
 addUser(inputs: Dictionary<InputPopupModel>): void {
   this.organizationService.organization$.pipe(
     map(organization => organization?.id),
@@ -100,24 +137,6 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
     }
   });
 }
-
-
-
-  private loadUsersWithSupervisors() {
-  return this.organizationService.organization$.pipe(
-    switchMap(org =>
-      this.organizationAdminService.getUsersWithSupervisors(org?.id).pipe(
-        map((res: PaginatedResult<UserWithSupervisor>) => {
-          return this.mapData(res);
-        })
-      )
-    )
-  );
-}
-
-
-
-
 
 
   private mapData(data: PaginatedResult<UserWithSupervisor>): SharedTableData[] {
@@ -144,7 +163,7 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
           {
             icon: 'supervisor_account',
             func: (arg: string) => {
-              this.openSetSupervisorPopup();
+              this.openSetSupervisorPopup(user);
             },
             arg: user?.id,
           },
@@ -167,21 +186,63 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
   }
 
 
+  openSetSupervisorPopup(user: UserWithSupervisor): void {
+    const inputs: Dictionary<InputPopupModel> = {
+      ['SupervisorsOptions']: {
+        value: '',
+        type: 'select',
+        placeholder: 'Select new supervisor',
+        selectOptions: this.listOfSupervisors.map(obj => ({
+          value: obj.id || '', 
+          displayValue: `${obj.firstName} ${obj.lastName}`,
+        })),      
+      },
+    };
 
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Set',
+        onClick: () => this.setSupervisor(inputs, user),
+      },
+    ];
 
-  openBlockUserPopup() {
-    // Logika otwierania popupa dla "Block User"
+    const data: InputPopupDataModel = {
+      title: 'Set new supervisor for ' + user.firstName + ' ' + user.lastName,
+      description: 'Fill data:',
+      inputs: inputs,
+      buttons: buttons,
+    };
+
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
+    });
   }
 
-  openResetPasswordPopup() {
-    // Logika otwierania popupa dla "Reset User's Password"
+
+  setSupervisor(inputs: Dictionary<InputPopupModel>, user: UserWithSupervisor) {
+    const updateSupervisor: UpdateSupervisor = {};
+  
+    this.organizationService.organization$.pipe(
+      map(organization => organization?.id),
+      switchMap(organizationId => {
+        updateSupervisor.organizationId = organizationId;
+        updateSupervisor.userId = user.id;
+        updateSupervisor.newSupervisorId = inputs['SupervisorsOptions'].value?.toString();
+        return this.supervisorService.updateUserSupervisor(updateSupervisor);
+      }),
+      take(1)
+    ).subscribe(updatedSupervisor => {
+      if (updatedSupervisor) {
+        this.tostr.success('Supervisor has been updated');
+      } else {
+        this.tostr.warning('Something went wrong');
+      }
+      this.listOfUsers$ = this.loadUsersWithSupervisors();
+    });
+
   }
-
-
-  openSetSupervisorPopup() {
-    // Logika otwierania popupa dla "Set Supervisor"
-  }
-
 
 
   openDeleteUserPopup(user: UserWithSupervisor): void {
@@ -194,8 +255,6 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
         onClick: () => {
           if(user.id) {
             this.deleteUser(user.id);
-          } else {
-            console.log("ups");
           }
         },
       },
@@ -223,20 +282,21 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
           this.tostr.warning('Something went wrong');
         } else {this.tostr.success('User has been deleted');}
         return this.loadUsersWithSupervisors();
-      })
+      }),
+      take(1)
     ).subscribe(updatedUsers => {
       this.listOfUsers$ = of(updatedUsers);
     });
   }
   
+  //TODO: Logika otwierania popupa dla "Block User"
+  openBlockUserPopup() {
 
+  }
 
-  openOrganizationNameChange() {
-    /*
-     * 
-     * 
-     * 
-     */
+  //TODO: Logika otwierania popupa dla "Reset User's Password"
+  openResetPasswordPopup() {
+    
   }
 
 
