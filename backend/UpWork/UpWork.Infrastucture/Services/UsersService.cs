@@ -22,6 +22,7 @@ namespace UpWork.Infrastucture.Services
         {
             var users = _context.Users
                 .Where(x => x.IsActive)
+                .Where(x => x.OrganizationId == organizationId)
                 .Include(x => x.Permissions)
                 .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise 
                 && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow)));
