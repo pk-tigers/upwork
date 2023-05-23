@@ -48,9 +48,9 @@ namespace UpWork.Api.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = IdentityData.AdminUserPolicy)]
-        public ActionResult<UserModel> GetUser(Guid Id)
+        public ActionResult<UserModel> GetUser(Guid Id, [FromQuery] Guid organizationId)
         {
-            var res = _userService.GetUser(Id);
+            var res = _userService.GetUser(Id, organizationId);
 
             if (res == null)
             {
@@ -68,9 +68,16 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<UserModel> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.ModifyUser)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
+        public ActionResult<UserModel> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto, [FromQuery] Guid organizationId)
         {
-            UserModel existingUser = _userService.GetUser(id);
+            UserModel existingUser = _userService.GetUser(id, organizationId);
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
             UserModel updatedUser = _userService.UpdateUser(existingUser, updateUserDto);
 
             return Ok(updatedUser);

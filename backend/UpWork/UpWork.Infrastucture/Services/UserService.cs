@@ -64,10 +64,16 @@ namespace UpWork.Infrastucture.Services
             }
         }
 
-        public UserModel GetUser(Guid Id)
+        public UserModel GetUser(Guid Id, Guid organizationId)
         {
 
-            var user = _context.Users.Find(Id);
+            var user = _context.Users.FirstOrDefault(u => u.Id == Id && u.OrganizationId == organizationId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             return user;
         }
 
