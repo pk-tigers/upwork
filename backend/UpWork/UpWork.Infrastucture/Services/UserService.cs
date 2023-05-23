@@ -98,5 +98,26 @@ namespace UpWork.Infrastucture.Services
 </body>";
             return res;
         }
+
+        public bool UpdateUserSupervisor(UpdateUserSupervisorDto updateUserSupervisor)
+        {
+            var user = _context.Users
+                .Where(x => x.Id == updateUserSupervisor.UserId && x.OrganizationId == updateUserSupervisor.OrganizationId)
+                .FirstOrDefault();
+
+            if (user == null) return false;
+
+            var newSupervisor = _context.Users
+                .Where(x => x.Id == updateUserSupervisor.NewSupervisorId && x.OrganizationId == updateUserSupervisor.OrganizationId && x.IsActive)
+                .FirstOrDefault();
+
+            if (newSupervisor == null) return false;
+
+            user.CurrentTimeOffSupervisorId = updateUserSupervisor.NewSupervisorId;
+
+            _context.SaveChanges();
+
+            return true;
+        }
     }
 }

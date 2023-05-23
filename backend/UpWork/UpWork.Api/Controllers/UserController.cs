@@ -29,8 +29,6 @@ namespace UpWork.Api.Controllers
         [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
         public ActionResult<UserModel> CreateUser([FromBody] RegisterDto registerDto)
         {
-            //_permissionsService.VerifyPermissionDatabase(User.Identity.GetUserId(), PermissionType.CreateUser, registerDto.OrganizationId);
-
             UserModel res = _userService.CreateUser(registerDto);
 
             return Ok(res);
@@ -63,7 +61,16 @@ namespace UpWork.Api.Controllers
         [Authorize(Policy = IdentityData.AdminUserPolicy)]
         public ActionResult <bool> DeleteUser(Guid Id)
         {
-            return _userService.DeleteUser(Id); 
+            return Ok(_userService.DeleteUser(Id));
+        }
+
+        [HttpPost("UpdateUserSupervisor")]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.ModifyUser)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdBodyPolicy)]
+        public ActionResult<bool> UpdateUserSupervisor([FromBody] UpdateUserSupervisorDto updateUserSupervisor)
+        {
+            bool res = _userService.UpdateUserSupervisor(updateUserSupervisor);
+            return Ok(res);
         }
     }
 }
