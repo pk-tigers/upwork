@@ -18,6 +18,7 @@ import { OrganizationService } from 'src/app/shared/data-access/service/organiza
 import { RegisterModel } from 'src/app/models/register.model';
 import { User } from 'src/app/models/user.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 
 
 @Component({
@@ -133,6 +134,7 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
               this.openResetPasswordPopup();
             },
             arg: user?.id,
+            tooltip: TooltipTexts.resetPassword,
           },
           {
             icon: 'lock',
@@ -140,6 +142,7 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
               this.openBlockUserPopup();
             },
             arg: user?.id,
+            tooltip: TooltipTexts.blockUser,
           },
           {
             icon: 'supervisor_account',
@@ -147,6 +150,7 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
               this.openSetSupervisorPopup();
             },
             arg: user?.id,
+            tooltip: TooltipTexts.setSupervisor,
           },
           {
             icon: 'delete',
@@ -154,6 +158,7 @@ addUser(inputs: Dictionary<InputPopupModel>): void {
               this.openDeleteUserPopup(user);
             },
             arg: user?.id,
+            tooltip: TooltipTexts.deleteUser,
           },
         ],
       };
