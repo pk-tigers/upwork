@@ -3,8 +3,11 @@ export enum TooltipTexts {
     deleteUser = 'Delete User',
     blockUser = 'Block User',
     setSupervisor = 'Set Supervisor',
-    deleteRequest = 'Delete request',
+    cancelRequest = 'Cancel request',
+    acceptRequest = 'Accept request',
     deleteOrganization = 'Delete organization',
-    organizationOwners = 'Organization Owners',
-    organizationCalendar = 'OrganizationCalendar'
+    organizationSettings = 'Organization settings',
+    organizationCalendar = 'Organization calendar',
+    deleteOwner = 'Delete Owner',
+    userProfile = 'User\'s profile',
   }

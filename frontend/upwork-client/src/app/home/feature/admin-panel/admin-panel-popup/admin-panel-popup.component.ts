@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Dictionary } from 'cypress/types/lodash';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -184,6 +185,7 @@ export class AdminPanelPopupComponent {
               this.openDeleteUserPopup(arg);
             },
             arg: user.id,
+            tooltip: TooltipTexts.deleteOwner,
           },
           {
             icon: 'launch',
@@ -191,6 +193,7 @@ export class AdminPanelPopupComponent {
               this.goto(arg);
             },
             arg: user.id,
+            tooltip: TooltipTexts.userProfile,
           },
         ],
       };
