@@ -23,7 +23,7 @@ export class DashboardComponent {
   containers: {
     type: string;
     header: string;
-    items: { today: Absence[]; week: Absence[] } | undefined;
+    items: { today: Absence[] | undefined; week: Absence[] } | undefined;
     buttonAction: () => Promise<void>;
   }[] = [];
   constructor(
@@ -50,13 +50,20 @@ export class DashboardComponent {
     weekDate.setDate(weekDate.getDate() + 7);
 
     this.requestsTimeOffsService
-      .getListOfRequests(0, 10)
-      .subscribe((res: { data: Absence[] | undefined }) => {
-        if (res) {
-          this.timeOffRequests = res.data;
-          this.updateContainers();
-        }
-      });
+  .getListOfRequests(0, 10)
+  .subscribe(
+    (res: { data: Absence[] | undefined }) => {
+      if (res) {
+        this.timeOffRequests = res.data;
+        this.updateContainers();
+      }
+    },
+    (error) => {
+      if (error.status === 403) {
+        this.timeOffRequests=undefined;
+      }
+    }
+  );
 
     this.absencesService
       .getAbsencesByOrganizationId(
@@ -100,8 +107,7 @@ export class DashboardComponent {
       this.todayAbsences &&
       this.weekAbsences &&
       this.userTodayAbsences &&
-      this.userWeekAbsences &&
-      this.timeOffRequests
+      this.userWeekAbsences
     ) {
       this.containers = [
         {
@@ -132,6 +138,8 @@ export class DashboardComponent {
     }
   }
 
+  
+
   categorizeAbsencesByDate(
     absences: Absence[],
     tomorrowDate: Date,
@@ -143,7 +151,10 @@ export class DashboardComponent {
     absences.forEach(absence => {
       if (new Date(absence.fromDate) === tomorrowDate) {
         today.push(absence);
-      } else if (new Date(absence.fromDate) <= weekDate) {
+      } else if (
+        new Date(absence.fromDate) <= weekDate &&
+        !week.some(existingAbsence => existingAbsence.userId === absence.userId)
+      ) {
         week.push(absence);
       }
     });
