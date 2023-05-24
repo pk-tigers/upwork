@@ -4,10 +4,11 @@ using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Common.Models;
 using UpWork.Api.Extensions;
+using UpWork.Common.DTO;
 
 namespace UpWork.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [Authorize]
     [ApiController]
     public class CalendarController : ControllerBase
@@ -20,14 +21,10 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetCalendarAbsencesForUser(DateTime? fromDate, DateTime? toDate, int skip = 0, int take = 10)
+        public ActionResult<IEnumerable<AbsenceModelDto>> GetCalendarAbsencesForUser(DateTime from, DateTime to)
         {
             Guid userId = User.Identity.GetUserId();
-            var res = _callendarService.GetCalendarAbsencesByUserId(userId, skip, take, fromDate, toDate);
-            if (res.Count == 0)
-            {
-                return NotFound();
-            }
+            var res = _callendarService.GetCalendarAbsencesByUserId(userId, from, to);
                 
             return Ok(res);
         }

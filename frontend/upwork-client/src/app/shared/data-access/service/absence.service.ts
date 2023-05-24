@@ -4,18 +4,24 @@ import { environment } from 'src/environments/environment';
 import { Absence } from 'src/app/models/absence.model';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AbsenceService {
-  private env = environment;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
     return this.http.post<Absence>(
-      `${this.env.apiUrl}/Absence/CreateAbsenceRequestForUser`,
+      `${environment.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
+    );
+  }
+
+  public cancelRequest(id: string): Observable<boolean> {
+    return this.http.delete<boolean>(
+      `${environment.apiUrl}/Absence/CancelRequestForUser/${id}`
     );
   }
 
@@ -24,21 +30,30 @@ export class AbsenceService {
     pageSize = 10
   ): Observable<PaginatedResult<Absence>> {
     return this.http.get<PaginatedResult<Absence>>(
-      `${this.env.apiUrl}/Absences/GetAbsencesForUser?skip=${
+      `${environment.apiUrl}/Absences/GetAbsencesForUser?skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
     );
   }
 
-  public cancelRequest(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(
-      `${this.env.apiUrl}/Absence/CancelRequestForUser/${id}`
+  public getAbsencesMonthly(
+    organizationId: string | undefined,
+    from: Date,
+    to: Date
+  ): Observable<Absence[]> {
+    return this.http.get<Absence[]>(
+      `${
+        environment.apiUrl
+      }/Calendar/GetCalendarAbsencesForUser?from=${this.datePipe.transform(
+        from,
+        'yyyy-MM-dd'
+      )}&to=${this.datePipe.transform(to, 'yyyy-MM-dd')}`
     );
   }
 
   public getYearAbsenceCountForUser(): Observable<number> {
     return this.http.get<number>(
-      `${this.env.apiUrl}/Absences/getYearAbsenceCountForUser`
+      `${environment.apiUrl}/Absences/getYearAbsenceCountForUser`
     );
   }
 }

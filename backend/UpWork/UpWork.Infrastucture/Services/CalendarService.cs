@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models;
@@ -16,7 +17,7 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public PaginatedResult<AbsenceModel> GetCalendarAbsencesByUserId(Guid userId, int skip, int take, DateTime? fromDate = null, DateTime? toDate = null)
+        public IEnumerable<AbsenceModelDto> GetCalendarAbsencesByUserId(Guid userId, DateTime fromDate, DateTime toDate)
         {
             var user = _context.Users.Where(x => x.Id == userId).First();
 
@@ -31,14 +32,13 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.UserId == user.Id || x.TimeOffSupervisorId == userId);
 
             var absences = orgAcceptedAbsences.Concat(ownAndSupervisedAbsences)
-                .Where(x => (x.FromDate >= fromDate.GetValueOrDefault(DateTime.MinValue) && x.FromDate <= toDate.GetValueOrDefault(DateTime.MaxValue))
-                || x.ToDate >= fromDate.GetValueOrDefault(DateTime.MinValue) && x.ToDate <= toDate.GetValueOrDefault(DateTime.MaxValue))
+                .Where(x => (x.FromDate >= fromDate && x.FromDate <= toDate)
+                || x.ToDate >= fromDate && x.ToDate <= toDate)
                 .OrderBy(x => x.FromDate)
-                .Distinct();
+                .Distinct()
+                .Select(x => new AbsenceModelDto(x));
 
-
-            var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
-            return res;
+            return absences;
         }
 
     }

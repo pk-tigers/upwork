@@ -19,7 +19,7 @@ export class RequestsTimeOffsService {
       approvalState: approvalState,
     };
     return this.http.post<Absence>(
-      `${environment.apiUrl}/absence/setAbsenceApprovalState`,
+      `${environment.apiUrl}/absence/SetAbsenceApprovalStateForSupervisor`,
       data
     );
   }

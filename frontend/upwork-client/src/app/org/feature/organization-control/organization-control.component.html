@@ -1,26 +1,30 @@
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">Choose an option:</div>
+    <div class="upwork-default-content-heading">Informations about your organization</div>
+    <div class="upwork-default-content-data" *ngIf="organization">
+      <div class="upwork-content"> <h2>Name: </h2><p>{{ organization.name }}</p></div>
+      <div class="upwork-content"> <h2>URL Name: </h2><p>{{ organization.urlName }}</p></div>
+
+    </div>
+  </div>
+    <div class="upwork-default-content-container">
+    <div class="upwork-default-content-heading">Your Organization Users</div>
     <div class="upwork-default-content-data">
-      <button class="upwork-btn" (click)="openAddUserPopup()">Add User</button>
-      <button class="upwork-btn" (click)="openDeleteUserPopup()">
-        Delete User
-      </button>
-      <button class="upwork-btn" (click)="openBlockUserPopup()">
-        Block User
-      </button>
-      <button class="upwork-btn" (click)="openResetPasswordPopup()">
-        Reset User's Password
-      </button>
-      <button class="upwork-btn" (click)="openGrantPermissionsPopup()">
-        Grant Permissions
-      </button>
-      <button class="upwork-btn" (click)="openSetSupervisorPopup()">
-        Set Supervisor
-      </button>
-      <button class="upwork-btn" (click)="openOrganizationSettingsPopup()">
-        Organization Settings
-      </button>
+      <div class="d-flex justify-content-end p-0">
+        <button
+          class="upwork-btn upwork-btn-primary"
+          (click)="openAddUserPopup()"> 
+          Add User
+        </button>
+      </div>
+      <app-shared-table
+        [caption]="'List of all users'"
+        [headers]="header"
+        [data]="(listOfUsers$ | async) ?? []"
+        [currentPage]="(currentPage$ | async) ?? 1"
+        [totalNumberOfPages]="totalNumberOfPages"
+        (nextPageEvent)="setPage($event)"
+        (prevPageEvent)="setPage($event)"></app-shared-table>
     </div>
   </div>
   <app-permissions-control
