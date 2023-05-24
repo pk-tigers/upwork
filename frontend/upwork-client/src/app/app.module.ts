@@ -22,7 +22,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { NgbModalModule, NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalModule,
+  NgbModule,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
 import { TimeOffComponent } from './org/feature/time-off/time-off.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';

@@ -18,13 +18,13 @@
         <td>
           <mat-icon
             class="upwork-icon mx-1"
-            *ngFor="let action of row?.actions"
-            >
-            <span
+            *ngFor="let action of row?.actions">
+            <ng-containt
+              class="tooltip-message"
               [ngbTooltip]="action.tooltip"
-              (click)="action.func(action.arg)"
-            >{{ action.icon }}
-            </span>
+              (click)="action.func(action.arg)">
+              {{ action.icon }}
+            </ng-containt>
           </mat-icon>
         </td>
       </tr>
