@@ -18,6 +18,12 @@
               class="upwork-input"
               [placeholder]="input[1].placeholder ?? ''"
               [(ngModel)]="input[1].value" />
+              <input
+              *ngSwitchCase="'password'"
+              type="password"
+              class="upwork-input"
+              [placeholder]="input[1].placeholder ?? ''"
+              [(ngModel)]="input[1].value" />
             <mat-form-field
               *ngSwitchCase="'date'"
               appearance="fill"

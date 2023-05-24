@@ -36,6 +36,7 @@ import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel
 import { MatCommonModule } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { ProfileComponent } from './home/feature/profile/profile.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -57,6 +58,7 @@ export function tokenGetter() {
     RequestTimeOffsComponent,
     AdminPanelPopupComponent,
     TimeOffComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

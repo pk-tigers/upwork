@@ -1,0 +1,38 @@
+.profile-detail {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.profile-detail > div {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+.info {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.avatar-photo {
+  width: 25%;
+}
+.data-container {
+  width: 400px;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin-left: 40px;
+}
+.upwork-default-content-data {
+  box-sizing: border-box;
+}
+.profile-content-container {
+  max-width: 800px;
+}
+.profile-edit-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 62px;
+}
+.profile-edit-button > div {
+  width: 50%;
+}
