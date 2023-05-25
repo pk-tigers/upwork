@@ -36,4 +36,17 @@ export class RequestsTimeOffsService {
       }&take=${take}`
     );
   }
+
+  public getListOfRequestsHistory(
+    skip = 0,
+    take = 10
+  ): Observable<PaginatedResult<Absence>> | Observable<undefined> {
+    return this.http.get<PaginatedResult<Absence>>(
+      `${
+        environment.apiUrl
+      }/absences/GetSupervisedAbsencesRequestsForSupervisor?skip=${
+        skip * take
+      }&take=${take}`
+    );
+  }
 }
