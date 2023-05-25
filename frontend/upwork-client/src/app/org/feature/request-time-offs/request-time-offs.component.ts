@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { Absence } from 'src/app/models/absence.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
@@ -136,8 +136,10 @@ export class RequestTimeOffsComponent {
   }
 
   private loadRequests() {
-    return this.userService.user$.pipe(
-      switchMap(currentUser => this.requestTimeOffsService.getListOfRequests()),
+    return this.currentPage$.pipe(
+      switchMap(currentPage =>
+        this.requestTimeOffsService.getListOfRequests(currentPage)
+      ),
       map(res => {
         this.totalNumberOfPages = res?.page ?? 1;
         if (res?.data.length === 0 && this.currentPage$.value - 1 >= 0)
@@ -148,9 +150,9 @@ export class RequestTimeOffsComponent {
   }
 
   private loadRequestsHistory() {
-    return this.userService.user$.pipe(
-      switchMap(currentUser =>
-        this.requestTimeOffsService.getListOfRequestsHistory(currentUser?.id)
+    return this.currentPageHistory$.pipe(
+      switchMap(currentPage =>
+        this.requestTimeOffsService.getListOfRequestsHistory(currentPage)
       ),
       map(res => {
         this.totalNumberOfPagesHistory = res?.page ?? 1;
