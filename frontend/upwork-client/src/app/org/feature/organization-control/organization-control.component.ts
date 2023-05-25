@@ -54,12 +54,19 @@ export class OrganizationControlComponent implements OnInit {
   }
 
   private loadUsersWithSupervisors() {
-    return this.organizationService.organization$.pipe(
-      switchMap(org =>
-        this.organizationAdminService.getUsersWithSupervisors(org?.id).pipe(
-          map((res: PaginatedResult<UserWithSupervisor>) => {
-            return this.mapData(res);
-          })
+    return this.currentPage$.pipe(
+      switchMap(pageNumber =>
+        this.organizationService.organization$.pipe(
+          switchMap(org =>
+            this.organizationAdminService
+              .getUsersWithSupervisors(org?.id, pageNumber)
+              .pipe(
+                map((res: PaginatedResult<UserWithSupervisor>) => {
+                  this.totalNumberOfPages = res.page ?? 1;
+                  return this.mapData(res);
+                })
+              )
+          )
         )
       )
     );
