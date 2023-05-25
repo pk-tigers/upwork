@@ -1,0 +1,25 @@
+<mat-dialog-content class="upwork-default-container">
+  <div class="upwork-default-content-container">
+    <div class="upwork-popup-close-button" (click)="closePopup()">
+      <mat-icon>close</mat-icon>
+    </div>
+    <div class="upwork-default-content-heading">{{ data.name }}'s owners</div>
+    <div class="upwork-default-content-data" style="color: black">
+      <div class="d-flex justify-content-end p-0">
+        <button
+          class="upwork-btn upwork-btn-primary"
+          (click)="openCreateUserPopup()">
+          Add owner
+        </button>
+      </div>
+      <app-shared-table
+        [caption]="'List of organizations\' owners'"
+        [headers]="header"
+        [data]="(listOfOwners$ | async) ?? []"
+        [currentPage]="(currentPage$ | async) ?? 1"
+        [totalNumberOfPages]="totalNumberOfPages"
+        (nextPageEvent)="setPage($event)"
+        (prevPageEvent)="setPage($event)"></app-shared-table>
+    </div>
+  </div>
+</mat-dialog-content>

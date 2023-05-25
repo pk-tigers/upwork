@@ -18,18 +18,24 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarComponent } from './org/feature/calendar/calendar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrganizationControlComponent } from './org/feature/organization-control/organization-control.component';
+import { TimeOffComponent } from './org/feature/time-off/time-off.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AdminPanelComponent } from './home/feature/admin-panel/admin-panel.component';
 import { RoleRestrictDirective } from './shared/data-access/directive/role-restrict.directive';
 import { SharedTableComponent } from './shared/ui/shared-table/shared-table.component';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { PermissionsControlComponent } from './org/feature/organization-control/permissions-control/permissions-control.component';
 import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
+import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel-popup/admin-panel-popup.component';
+import { MatCommonModule } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -49,6 +55,8 @@ export function tokenGetter() {
     PageNotFoundComponent,
     PermissionsControlComponent,
     RequestTimeOffsComponent,
+    AdminPanelPopupComponent,
+    TimeOffComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +72,10 @@ export function tokenGetter() {
     MatDialogModule,
     CommonModule,
     NgbModalModule,
+    MatDatepickerModule,
+    MatCommonModule,
+    MatNativeDateModule,
+    MatInputModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -88,6 +100,7 @@ export function tokenGetter() {
   entryComponents: [PopupWithInputsComponent],
 
   providers: [
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

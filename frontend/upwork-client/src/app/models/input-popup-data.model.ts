@@ -22,7 +22,7 @@ export interface InputPopupModel {
   type: string;
   placeholder?: string;
   selectOptions?: SelectOptionPopupModel[];
-  value?: number | string;
+  value?: number | string | Date;
 }
 
 export interface SelectOptionPopupModel {

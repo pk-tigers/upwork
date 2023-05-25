@@ -2,12 +2,13 @@ import { AbsenceType } from './enums/absence-type.enum';
 import { ApprovalState } from './enums/approval-state.enum';
 
 export interface Absence {
-  id: string;
+  id?: string;
   fromDate: Date;
   toDate: Date;
   absenceType: AbsenceType;
-  userId: string;
-  userName?: string;
-  approvalState: ApprovalState;
+  userId?: string;
+  userFirstName?: string;
+  userLastName?: string;
+  approvalState?: ApprovalState;
   timeOffSupervisorId?: string;
 }
