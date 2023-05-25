@@ -12,7 +12,7 @@
           <div class="d-flex justify-content-center time-off-container">
             <div class="d-flex justify-content-center">
               <div
-                *ngIf="container.type == 'time'"
+                *ngIf="container.type === 'time'"
                 class="time-off d-flex justify-content-center flex-column">
                 <div class="time-off-header m-2">Today's time offs</div>
                 <ng-container
@@ -28,7 +28,7 @@
                 </ng-container>
               </div>
               <div
-                *ngIf="container.type == 'time'"
+                *ngIf="container.type === 'time'"
                 class="time-off d-flex justify-content-center flex-column">
                 <div class="time-off-header m-2">This week's time offs</div>
                 <ng-container

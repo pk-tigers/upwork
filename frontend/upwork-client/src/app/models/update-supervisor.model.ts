@@ -1,5 +1,5 @@
 export interface UpdateSupervisor {
-    organizationId?: string;
-    userId?: string;
-    newSupervisorId?: string;
-  }
+  organizationId?: string;
+  userId?: string;
+  newSupervisorId?: string;
+}

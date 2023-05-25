@@ -6,7 +6,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AbsencesService {
   private env = environment;

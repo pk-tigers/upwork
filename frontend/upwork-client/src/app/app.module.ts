@@ -105,7 +105,7 @@ export function tokenGetter() {
   providers: [
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

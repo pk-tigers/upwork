@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { RegisterModel } from 'src/app/models/register.model';
 import { UserWithSupervisor } from 'src/app/models/user-with-supervisor.model';
@@ -28,7 +28,7 @@ export class OrganizationAdminService {
       }&take=${pageSize}`
     );
   }
-  
+
   public deleteUser(guid: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.env.apiUrl}/user/${guid}`);
   }
@@ -36,8 +36,4 @@ export class OrganizationAdminService {
   public addUser(user: RegisterModel): Observable<User> {
     return this.http.post<User>(`${this.env.apiUrl}/user`, user);
   }
-
-
 }
-
-
