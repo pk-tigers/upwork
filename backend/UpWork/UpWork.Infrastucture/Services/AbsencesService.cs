@@ -77,7 +77,7 @@ namespace UpWork.Infrastucture.Services
             DateTime nextYearStart = currentYearStart.AddYears(1);
 
             var absences = _context.Absences
-                .Where(x => x.IsActive)
+                .Where(x => x.IsActive  && x.ApprovalState != ApprovalState.Rejected)
                 .Where(a => a.UserId == userId && a.IsActive &&
                     ((a.FromDate >= currentYearStart && a.FromDate < nextYearStart) ||
                     (a.FromDate < currentYearStart && a.ToDate >= currentYearStart)));
