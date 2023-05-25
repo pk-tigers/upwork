@@ -46,11 +46,13 @@ export class LoginComponent implements OnInit {
     this.userService.login(credentials).subscribe(loggedIn => {
       (async () => {
         if (loggedIn) {
-          this.organizationService.organization$.subscribe(res => async () => {
-            if (res?.urlName) {
-              const url = res.urlName;
-              await this.router.navigate([`/org/${url}/dashboard`]);
-            }
+          this.organizationService.organization$.subscribe(res => {
+            (async () => {
+              if (res?.urlName) {
+                const url = res.urlName;
+                this.router.navigate([`/org/${url}/dashboard`]);
+              }
+            })();
           });
         }
       })();
