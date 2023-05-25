@@ -16,11 +16,12 @@ namespace UpWork.Infrastucture.Services
             _context = context;
         }
 
-        public bool CancelRequestForUser(Guid requestId, Guid userId)
+        public bool CancelRequestForUser(Guid absenceId, Guid userId)
         {
             AbsenceModel request = _context.Absences
                 .Where(x => x.UserId == userId)
-                .Where(a => a.Id == requestId)
+                .Where(a => a.Id == absenceId)
+                .Where(a => a.FromDate < DateTime.Now)
                 .FirstOrDefault();
 
             if (request != null)
