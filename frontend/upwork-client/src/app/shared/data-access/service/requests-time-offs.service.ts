@@ -38,4 +38,19 @@ export class RequestsTimeOffsService {
       }&take=${take}`
     );
   }
+
+  public getListOfRequestsHistory(
+    supervisorId: string | undefined,
+    skip = 0,
+    take = 10
+  ): Observable<PaginatedResult<Absence>> | Observable<undefined> {
+    if (typeof supervisorId == 'undefined') return of(undefined);
+    return this.http.get<PaginatedResult<Absence>>(
+      `${
+        environment.apiUrl
+      }/absences/GetSupervisedAbsencesRequestsForSupervisor?skip=${
+        skip * take
+      }&take=${take}`
+    );
+  }
 }

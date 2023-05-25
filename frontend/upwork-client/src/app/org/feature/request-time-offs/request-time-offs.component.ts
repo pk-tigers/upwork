@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
 import { Absence } from 'src/app/models/absence.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
@@ -11,7 +11,10 @@ import {
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { SharedTableData } from 'src/app/models/shared-table-data.model';
+import {
+  SharedTableData,
+  SharedTableDataFunc,
+} from 'src/app/models/shared-table-data.model';
 import { RequestsTimeOffsService } from 'src/app/shared/data-access/service/requests-time-offs.service';
 import { UserService } from 'src/app/shared/data-access/service/user.service';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
@@ -23,10 +26,28 @@ import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/po
 })
 export class RequestTimeOffsComponent {
   currentPage$ = new BehaviorSubject<number>(0);
+  currentPageHistory$ = new BehaviorSubject<number>(0);
   listOfRequests$: Observable<SharedTableData[]> = this.loadRequests();
+  listOfRequestsHistory$: Observable<SharedTableData[]> =
+    this.loadRequestsHistory();
   header = ['Name', 'Type', 'From Date', 'To Date', 'Actions'];
+  headerHistory = [
+    'Name',
+    'Type',
+    'From Date',
+    'To Date',
+    'Request State',
+    'Change Status',
+  ];
   totalNumberOfPages = 1;
-  absenceTypeString: string[] = ['Paid Time off', 'Unpaid leave', 'Sick leave'];
+  totalNumberOfPagesHistory = 1;
+  absenceTypeString: string[] = [
+    'Paid Time off',
+    'Unpaid leave',
+    'Sick leave',
+    'Maternity leave',
+  ];
+  absenceStateString: string[] = ['Pending', 'Approved', 'Rejected'];
 
   constructor(
     private userService: UserService,
@@ -36,6 +57,10 @@ export class RequestTimeOffsComponent {
 
   setPage(pageNumber: number): void {
     this.currentPage$.next(pageNumber);
+  }
+
+  setPageHistory(pageNumber: number): void {
+    this.currentPageHistory$.next(pageNumber);
   }
 
   openRequestApprovalPopup(guid: string | undefined) {
@@ -95,13 +120,19 @@ export class RequestTimeOffsComponent {
   private requestApproval(requestId: string) {
     this.requestTimeOffsService
       .approveRequest(requestId, ApprovalState.Approved)
-      .subscribe(() => (this.listOfRequests$ = this.loadRequests()));
+      .subscribe(() => {
+        this.listOfRequests$ = this.loadRequests();
+        this.listOfRequestsHistory$ = this.loadRequestsHistory();
+      });
   }
 
   private requestDisapproval(requestId: string) {
     this.requestTimeOffsService
       .approveRequest(requestId, ApprovalState.Rejected)
-      .subscribe(() => (this.listOfRequests$ = this.loadRequests()));
+      .subscribe(() => {
+        this.listOfRequests$ = this.loadRequests();
+        this.listOfRequestsHistory$ = this.loadRequestsHistory();
+      });
   }
 
   private loadRequests() {
@@ -114,6 +145,20 @@ export class RequestTimeOffsComponent {
         if (res?.data.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
         return this.mapData(res);
+      })
+    );
+  }
+
+  private loadRequestsHistory() {
+    return this.userService.user$.pipe(
+      switchMap(currentUser =>
+        this.requestTimeOffsService.getListOfRequestsHistory(currentUser?.id)
+      ),
+      map(res => {
+        this.totalNumberOfPagesHistory = res?.page ?? 1;
+        if (res?.data.length === 0 && this.currentPageHistory$.value - 1 >= 0)
+          this.currentPageHistory$.next(this.currentPageHistory$.value - 1);
+        return this.mapDataHistory(res);
       })
     );
   }
@@ -164,5 +209,66 @@ export class RequestTimeOffsComponent {
       results.push(result);
     });
     return results;
+  }
+
+  private mapDataHistory(
+    data: PaginatedResult<Absence> | undefined
+  ): SharedTableData[] {
+    if (typeof data === 'undefined') return [];
+    const requests = data.data;
+    const results: SharedTableData[] = [];
+    requests.forEach(request => {
+      const fromDate = new Date(request.fromDate);
+      const toDate = new Date(request.toDate);
+      const result: SharedTableData = {
+        cols: [
+          request?.userFirstName?.toString() +
+            ' ' +
+            request?.userLastName?.toString(),
+          this.absenceTypeString[request.absenceType],
+          fromDate.getDay() +
+            '/' +
+            fromDate.getMonth() +
+            '/' +
+            fromDate.getFullYear(),
+          toDate.getDay() +
+            '/' +
+            toDate.getMonth() +
+            '/' +
+            toDate.getFullYear(),
+          this.absenceStateString[request.approvalState],
+        ],
+        actions: this.getActionChangeRequestOffState(request),
+      };
+      results.push(result);
+    });
+    return results;
+  }
+
+  private getActionChangeRequestOffState(
+    request: Absence
+  ): SharedTableDataFunc[] {
+    if (request.approvalState === ApprovalState.Approved) {
+      return [
+        {
+          icon: 'close',
+          func: (arg: string) => {
+            this.openRequestDisapprovalPopup(arg);
+          },
+          arg: request.id,
+        },
+      ];
+    } else if (request.approvalState == ApprovalState.Rejected) {
+      return [
+        {
+          icon: 'done',
+          func: (arg: string) => {
+            this.openRequestApprovalPopup(arg);
+          },
+          arg: request.id,
+        },
+      ];
+    }
+    return [];
   }
 }
