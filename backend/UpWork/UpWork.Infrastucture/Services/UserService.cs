@@ -64,10 +64,16 @@ namespace UpWork.Infrastucture.Services
             }
         }
 
-        public UserModel GetUser(Guid Id)
+        public UserModel GetUser(Guid Id, Guid organizationId)
         {
 
-            var user = _context.Users.Find(Id);
+            var user = _context.Users.FirstOrDefault(u => u.Id == Id && u.OrganizationId == organizationId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             return user;
         }
 
@@ -97,6 +103,30 @@ namespace UpWork.Infrastucture.Services
 	<p>If this is a mistake please ignore this message.</p>
 </body>";
             return res;
+        }
+
+        public UserModel UpdateUser(UserModel existingUser, UpdateUserDto updateUserDto)
+        {
+
+
+            if (!string.IsNullOrEmpty(updateUserDto.FirstName))
+            {
+                existingUser.FirstName = updateUserDto.FirstName;
+            }
+
+            if (!string.IsNullOrEmpty(updateUserDto.LastName))
+            {
+                existingUser.LastName = updateUserDto.LastName;
+            }
+
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                existingUser.Password = _encodeService.EncodePassword(updateUserDto.Password);
+            }
+
+            _context.SaveChanges();
+
+            return existingUser;
         }
 
         public bool UpdateUserSupervisor(UpdateUserSupervisorDto updateUserSupervisor)
