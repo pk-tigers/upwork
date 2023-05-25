@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UpWork.Api.Attributes;
 using UpWork.Api.Extensions;
 using UpWork.Common.Dto;
+using UpWork.Common.DTO;
 using UpWork.Common.Enums;
 using UpWork.Common.Identity;
 using UpWork.Common.Interfaces;
@@ -45,9 +46,9 @@ namespace UpWork.Api.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = IdentityData.AdminUserPolicy)]
-        public ActionResult<UserModel> GetUser(Guid Id)
+        public ActionResult<UserModel> GetUser(Guid Id, [FromQuery] Guid organizationId)
         {
-            var res = _userService.GetUser(Id);
+            var res = _userService.GetUser(Id, organizationId);
 
             if (res == null)
             {
@@ -72,5 +73,20 @@ namespace UpWork.Api.Controllers
             bool res = _userService.UpdateUserSupervisor(updateUserSupervisor);
             return Ok(res);
         }
+
+        [HttpPut("{id}")]
+        [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.ModifyUser)]
+        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
+        public ActionResult<UserModel> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto, [FromQuery] Guid organizationId)
+        {
+            UserModel existingUser = _userService.GetUser(id, organizationId);
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+            UserModel updatedUser = _userService.UpdateUser(existingUser, updateUserDto);
+            return Ok(updatedUser);
+       }
     }
 }
