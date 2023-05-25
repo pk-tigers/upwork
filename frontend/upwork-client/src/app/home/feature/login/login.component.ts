@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
             (async () => {
               if (res?.urlName) {
                 const url = res.urlName;
-                this.router.navigate([`/org/${url}/dashboard`]);
+                await this.router.navigate([`/org/${url}/dashboard`]);
               }
             })();
           });
