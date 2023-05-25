@@ -36,3 +36,15 @@ mwl-calendar-month-view {
   font-weight: 500;
   margin: 1px;
 }
+
+.approved {
+  border-width: 2px;
+  border-style: solid;
+  border-color: green;
+}
+
+.rejected {
+  border-width: 2px;
+  border-style: solid;
+  border-color: red;
+}
