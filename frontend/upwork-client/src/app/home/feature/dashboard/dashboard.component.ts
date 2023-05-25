@@ -49,21 +49,19 @@ export class DashboardComponent {
     const weekDate = new Date();
     weekDate.setDate(weekDate.getDate() + 7);
 
-    this.requestsTimeOffsService
-  .getListOfRequests(0, 10)
-  .subscribe(
-    (res: { data: Absence[] | undefined }) => {
-      if (res) {
-        this.timeOffRequests = res.data;
-        this.updateContainers();
+    this.requestsTimeOffsService.getListOfRequests(0, 10).subscribe(
+      (res: { data: Absence[] | undefined }) => {
+        if (res) {
+          this.timeOffRequests = res.data;
+          this.updateContainers();
+        }
+      },
+      error => {
+        if (error.status === 403) {
+          this.timeOffRequests = undefined;
+        }
       }
-    },
-    (error) => {
-      if (error.status === 403) {
-        this.timeOffRequests=undefined;
-      }
-    }
-  );
+    );
 
     this.absencesService
       .getAbsencesByOrganizationId(
@@ -137,8 +135,6 @@ export class DashboardComponent {
       ];
     }
   }
-
-  
 
   categorizeAbsencesByDate(
     absences: Absence[],
