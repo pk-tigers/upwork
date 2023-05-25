@@ -27,8 +27,8 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise 
                 && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow)));
 
-                take = take == 0 ? users.Count() : take;
-                take = take == 0 ? 10 : take;
+            take = take == 0 ? users.Count() : take;
+            take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -45,13 +45,12 @@ namespace UpWork.Infrastucture.Services
             return res;
         }
 
-
         public PaginatedResult<UserModel> GetUsersByOrganizationId(Guid OrganizationId, int skip, int take)
         {
             var users = _context.Users.Where(x => x.OrganizationId == OrganizationId && x.IsActive);
 
-                take = take == 0 ? users.Count() : take;
-                take = take == 0 ? 10 : take;
+            take = take == 0 ? users.Count() : take;
+            take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -61,8 +60,8 @@ namespace UpWork.Infrastucture.Services
         {
             var users = _context.Users.Where(x => x.OrganizationId == OrganizationId && x.Role == Role.OrganizationOwner && x.IsActive);
 
-                take = take == 0 ? users.Count() : take;
-                take = take == 0 ? 10 : take;
+            take = take == 0 ? users.Count() : take;
+            take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<UserModel>(users.Skip(skip).Take(take), users.Count(), take);
             return res;
@@ -77,10 +76,12 @@ namespace UpWork.Infrastucture.Services
                 .Include(x => x.Permissions)
                 .Select(x => MapUserWithPermissionsFromUserModel(x));
 
-            if (take == 0)
-                take = users.Count();
+
+            take = take == 0 ? users.Count() : take;
+            take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<UserWithPermissionsDto>(users.Skip(skip).Take(take), users.Count(), take);
+
             return res;
         }
 

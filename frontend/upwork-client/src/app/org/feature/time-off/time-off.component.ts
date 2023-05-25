@@ -25,7 +25,7 @@ import { AbsenceService } from 'src/app/shared/data-access/service/absence.servi
   styleUrls: ['./time-off.component.scss'],
 })
 export class TimeOffComponent {
-  header = ['From date', 'To date', 'Type', 'Status'];
+  header = ['From date', 'To date', 'Type', 'Status', 'Actions'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
@@ -130,6 +130,7 @@ export class TimeOffComponent {
       ),
       absenceType:
         AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
+      approvalState: ApprovalState.Pending,
     };
 
     this.absenceService
@@ -178,6 +179,7 @@ export class TimeOffComponent {
             /([A-Z])/g,
             ' $1'
           ),
+          ApprovalState[Number(userRequest.approvalState?.toString())],
         ],
         actions: [],
       };
@@ -190,13 +192,25 @@ export class TimeOffComponent {
           },
           arg: userRequest.id,
         });
-      } else {
-        result.cols?.push(
-          ApprovalState[Number(userRequest.approvalState?.toString())]
-        );
+      }
+      if (
+        ApprovalState[Number(userRequest.approvalState?.toString())] ==
+        'Pending'
+      ) {
+        result.actions?.push({
+          icon: 'supervisor_account',
+          func: (arg: string) => {
+            this.showPreview(arg);
+          },
+          arg: userRequest.id,
+        });
       }
       results.push(result);
     });
     return results;
+  }
+
+  private showPreview(arg: string) {
+    throw new Error('Method not implemented.');
   }
 }

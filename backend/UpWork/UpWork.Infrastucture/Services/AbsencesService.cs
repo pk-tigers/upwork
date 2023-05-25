@@ -66,18 +66,20 @@ namespace UpWork.Infrastucture.Services
             return res;                
         }
 
-        public PaginatedResult<AbsenceModel> GetSupervisedAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
+        public PaginatedResult<AbsenceModelDto> GetSupervisedAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take)
         {
             var absences = _context.Absences
                 .Where(x => x.TimeOffSupervisorId == supervisorId)
                 .Where(x => x.IsActive)
-                .Where(x => x.ApprovalState != ApprovalState.Pending);
+                .Where(x => x.ApprovalState != ApprovalState.Pending)
+                .Include(x => x.User)
+                .Select(x => new AbsenceModelDto(x));
 
                 take = take == 0 ? absences.Count() : take;
                 take = take == 0 ? 10 : take;
 
-            var res = new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take);
-            return res;
+                var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
+                return res;
         }
 
         public int GetYearAbsenceCountForUser(Guid userId)

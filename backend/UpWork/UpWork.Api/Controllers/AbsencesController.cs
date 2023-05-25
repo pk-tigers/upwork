@@ -59,7 +59,7 @@ namespace UpWork.Api.Controllers
 
         [HttpGet]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.CanSupervise)]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetSupervisedAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<AbsenceModelDto>> GetSupervisedAbsencesRequestsForSupervisor(int skip = 0, int take = 10)
         {
             var supervisorId = User.Identity.GetUserId();
             var res = _absencesService.GetSupervisedAbsencesRequestsForSupervisor(supervisorId, skip, take);
