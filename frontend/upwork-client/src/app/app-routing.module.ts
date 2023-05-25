@@ -10,7 +10,7 @@ import { adminGuard } from './shared/data-access/guard/admin.guard';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { organizationGuard } from './shared/data-access/guard/organization.guard';
 import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
-
+import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -33,10 +33,13 @@ const routes: Routes = [
             component: OrganizationControlComponent,
           },
           { path: 'requests', component: RequestTimeOffsComponent },
+          { path: 'dashboard', component:DashboardComponent},
+          
         ],
       },
     ],
   },
+  
   { path: '**', component: PageNotFoundComponent },
 ];
 

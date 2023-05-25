@@ -1,0 +1,115 @@
+<ng-template #containerTemplate let-container>
+  <div
+    *ngIf="container && container.items.today"
+    class="upwork-default-container">
+    <div class="upwork-default-content-container">
+      <div class="upwork-default-content-heading dashboard-header">
+        {{ container.header }}
+      </div>
+      <div
+        class="upwork-default-content-data flex-column d-flex justify-content-around">
+        <div class="p-0">
+          <div class="d-flex justify-content-center time-off-container">
+            <div class="d-flex justify-content-center">
+              <div
+                *ngIf="container.type == 'time'"
+                class="time-off d-flex justify-content-center flex-column">
+                <div class="time-off-header m-2">Today's time offs</div>
+                <ng-container
+                  *ngIf="
+                    container.items.today && container.items.today.length > 0;
+                    else noTimeOff
+                  ">
+                  <ng-container
+                    [ngTemplateOutlet]="timeOffUsersTemplate"
+                    [ngTemplateOutletContext]="{
+                      $implicit: container.items.week
+                    }"></ng-container>
+                </ng-container>
+              </div>
+              <div
+                *ngIf="container.type == 'time'"
+                class="time-off d-flex justify-content-center flex-column">
+                <div class="time-off-header m-2">This week's time offs</div>
+                <ng-container
+                  *ngIf="
+                    container.items.week && container.items.week.length > 0;
+                    else noTimeOff
+                  ">
+                  <ng-container
+                    [ngTemplateOutlet]="timeOffUsersTemplate"
+                    [ngTemplateOutletContext]="{
+                      $implicit: container.items.week
+                    }"></ng-container>
+                </ng-container>
+              </div>
+              <div
+                *ngIf="container.type === 'requests'"
+                class="employee-time-off d-flex justify-content-center flex-column">
+                <ng-container
+                  *ngIf="
+                    container.items.today && container.items.today.length > 0;
+                    else noTimeOff
+                  ">
+                  <ng-container
+                    [ngTemplateOutlet]="timeOffUsersTemplate"
+                    [ngTemplateOutletContext]="{
+                      $implicit: container.items.week
+                    }"></ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div
+            (click)="container.buttonAction()"
+            class="upwork-btn upwork-btn-primary show-all-btn">
+            Show all
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noTimeOff>
+  <div class="d-flex justify-content-center">
+    <mat-icon color="primary" class="icon-display">remove</mat-icon>
+  </div>
+</ng-template>
+
+<ng-template #timeOffUsersTemplate let-items>
+  <div class="time-off-users d-flex">
+    <ng-container *ngFor="let item of items">
+      <div class="users-container">
+        <app-avatar
+          [photoUrl]=""
+          [firstName]="item.userFirstName"
+          [lastName]="item.userLastName"
+          (mouseenter)="showName = true"
+          (mouseleave)="showName = false"></app-avatar>
+        <div *ngIf="showName" class="info-popup">
+          {{
+            (item.userFirstName
+              ? item.userFirstName
+              : item.userLastName
+              ? ''
+              : 'Unknown') +
+              ' ' +
+              (item.userLastName
+                ? item.userLastName
+                : item.userFirstName
+                ? ''
+                : 'User')
+          }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-container
+  *ngFor="let container of containers"
+  [ngTemplateOutlet]="containerTemplate"
+  [ngTemplateOutletContext]="{ $implicit: container }"></ng-container>
