@@ -27,6 +27,8 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to)
                 .Select(x => new AbsenceModelDto(x));
 
+                take = take == 0 ? absences.Count() : take;
+                take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
@@ -40,6 +42,9 @@ namespace UpWork.Infrastucture.Services
                 .Include(x => x.User)
                 .Where(x => (x.FromDate >= from && x.FromDate <= to) || x.ToDate >= from && x.ToDate <= to)
                 .Select(x => new AbsenceModelDto(x));
+            
+                take = take == 0 ? absences.Count() : take;
+                take = take == 0 ? 10 : take;
 
             var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;
@@ -54,6 +59,9 @@ namespace UpWork.Infrastucture.Services
                 .Include(x => x.User)
                 .Select(x => new AbsenceModelDto(x));
 
+                take = take == 0 ? absences.Count() : take;
+                take = take == 0 ? 10 : take;
+
             var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
             return res;                
         }
@@ -67,8 +75,11 @@ namespace UpWork.Infrastucture.Services
                 .Include(x => x.User)
                 .Select(x => new AbsenceModelDto(x));
 
-            var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
-            return res;
+                take = take == 0 ? absences.Count() : take;
+                take = take == 0 ? 10 : take;
+
+                var res = new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take);
+                return res;
         }
 
         public int GetYearAbsenceCountForUser(Guid userId)
@@ -101,6 +112,10 @@ namespace UpWork.Infrastucture.Services
             var absences = _context.Absences
                 .Where(x => x.IsActive)
                 .Where(x => x.UserId == userId);
+
+                take = take == 0 ? absences.Count() : take;
+                take = take == 0 ? 10 : take;
+
             return new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take); 
         }
     }
