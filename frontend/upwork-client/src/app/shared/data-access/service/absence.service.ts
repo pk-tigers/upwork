@@ -5,11 +5,13 @@ import { Absence } from 'src/app/models/absence.model';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
+import { User } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AbsenceService {
+  env = environment;
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
@@ -54,6 +56,12 @@ export class AbsenceService {
   public getYearAbsenceCountForUser(): Observable<number> {
     return this.http.get<number>(
       `${environment.apiUrl}/Absences/getYearAbsenceCountForUser`
+    );
+  }
+
+  public getSupervisorsForOrganization(): Observable<PaginatedResult<User>> {
+    return this.http.get<PaginatedResult<User>>(
+      `${this.env.apiUrl}/Users/GetSupervisors`
     );
   }
 }

@@ -18,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
+import { UserService } from 'src/app/shared/data-access/service/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-time-off',
@@ -30,11 +32,13 @@ export class TimeOffComponent {
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
   absencesYearCount$ = this.getAbsencesYearCount();
+  supervisorsForUser$ = this.getSupervisorsForOrganization();
 
   constructor(
     private dialog: MatDialog,
     private absenceService: AbsenceService,
-    private tostr: ToastrService
+    private tostr: ToastrService,
+    private userService: UserService
   ) {}
 
   openCancelRequestPopup(requestId: string): void {
@@ -97,6 +101,11 @@ export class TimeOffComponent {
             displayValue: key.replace(/([A-Z])/g, ' $1').trim(),
           })),
       },
+      ['SupervisorsOptions']: {
+        value: '',
+        type: 'select',
+        placeholder: 'Select approver',
+      },
     };
 
     const buttons: ButtonPopupModel[] = [
@@ -118,6 +127,14 @@ export class TimeOffComponent {
       data: data,
       panelClass: 'upwork-popup',
     });
+  }
+
+  //tood: private
+  public getSupervisorsForOrganization() {
+    console.log('dupa');
+    this.absenceService
+      .getSupervisorsForOrganization()
+      .subscribe(res => console.log(res));
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
