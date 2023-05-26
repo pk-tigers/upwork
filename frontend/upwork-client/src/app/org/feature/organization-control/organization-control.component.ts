@@ -43,10 +43,7 @@ export class OrganizationControlComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-<<<<<<< HEAD
-=======
     this.getSupervisors();
->>>>>>> dev
     this.organizationService.organization$.subscribe(
       (org: OrganizationModel | null) => {
         if (org) {
@@ -56,8 +53,6 @@ export class OrganizationControlComponent implements OnInit {
     );
   }
 
-<<<<<<< HEAD
-=======
   private loadUsersWithSupervisors() {
     return this.currentPage$.pipe(
       switchMap(pageNumber =>
@@ -101,7 +96,6 @@ export class OrganizationControlComponent implements OnInit {
     });
   }
 
->>>>>>> dev
   openAddUserPopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
       ['firstname']: { value: '', type: 'text', placeholder: 'Firstname' },
@@ -154,21 +148,6 @@ export class OrganizationControlComponent implements OnInit {
       });
   }
 
-<<<<<<< HEAD
-  private loadUsersWithSupervisors() {
-    return this.organizationService.organization$.pipe(
-      switchMap(org =>
-        this.organizationAdminService.getUsersWithSupervisors(org?.id).pipe(
-          map((res: PaginatedResult<UserWithSupervisor>) => {
-            return this.mapData(res);
-          })
-        )
-      )
-    );
-  }
-
-=======
->>>>>>> dev
   private mapData(
     data: PaginatedResult<UserWithSupervisor>
   ): SharedTableData[] {
@@ -335,8 +314,12 @@ export class OrganizationControlComponent implements OnInit {
   }
 
   //TODO: Logika otwierania popupa dla "Block User"
-  openBlockUserPopup() {}
+  openBlockUserPopup() {
+    throw new Error('Method not implemented.');
+  }
 
   //TODO: Logika otwierania popupa dla "Reset User's Password"
-  openResetPasswordPopup() {}
+  openResetPasswordPopup() {
+    throw new Error('Method not implemented.');
+  }
 }
