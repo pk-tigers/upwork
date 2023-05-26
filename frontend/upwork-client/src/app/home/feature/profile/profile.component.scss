@@ -3,24 +3,27 @@
   justify-content: center;
   width: 100%;
 }
-.profile-detail > div {
+.info-container {
   display: flex;
-  justify-content: space-between;
-  width: 50%;
+  justify-content: flex-end;
+  width: 100%;
+  position: relative;
+  min-height: 35px;
 }
 .info {
-  width: 50%;
+  width: 65%;
   display: flex;
-  justify-content: center;
-}
-.avatar-photo {
-  width: 25%;
+  justify-content: left;
+  line-height: 35px;
+  margin-top: 7px;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+  margin-left: 20px;
 }
 .data-container {
-  width: 400px;
+  width: 75%;
   border: 2px solid black;
   border-radius: 10px;
-  margin-left: 40px;
 }
 .upwork-default-content-data {
   box-sizing: border-box;
@@ -31,8 +34,53 @@
 .profile-edit-button {
   display: flex;
   justify-content: center;
-  margin-top: 62px;
+  margin-top: 10px;
 }
 .profile-edit-button > div {
-  width: 50%;
+  width: 30%;
+  margin: 10px;
+}
+
+.info-popup {
+  position: absolute;
+  left: 40%;
+  bottom: -50%;
+  max-width: 150px;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+  text-align: center;
+  width: fit-content;
+}
+.info-container:hover > .info-popup {
+  visibility: visible;
+  opacity: 1;
+}
+
+.icon-display {
+  font-size: 30px;
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
+  .info-container {
+    width: 100%;
+    justify-content: center;
+  }
+  .profile-edit-button {
+    flex-direction: column;
+  }
+  .profile-edit-button > div {
+    width: inherit;
+  }
+  .data-container {
+    width: 100%;
+  }
 }

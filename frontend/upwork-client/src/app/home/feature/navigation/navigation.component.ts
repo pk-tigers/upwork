@@ -46,7 +46,7 @@ export class NavigationComponent implements OnInit {
         text: 'Dashboard',
         router_link: `/org/${this.url}/dashboard`,
       },
-      { icon: 'person_outline', text: 'Profile', router_link: '' },
+      { icon: 'person_outline', text: 'Profile', router_link:  `/profile` },
       {
         icon: 'beach_access',
         text: 'Time off',

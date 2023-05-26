@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/shared/data-access/service/user.service';
 import { Dictionary } from 'cypress/types/lodash';
@@ -12,6 +12,10 @@ import {
   InputPopupDataModel,
   InputPopupModel,
 } from 'src/app/models/input-popup-data.model';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
+import { UpdateUserDto } from 'src/app/models/update-user.model';
+import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -20,28 +24,57 @@ import {
 export class ProfileComponent {
   photoPath = 'assets/images/default-avatar.png';
   profileForm: FormGroup;
+  public showHover = true;
   user: User | undefined;
+  userID: string | undefined;
+  organizationId: string | undefined;
   supervisor: string | undefined;
   companyName: string | undefined;
   vacation: number | undefined;
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private router: Router,
+    private absenceService: AbsenceService,
+    private organizationServe: OrganizationService,
     private dialog: MatDialog
   ) {
     this.profileForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
+    this.userService.user$.subscribe(res => {
+      if (res) {
+        this.userID = res.id;
+        this.organizationId = res.organizationId;
+      }
+    });
+    if (this.userID) {
+      this.userService.getUser(this.userID).subscribe(res => {
+        this.user = res;
+        if (this.user && this.user.currentTimeOffSupervisorId) {
+          this.userService
+            .getUser(this.user.currentTimeOffSupervisorId)
+            .subscribe(res => {
+              this.supervisor = res.firstName + ' ' + res.lastName;
+            });
+        }
+      });
+      this.absenceService.getYearAbsenceCountForUser().subscribe(res => {
+        if (res) {
+          this.vacation = res;
+        }
+      });
+    }
 
-    this.user = { firstName: 'John', lastName: 'Smith', email: 'email@com' };
-    this.supervisor = 'Marek smith';
-    this.companyName = 'Upwork';
-    this.vacation = 50;
+    this.organizationServe.organization$.subscribe(res => {
+      if (res) {
+        this.companyName = res.urlName;
+      }
+    });
   }
 
-  openChangeProfilePopup(): void {
+
+  openChangeNamePopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
       ['firstName']: {
         value: this.user?.firstName,
@@ -53,23 +86,14 @@ export class ProfileComponent {
         type: 'text',
         placeholder: 'Surname',
       },
-      ['password']: {
-        value: '',
-        type: 'password',
-        placeholder: 'New password',
-      },
-      ['repeatPassword']: {
-        value: '',
-        type: 'password',
-        placeholder: 'Repeat password',
-      },
     };
     const buttons: ButtonPopupModel[] = [
       {
         type: ButtonTypes.PRIMARY,
         text: 'Edit',
-        onClick: () => this.openConfirmPopup(),
+        onClick: () => this.updateUser(inputs),
       },
+
       {
         type: ButtonTypes.SECONDARY,
         text: 'Cancel',
@@ -88,35 +112,26 @@ export class ProfileComponent {
     });
   }
 
-  openConfirmPopup(): void {
-    const inputs: Dictionary<InputPopupModel> = {
-      ['password']: {
-        value: '',
-        type: 'password',
-        placeholder: 'Current password',
-      },
-    };
-    const buttons: ButtonPopupModel[] = [
-      {
-        type: ButtonTypes.PRIMARY,
-        text: 'Confirm',
-        onClick: () => console.log('A'),
-      },
-      {
-        type: ButtonTypes.SECONDARY,
-        text: 'Cancel',
-        onClick: () => this.dialog.closeAll(),
-      },
-    ];
-    const data: InputPopupDataModel = {
-      title: 'Change profile',
-      description: 'Please provide current password in order to proceed',
-      inputs: inputs,
-      buttons: buttons,
-    };
-    this.dialog.open(PopupWithInputsComponent, {
-      data: data,
-      panelClass: 'upwork-popup',
+  openChangePasswordPopup(): void {
+    this.dialog.open(ProfilePopupComponent, {
+      data: { userId: this.userID, organizationId: this.organizationId },
     });
+  }
+
+  updateUser(inputs: Dictionary<InputPopupModel>): void {
+    const updateUserDto: UpdateUserDto = {
+      firstName: String(inputs['firstName'].value),
+      lastName: String(inputs['lastName'].value),
+    };
+
+    if (this.userID && this.organizationId) {
+      this.userService
+        .updateUser(this.userID, this.organizationId, updateUserDto)
+        .subscribe(
+          response => {
+            location.reload();
+          }
+        );
+    }
   }
 }
