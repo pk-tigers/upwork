@@ -46,10 +46,9 @@ namespace UpWork.Api.Controllers
 
         [HttpGet("{id}")]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
-        [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
-        public ActionResult<UserModel> GetUser(Guid Id, [FromQuery] Guid organizationId)
+        public ActionResult<UserModel> GetUser(Guid Id)
         {
-            var res = _userService.GetUser(Id, organizationId);
+            var res = _userService.GetUser(Id);
 
             if (res == null)
             {
