@@ -22,6 +22,8 @@ import { User } from 'src/app/models/user.model';
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { SupervisorService } from 'src/app/shared/data-access/service/supervisor.service';
 import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
+import { UserWithSupervisor } from '../../../models/user-with-supervisor.model';
+import { OrganizationAdminService } from '../../../shared/data-access/service/organization-admin.service';
 
 @Component({
   selector: 'app-time-off',
@@ -40,6 +42,7 @@ export class TimeOffComponent implements OnInit {
     private dialog: MatDialog,
     private absenceService: AbsenceService,
     private tostr: ToastrService,
+    private organizationAdminService: OrganizationAdminService,
     private supervisorService: SupervisorService,
     private organizationService: OrganizationService
   ) {}
@@ -140,7 +143,6 @@ export class TimeOffComponent implements OnInit {
     });
   }
 
-  //tood: private
   public getSupervisorsForOrganization(): void {
     this.organizationService.organization$
       .pipe(
@@ -233,11 +235,11 @@ export class TimeOffComponent implements OnInit {
         'Pending'
       ) {
         result.actions?.push({
-          icon: 'supervisor_account',
-          func: (arg: string) => {
-            this.showPreview(arg);
+          icon: 'launch',
+          func: (arg: Absence) => {
+            this.openUpdateAbsencePopup(arg);
           },
-          arg: userRequest.id,
+          arg: userRequest,
         });
       }
       results.push(result);
@@ -245,7 +247,59 @@ export class TimeOffComponent implements OnInit {
     return results;
   }
 
-  private showPreview(arg: string) {
-    throw new Error('Method not implemented.');
+  private openUpdateAbsencePopup(userRequest: Absence): void {
+    const inputs: Dictionary<InputPopupModel> = {
+      ['TimeOffBeginningDate']: {
+        value: userRequest.fromDate,
+        type: 'date',
+        placeholder: 'Current beginning date:',
+      },
+      ['TimeOffEndDate']: {
+        value: userRequest.toDate,
+        type: 'date',
+        placeholder: 'Current end date:',
+      },
+      ['TimeOffOptions']: {
+        value: '',
+        type: 'select',
+        placeholder: AbsenceType[userRequest.absenceType]
+          .replace(/([A-Z])/g, ' $1')
+          .trim(),
+        selectOptions: Object.keys(AbsenceType)
+          .filter(key => isNaN(Number(key)))
+          .map(key => ({
+            value: key,
+            displayValue: key.replace(/([A-Z])/g, ' $1').trim(),
+          })),
+      },
+    };
+
+    const buttons: ButtonPopupModel[] = [
+      {
+        type: ButtonTypes.PRIMARY,
+        text: 'Update',
+        onClick: () => console.log('dupa'), ///this.setSupervisor(inputs, user),
+      },
+    ];
+
+    const data: InputPopupDataModel = {
+      title: 'Update your Pending Time off details',
+      description:
+        'Your request supervisor is: ' +
+        this.listOfSupervisors.find(
+          supervisor => supervisor.id === userRequest.timeOffSupervisorId
+        )?.firstName +
+        ' ' +
+        this.listOfSupervisors.find(
+          supervisor => supervisor.id === userRequest.timeOffSupervisorId
+        )?.lastName,
+      inputs: inputs,
+      buttons: buttons,
+    };
+
+    this.dialog.open(PopupWithInputsComponent, {
+      data: data,
+      panelClass: 'upwork-popup',
+    });
   }
 }
