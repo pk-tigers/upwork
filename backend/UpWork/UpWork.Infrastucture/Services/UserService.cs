@@ -149,10 +149,5 @@ namespace UpWork.Infrastucture.Services
 
             return true;
         }
-
-        public UserModel GetUser(Guid Id, Guid organizationId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

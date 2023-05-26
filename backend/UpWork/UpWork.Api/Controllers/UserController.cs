@@ -79,7 +79,7 @@ namespace UpWork.Api.Controllers
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
         public ActionResult<UserModel> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto, [FromQuery] Guid organizationId)
         {
-            UserModel existingUser = _userService.GetUser(id, organizationId);
+            UserModel existingUser = _userService.GetUser(id);
 
             if (existingUser == null)
             {
