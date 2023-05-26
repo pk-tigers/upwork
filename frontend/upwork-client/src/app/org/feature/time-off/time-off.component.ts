@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Dictionary } from 'cypress/types/lodash';
-import { Observable, BehaviorSubject, switchMap, map } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap, map, take } from 'rxjs';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -18,28 +18,35 @@ import { ToastrService } from 'ngx-toastr';
 import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
-import { UserService } from 'src/app/shared/data-access/service/user.service';
 import { User } from 'src/app/models/user.model';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
+import { SupervisorService } from 'src/app/shared/data-access/service/supervisor.service';
+import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
 
 @Component({
   selector: 'app-time-off',
   templateUrl: './time-off.component.html',
   styleUrls: ['./time-off.component.scss'],
 })
-export class TimeOffComponent {
+export class TimeOffComponent implements OnInit {
   header = ['From date', 'To date', 'Type', 'Status', 'Actions'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
   absencesYearCount$ = this.getAbsencesYearCount();
-  supervisorsForUser$ = this.getSupervisorsForOrganization();
+  listOfSupervisors: User[] = [];
 
   constructor(
     private dialog: MatDialog,
     private absenceService: AbsenceService,
     private tostr: ToastrService,
-    private userService: UserService
+    private supervisorService: SupervisorService,
+    private organizationService: OrganizationService
   ) {}
+
+  ngOnInit(): void {
+    this.getSupervisorsForOrganization();
+  }
 
   openCancelRequestPopup(requestId: string): void {
     const inputs: Dictionary<InputPopupModel> = {};
@@ -105,6 +112,10 @@ export class TimeOffComponent {
         value: '',
         type: 'select',
         placeholder: 'Select approver',
+        selectOptions: this.listOfSupervisors.map(supervisor => ({
+          value: supervisor.id || '',
+          displayValue: `${supervisor.firstName} ${supervisor.lastName}`,
+        })),
       },
     };
 
@@ -130,11 +141,18 @@ export class TimeOffComponent {
   }
 
   //tood: private
-  public getSupervisorsForOrganization() {
-    console.log('dupa');
-    this.absenceService
-      .getSupervisorsForOrganization()
-      .subscribe(res => console.log(res));
+  public getSupervisorsForOrganization(): void {
+    this.organizationService.organization$
+      .pipe(
+        switchMap(org => this.supervisorService.getSupervisors(org?.id)),
+        take(1)
+      )
+      .subscribe((result: PaginatedResult<User>) => {
+        this.listOfSupervisors = result.data;
+      });
+    SupervisorsSort.sortAlphabeticallyFirtnameAndLastName(
+      this.listOfSupervisors
+    );
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {

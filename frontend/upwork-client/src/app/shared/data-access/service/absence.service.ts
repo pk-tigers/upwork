@@ -54,10 +54,4 @@ export class AbsenceService {
       `${environment.apiUrl}/Absences/getYearAbsenceCountForUser`
     );
   }
-
-  public getSupervisorsForOrganization(): Observable<PaginatedResult<User>> {
-    return this.http.get<PaginatedResult<User>>(
-      `${this.env.apiUrl}/Users/GetSupervisors`
-    );
-  }
 }

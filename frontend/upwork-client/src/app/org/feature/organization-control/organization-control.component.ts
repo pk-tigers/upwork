@@ -20,6 +20,7 @@ import { SupervisorService } from 'src/app/shared/data-access/service/supervisor
 import { RegisterModel } from 'src/app/models/register.model';
 import { User } from 'src/app/models/user.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
+import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
 
 @Component({
   selector: 'app-organization-control',
@@ -81,19 +82,9 @@ export class OrganizationControlComponent implements OnInit {
       .subscribe((result: PaginatedResult<User>) => {
         this.listOfSupervisors = result.data;
       });
-    this.sortSupervisorsByFirstNameAndLastName(this.listOfSupervisors);
-  }
-
-  sortSupervisorsByFirstNameAndLastName(users: User[]): void {
-    users.sort((a, b) => {
-      const firstNameComparison = (a.firstName || '').localeCompare(
-        b.firstName || ''
-      );
-      if (firstNameComparison !== 0) {
-        return firstNameComparison;
-      }
-      return (a.lastName || '').localeCompare(b.lastName || '');
-    });
+    SupervisorsSort.sortAlphabeticallyFirtnameAndLastName(
+      this.listOfSupervisors
+    );
   }
 
   openAddUserPopup(): void {

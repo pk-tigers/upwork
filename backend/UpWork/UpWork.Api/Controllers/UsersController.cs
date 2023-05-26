@@ -63,9 +63,9 @@ namespace UpWork.Api.Controllers
         [HttpGet("GetSupervisors")]
         [RequireClaim(IdentityData.PermissionsClaimName, PermissionType.BasicRead)]
         [Authorize(Policy = IdentityData.MatchOrganizationIdQueryPolicy)]
-        public ActionResult<PaginatedResult<UserModel>> GetSupervisors(int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<UserModel>> GetSupervisors(Guid organizationId, int skip = 0, int take = 10)
         {
-            Guid organizationId = (Guid)User.Identity.GetOrganizationId();
+            //Guid organizationId = (Guid)User.Identity.GetOrganizationId();
             var res = _usersService.GetSupervisors(organizationId, skip, take);
 
             return Ok(res);
