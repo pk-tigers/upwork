@@ -24,7 +24,6 @@
                   ><mat-icon>{{ element.icon }}</mat-icon
                   ><span class="nav-text-link">{{ element.text }}</span></a
                 >
-                <!-- <div class="rounding-bottom" *ngIf="isMenuActive(i)"></div> -->
               </li>
             </ng-container>
 
@@ -36,7 +35,9 @@
                 <p *ngIf="isMenuActive(menuData.length)"></p>
                 <a class="nav-link" routerLink="admin-panel"
                   ><mat-icon>settings</mat-icon
-                  ><span class="nav-text-link">Admin Panel</span></a
+                  ><span class="nav-text-link">{{
+                    'navigation.admin-panel' | translate
+                  }}</span></a
                 >
                 <p
                   class="rounding-bottom"
@@ -52,7 +53,9 @@
             <li class="nav-item" (click)="logout()">
               <a class="nav-link" routerLink="#"
                 ><mat-icon>logout</mat-icon
-                ><span class="nav-text-link">Logout</span></a
+                ><span class="nav-text-link">{{
+                  'navigation.logout' | translate
+                }}</span></a
               >
             </li>
           </ul>
