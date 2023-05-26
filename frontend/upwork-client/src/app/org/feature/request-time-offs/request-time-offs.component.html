@@ -1,6 +1,8 @@
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">Requested Time offs</div>
+    <div class="upwork-default-content-heading">
+      {{ 'requests.requested-time-offs' | translate }}
+    </div>
     <div class="upwork-default-content-data">
       <app-shared-table
         [caption]="'List of all pending requests time off'"
@@ -17,7 +19,7 @@
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
     <div class="upwork-default-content-heading">
-      History of Requested Time offs
+      {{ 'requests.requested-time-offs-history' | translate }}
     </div>
     <div class="upwork-default-content-data">
       <app-shared-table

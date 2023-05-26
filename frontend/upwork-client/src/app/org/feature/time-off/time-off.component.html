@@ -1,15 +1,18 @@
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">Time off</div>
+    <div class="upwork-default-content-heading">
+      {{ 'time-off.header' | translate }}
+    </div>
     <div class="upwork-default-content-data">
       <div class="d-flex justify-content-around">
         <h2>
-          {{ absencesYearCount$ | async }} time off days already taken this year
+          {{ absencesYearCount$ | async }}
+          {{ 'time-off.year-days-counter' | translate }}
         </h2>
         <button
           class="upwork-btn upwork-btn-primary"
           (click)="openNewRequestPopup()">
-          New request
+          {{ 'time-off.new-request-button' | translate }}
         </button>
       </div>
       <app-shared-table

@@ -6,15 +6,18 @@
     <div class="page-not-found-body">
       <div>
         <div class="error-number">404</div>
-        <div class="error-meaning">Page not found</div>
+        <div class="error-meaning">
+          {{ 'page-not-found.meaning' | translate }}
+        </div>
         <div class="error-description">
           <p>
-            The page you are looking for doesn't exist or a different error
-            occured.
+            {{ 'page-not-found.description' | translate }}
           </p>
           <p>
-            Go back or head over to&nbsp;<a routerLink="/">main page</a>&nbsp;to
-            choose a new direction&period;
+            {{ 'page-not-found.before-link-text' | translate }}&nbsp;<a
+              routerLink="/"
+              >{{ 'page-not-found.link' | translate }}</a
+            >&nbsp; {{ 'page-not-found.after-link-text' | translate }}&period;
           </p>
         </div>
       </div>
