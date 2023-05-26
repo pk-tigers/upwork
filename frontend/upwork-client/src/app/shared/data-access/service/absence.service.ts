@@ -38,11 +38,7 @@ export class AbsenceService {
     );
   }
 
-  public getAbsencesMonthly(
-    organizationId: string | undefined,
-    from: Date,
-    to: Date
-  ): Observable<Absence[]> {
+  public getAbsencesMonthly(from: Date, to: Date): Observable<Absence[]> {
     return this.http.get<Absence[]>(
       `${
         environment.apiUrl

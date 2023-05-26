@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginModel } from 'src/app/models/login.model';
 import { UserService } from 'src/app/shared/data-access/service/user.service';
+import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private organizationService: OrganizationService,
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
@@ -25,7 +27,12 @@ export class LoginComponent implements OnInit {
 
   async ngOnInit() {
     if (this.userService.isUserAuthenticated) {
-      await this.router.navigate(['/']);
+      this.organizationService.organization$.subscribe(res => async () => {
+        if (res?.urlName) {
+          const url = res.urlName;
+          await this.router.navigate([`/org/${url}/dashboard`]);
+        }
+      });
     }
   }
 
@@ -35,9 +42,19 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
     };
+
     this.userService.login(credentials).subscribe(loggedIn => {
       (async () => {
-        if (loggedIn) await this.router.navigate(['/']);
+        if (loggedIn) {
+          this.organizationService.organization$.subscribe(res => {
+            (async () => {
+              if (res?.urlName) {
+                const url = res.urlName;
+                await this.router.navigate([`/org/${url}/dashboard`]);
+              }
+            })();
+          });
+        }
       })();
     });
   }

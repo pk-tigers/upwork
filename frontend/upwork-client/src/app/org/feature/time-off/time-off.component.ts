@@ -147,6 +147,7 @@ export class TimeOffComponent {
       ),
       absenceType:
         AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
+      approvalState: ApprovalState.Pending,
     };
 
     this.absenceService
