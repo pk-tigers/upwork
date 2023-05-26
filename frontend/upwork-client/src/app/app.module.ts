@@ -38,6 +38,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { ProfileComponent } from './home/feature/profile/profile.component';
 
+import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
+import { AvatarComponent } from './home/feature/avatar/avatar.component';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -59,6 +61,8 @@ export function tokenGetter() {
     AdminPanelPopupComponent,
     TimeOffComponent,
     ProfileComponent,
+    DashboardComponent,
+    AvatarComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +108,7 @@ export function tokenGetter() {
   providers: [
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })
