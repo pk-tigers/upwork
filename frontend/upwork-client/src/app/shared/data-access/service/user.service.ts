@@ -37,7 +37,7 @@ export class UserService {
     return false;
   }
 
-  public getUser(id: String): Observable<User>{
+  public getUser(id: string): Observable<User>{
     return this.http.get<User>(`${environment.apiUrl}/User/${id}`);
   }
 

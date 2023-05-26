@@ -51,7 +51,7 @@ export class ProfileComponent {
     if (this.userID) {
       this.userService.getUser(this.userID).subscribe(res => {
         this.user = res;
-        if (this.user && this.user.currentTimeOffSupervisorId) {
+        if (this.user?.currentTimeOffSupervisorId) {
           this.userService
             .getUser(this.user.currentTimeOffSupervisorId)
             .subscribe(res => {
