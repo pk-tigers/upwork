@@ -14,7 +14,8 @@
       </div>
     </div>
   </div>
-  <div class="upwork-default-content-container">
+  <div class="upwork-default-content-container" 
+  *appPermission="permissionTypes.ModifyUser">
     <div class="upwork-default-content-heading">
       {{ 'organization-control.users-header' | translate }}
     </div>
@@ -37,5 +38,6 @@
     </div>
   </div>
   <app-permissions-control
+    *appPermission="permissionTypes.GrantPermissions"
     class="upwork-default-content-container upwork-default-content-container-permissions"></app-permissions-control>
 </div>

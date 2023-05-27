@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, switchMap, BehaviorSubject } from 'rxjs';
 import { PermissionTypes } from 'src/app/models/enums/permission-types.enum';
 import { Roles } from 'src/app/models/enums/roles.enum';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
@@ -21,6 +21,7 @@ import { UserService } from 'src/app/shared/data-access/service/user.service';
 export class PermissionsControlComponent {
   caption = 'List of all users in organization';
   currentPage = 0;
+  currentPage$ = new BehaviorSubject<number>(0);
   totalNumberOfPages = 1;
   listOfUsers$: Observable<PaginatedResult<UserWithPermissions>> =
     this.loadUsersWithPermissions();
@@ -43,22 +44,32 @@ export class PermissionsControlComponent {
   ) {}
 
   prevPage(): void {
-    this.currentPage = this.currentPage - 1;
+    if (this.currentPage > 0) {
+      this.currentPage = this.currentPage - 1;
+      this.currentPage$.next(this.currentPage);
+    }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalNumberOfPages - 1)
+    if (this.currentPage < this.totalNumberOfPages - 1) {
       this.currentPage = this.currentPage + 1;
+      this.currentPage$.next(this.currentPage);
+    }
   }
 
   private loadUsersWithPermissions() {
-    return this.organizationService.organization$.pipe(
-      switchMap(org =>
-        this.permissionsService.getUsersWithPermissions(org?.id)
-      ),
-      map((res: PaginatedResult<UserWithPermissions>) => {
-        return res;
-      })
+    return this.currentPage$.pipe(
+      switchMap(pageNumber =>
+        this.organizationService.organization$.pipe(
+          switchMap(org =>
+            this.permissionsService.getUsersWithPermissions(org?.id, pageNumber)
+          ),
+          map((res: PaginatedResult<UserWithPermissions>) => {
+            this.totalNumberOfPages = res?.page ?? 1;
+            return res;
+          })
+        )
+      )
     );
   }
 

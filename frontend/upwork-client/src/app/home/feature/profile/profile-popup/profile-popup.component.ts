@@ -41,13 +41,11 @@ export class ProfilePopupComponent {
     };
 
     if (this.userId && this.organizationId) {
-      this.userService
-        .updateUser(this.userId, this.organizationId, updateUserDto)
-        .subscribe((res: any) => {
-          if (res) {
-            location.reload();
-          }
-        });
+      this.userService.updateUser(updateUserDto).subscribe((res: any) => {
+        if (res) {
+          location.reload();
+        }
+      });
     }
   }
 

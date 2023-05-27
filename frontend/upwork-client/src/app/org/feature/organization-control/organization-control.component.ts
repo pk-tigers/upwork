@@ -21,6 +21,7 @@ import { RegisterModel } from 'src/app/models/register.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
 import { User } from 'src/app/models/user.model';
 import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
+import { PermissionTypes } from 'src/app/models/enums/permission-types.enum';
 
 @Component({
   selector: 'app-organization-control',
@@ -34,6 +35,7 @@ export class OrganizationControlComponent implements OnInit {
   header = ['First name', 'Last name', 'Current Supervisor', 'Actions'];
   totalNumberOfPages = 1;
   organization: OrganizationModel | undefined;
+  permissionTypes = PermissionTypes;
 
   constructor(
     private organizationAdminService: OrganizationAdminService,

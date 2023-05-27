@@ -1,35 +1,37 @@
-<div class="upwork-default-container">
-  <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">
-      {{ 'requests.requested-time-offs' | translate }}
-    </div>
-    <div class="upwork-default-content-data">
-      <app-shared-table
-        [caption]="'List of all pending requests time off'"
-        [headers]="header"
-        [data]="(listOfRequests$ | async) ?? []"
-        [currentPage]="(currentPage$ | async) ?? 1"
-        [totalNumberOfPages]="totalNumberOfPages"
-        (nextPageEvent)="setPage($event)"
-        (prevPageEvent)="setPage($event)"></app-shared-table>
+<ng-container *appPermission="permissionTypes.CanSupervise">
+  <div class="upwork-default-container">
+    <div class="upwork-default-content-container">
+      <div class="upwork-default-content-heading">
+        {{ 'requests.requested-time-offs' | translate }}
+      </div>
+      <div class="upwork-default-content-data">
+        <app-shared-table
+          [caption]="'List of all pending requests time off'"
+          [headers]="header"
+          [data]="(listOfRequests$ | async) ?? []"
+          [currentPage]="(currentPage$ | async) ?? 1"
+          [totalNumberOfPages]="totalNumberOfPages"
+          (nextPageEvent)="setPage($event)"
+          (prevPageEvent)="setPage($event)"></app-shared-table>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="upwork-default-container">
-  <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">
-      {{ 'requests.requested-time-offs-history' | translate }}
-    </div>
-    <div class="upwork-default-content-data">
-      <app-shared-table
-        [caption]="'List of history of requested time offs'"
-        [headers]="headerHistory"
-        [data]="(listOfRequestsHistory$ | async) ?? []"
-        [currentPage]="(currentPageHistory$ | async) ?? 1"
-        [totalNumberOfPages]="totalNumberOfPagesHistory"
-        (nextPageEvent)="setPageHistory($event)"
-        (prevPageEvent)="setPageHistory($event)"></app-shared-table>
+  <div class="upwork-default-container">
+    <div class="upwork-default-content-container">
+      <div class="upwork-default-content-heading">
+        {{ 'requests.requested-time-offs-history' | translate }}
+      </div>
+      <div class="upwork-default-content-data">
+        <app-shared-table
+          [caption]="'List of history of requested time offs'"
+          [headers]="headerHistory"
+          [data]="(listOfRequestsHistory$ | async) ?? []"
+          [currentPage]="(currentPageHistory$ | async) ?? 1"
+          [totalNumberOfPages]="totalNumberOfPagesHistory"
+          (nextPageEvent)="setPageHistory($event)"
+          (prevPageEvent)="setPageHistory($event)"></app-shared-table>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>

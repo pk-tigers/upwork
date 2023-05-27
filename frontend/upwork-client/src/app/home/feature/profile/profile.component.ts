@@ -73,7 +73,6 @@ export class ProfileComponent {
     });
   }
 
-
   openChangeNamePopup(): void {
     const inputs: Dictionary<InputPopupModel> = {
       ['firstName']: {
@@ -125,13 +124,9 @@ export class ProfileComponent {
     };
 
     if (this.userID && this.organizationId) {
-      this.userService
-        .updateUser(this.userID, this.organizationId, updateUserDto)
-        .subscribe(
-          response => {
-            location.reload();
-          }
-        );
+      this.userService.updateUser(updateUserDto).subscribe(response => {
+        location.reload();
+      });
     }
   }
 }
