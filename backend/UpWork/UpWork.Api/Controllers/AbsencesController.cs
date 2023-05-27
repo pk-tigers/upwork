@@ -40,7 +40,7 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<PaginatedResult<AbsenceModel>> GetAbsencesForUser(int skip = 0, int take = 10)
+        public ActionResult<PaginatedResult<AbsenceModelDto>> GetAbsencesForUser(int skip = 0, int take = 10)
         {
             var userId = User.Identity.GetUserId();
 

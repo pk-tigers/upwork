@@ -96,12 +96,14 @@ namespace UpWork.Infrastucture.Services
             return absenceDays;
         }
 
-        public PaginatedResult<AbsenceModel> GetAbsencesForUser(Guid userId, int skip, int take)
+        public PaginatedResult<AbsenceModelDto> GetAbsencesForUser(Guid userId, int skip, int take)
         {
             var absences = _context.Absences
+                .Include(x => x.TimeOffSupervisor)
                 .Where(x => x.IsActive)
-                .Where(x => x.UserId == userId);
-            return new PaginatedResult<AbsenceModel>(absences.Skip(skip).Take(take), absences.Count(), take); 
+                .Where(x => x.UserId == userId)
+                .Select(x => new AbsenceModelDto(x));
+            return new PaginatedResult<AbsenceModelDto>(absences.Skip(skip).Take(take), absences.Count(), take); 
         }
     }
 }

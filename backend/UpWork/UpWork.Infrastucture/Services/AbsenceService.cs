@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UpWork.Common.Dto;
 using UpWork.Common.DTO;
+using UpWork.Common.Enums;
 using UpWork.Common.Interfaces;
 using UpWork.Common.Models.DatabaseModels;
 using UpWork.Database;
@@ -70,6 +71,28 @@ namespace UpWork.Infrastucture.Services
             _context.Add(newAbsence);
             _context.SaveChanges();
             return newAbsence;
+        }
+
+        public AbsenceModelDto UpdateAbsenceSupervisor(Guid userId, Guid absenceId, Guid supervisorId)
+        {
+            var absence = _context.Absences
+                .Where(x => x.UserId == userId && x.Id == absenceId)
+                .Include(x => x.User)
+                .Include(x => x.TimeOffSupervisor)
+                .First();
+
+            var supervisor = _context.Users
+                .Where(x => x.IsActive && x.Id == supervisorId)
+                .Where(x => x.OrganizationId == absence.User.OrganizationId)
+                .Include(x => x.Permissions)
+                .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise
+                && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow))).First();
+
+            absence.TimeOffSupervisorId = supervisor.Id;
+
+            _context.SaveChanges();
+
+            return new AbsenceModelDto(absence);
         }
     }
 }

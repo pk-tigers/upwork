@@ -15,6 +15,8 @@ namespace UpWork.Common.DTO
             UserId = absenceModel.UserId;
             UserFirstName = absenceModel.User?.FirstName;
             UserLastName = absenceModel.User?.LastName;
+            SupervisorFirstName = absenceModel.TimeOffSupervisor?.FirstName;
+            SupervisorLastName = absenceModel.TimeOffSupervisor?.LastName;
             ApprovalState = absenceModel.ApprovalState;
             TimeOffSupervisorId = absenceModel.TimeOffSupervisorId;
         }
@@ -25,6 +27,8 @@ namespace UpWork.Common.DTO
         public Guid UserId { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
+        public string SupervisorFirstName { get; set; }
+        public string SupervisorLastName { get; set; }
         public ApprovalState ApprovalState { get; set; }
         public Guid? TimeOffSupervisorId { get; set; }
 	}
