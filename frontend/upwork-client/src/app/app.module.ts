@@ -40,6 +40,9 @@ import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel
 import { MatCommonModule } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { ProfileComponent } from './home/feature/profile/profile.component';
+import { ProfilePopupComponent } from './home/feature/profile/profile-popup/profile-popup.component';
+
 import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
 import { AvatarComponent } from './home/feature/avatar/avatar.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -65,8 +68,10 @@ export function tokenGetter() {
     RequestTimeOffsComponent,
     AdminPanelPopupComponent,
     TimeOffComponent,
+    ProfileComponent,
     DashboardComponent,
     AvatarComponent,
+    ProfilePopupComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { AuthenticatedResponse } from '../../../models/authenticated-response.mo
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { OrganizationService } from './organization.service';
+import { UpdateUserDto } from 'src/app/models/update-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,10 @@ export class UserService {
     const token = this.tokenService.getToken();
     if (!!token && !this.jwtHelper.isTokenExpired(token)) return true;
     return false;
+  }
+
+  public getUser(id: string): Observable<User>{
+    return this.http.get<User>(`${environment.apiUrl}/User/${id}`);
   }
 
   public login(loginModel: LoginModel): Observable<boolean> {
@@ -77,5 +82,12 @@ export class UserService {
     this.user.next(null);
     this.isAdmin.next(false);
     this.organizationService.clearOrganization();
+  }
+
+  public updateUser(id: string, organizationId: string,updateUserDto: UpdateUserDto) {
+    return this.http.put<boolean>(
+      `${environment.apiUrl}/User/${id}?organizationId=${organizationId}`,
+      updateUserDto
+    );
   }
 }

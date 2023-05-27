@@ -1,0 +1,85 @@
+<div class="upwork-default-container">
+  <div class="upwork-default-content-container profile-content-container">
+    <div class="upwork-default-content-heading">Profile</div>
+    <div class="upwork-default-content-data">
+      <div class="d-flex justify-content-center">
+        <div
+          class="d-flex justify-content-center p-3 flex-column data-container">
+          <div class="profile-detail">
+            <div class="info-container">
+              <div class="d-flex justify-content-center flex-column">
+                <mat-icon class="icon-display">email</mat-icon>
+              </div>
+              <div
+                class="info"
+                (mouseenter)="showHover = true"
+                (mouseleave)="showHover = true">
+                {{ user?.email ? user?.email : 'No email' }}
+              </div>
+              <div *ngIf="showHover" class="info-popup">E-mail address</div>
+            </div>
+          </div>
+          <div class="profile-detail">
+            <div class="info-container">
+              <div class="d-flex justify-content-center flex-column">
+                <mat-icon class="icon-display">person</mat-icon>
+              </div>
+              <div class="info">
+                {{
+                  user?.firstName || user?.lastName
+                    ? user?.firstName + ' ' + user?.lastName
+                    : 'No data'
+                }}
+              </div>
+              <div *ngIf="showHover" class="info-popup">Name and Surname</div>
+            </div>
+          </div>
+          <div class="profile-detail">
+            <div class="info-container">
+              <div class="d-flex justify-content-center flex-column">
+                <mat-icon class="icon-display">supervisor_account</mat-icon>
+              </div>
+              <div class="info">
+                {{ supervisor ? supervisor : 'No supervisor' }}
+              </div>
+              <div *ngIf="showHover" class="info-popup">Supervisor name</div>
+            </div>
+          </div>
+          <div class="profile-detail">
+            <div class="info-container">
+              <div class="d-flex justify-content-center flex-column">
+                <mat-icon class="icon-display"> business</mat-icon>
+              </div>
+              <div class="info">
+                {{ companyName ? companyName : 'No company' }}
+              </div>
+              <div *ngIf="showHover" class="info-popup">Company name</div>
+            </div>
+          </div>
+          <div class="profile-detail">
+            <div class="info-container">
+              <div class="d-flex justify-content-center flex-column">
+                <mat-icon class="icon-display">beach_access</mat-icon>
+              </div>
+              <div class="info">{{ vacation ? vacation : 0 }}</div>
+              <div *ngIf="showHover" class="info-popup">Number of days off</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-edit-button">
+        <div
+          class="upwork-btn upwork-btn-primary"
+          (click)="openChangeNamePopup()">
+          Edit data
+        </div>
+
+        <div
+          class="upwork-btn upwork-btn-primary"
+          (click)="openChangePasswordPopup()">
+          Change password
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
