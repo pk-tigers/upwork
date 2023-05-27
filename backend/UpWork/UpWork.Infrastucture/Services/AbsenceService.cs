@@ -73,22 +73,31 @@ namespace UpWork.Infrastucture.Services
             return newAbsence;
         }
 
-        public AbsenceModelDto UpdateAbsenceSupervisor(Guid userId, Guid absenceId, Guid supervisorId)
+        public AbsenceModelDto UpdateAbsence(Guid userId, UpdateAbsenceDto updateAbsenceDto)
         {
             var absence = _context.Absences
-                .Where(x => x.UserId == userId && x.Id == absenceId)
+                .Where(x => x.UserId == userId && x.Id == updateAbsenceDto.Id)
                 .Include(x => x.User)
                 .Include(x => x.TimeOffSupervisor)
                 .First();
 
-            var supervisor = _context.Users
-                .Where(x => x.IsActive && x.Id == supervisorId)
-                .Where(x => x.OrganizationId == absence.User.OrganizationId)
-                .Include(x => x.Permissions)
-                .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise
-                && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow))).First();
+            if (updateAbsenceDto.FromDate.HasValue && updateAbsenceDto.FromDate.Value >= DateTime.Today)
+                absence.FromDate = updateAbsenceDto.FromDate.Value;
 
-            absence.TimeOffSupervisorId = supervisor.Id;
+            if (updateAbsenceDto.ToDate.HasValue && updateAbsenceDto.ToDate.Value >= absence.FromDate)
+                absence.ToDate = updateAbsenceDto.ToDate.Value;
+
+            if (updateAbsenceDto.TimeOffSupervisorId.HasValue)
+            {
+                var supervisor = _context.Users
+                    .Where(x => x.IsActive && x.Id == updateAbsenceDto.TimeOffSupervisorId)
+                    .Where(x => x.OrganizationId == absence.User.OrganizationId)
+                    .Include(x => x.Permissions)
+                    .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise
+                    && z.GrantDate < DateTime.UtcNow && (z.ExpirationDate == null || z.ExpirationDate > DateTime.UtcNow))).First();
+
+                absence.TimeOffSupervisorId = supervisor.Id;
+            }
 
             _context.SaveChanges();
 

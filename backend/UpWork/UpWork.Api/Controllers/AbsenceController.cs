@@ -59,10 +59,10 @@ namespace UpWork.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AbsenceModelDto> UpdateAbsenceSupervisor([FromQuery] Guid absenceId, [FromQuery] Guid supervisorId)
+        public ActionResult<AbsenceModelDto> UpdateAbsenceForUser([FromBody] UpdateAbsenceDto updateAbsenceDto)
         {
             var userId = User.Identity.GetUserId();
-            var absence = _absenceService.UpdateAbsenceSupervisor(userId, absenceId, supervisorId);
+            var absence = _absenceService.UpdateAbsence(userId, updateAbsenceDto);
 
             return Ok(absence);
         }
