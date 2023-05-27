@@ -29,7 +29,8 @@ namespace UpWork.Infrastucture.Services
             var ownAndSupervisedAbsences = _context.Absences
                 .Where(x => x.IsActive)
                 .Include(x => x.User)
-                .Where(x => x.UserId == user.Id || x.TimeOffSupervisorId == userId);
+                .Where(x => x.User.OrganizationId == user.OrganizationId)
+                .Where(x => x.UserId == user.Id || x.TimeOffSupervisorId == userId || user.Role == Role.OrganizationOwner);
 
             var absences = orgAcceptedAbsences.Concat(ownAndSupervisedAbsences)
                 .Where(x => (x.FromDate >= fromDate && x.FromDate <= toDate)
