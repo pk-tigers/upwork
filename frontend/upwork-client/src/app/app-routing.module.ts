@@ -26,8 +26,8 @@ const routes: Routes = [
         canActivate: [adminGuard],
       },
       {
-        path:'profile',
-        component: ProfileComponent
+        path: 'profile',
+        component: ProfileComponent,
       },
       {
         path: 'org/:org-url',

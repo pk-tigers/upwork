@@ -51,6 +51,7 @@ import { DashboardComponent } from './home/feature/dashboard/dashboard.component
 import { AvatarComponent } from './home/feature/avatar/avatar.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { PermissionRestrictDirective } from './shared/data-access/directive/permission-restrict.directive';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -65,7 +66,6 @@ export function tokenGetter() {
     CalendarComponent,
     OrganizationControlComponent,
     AdminPanelComponent,
-    RoleRestrictDirective,
     SharedTableComponent,
     PageNotFoundComponent,
     PermissionsControlComponent,
@@ -76,6 +76,8 @@ export function tokenGetter() {
     DashboardComponent,
     AvatarComponent,
     ProfilePopupComponent,
+    RoleRestrictDirective,
+    PermissionRestrictDirective,
   ],
   imports: [
     NgbTooltipModule,

@@ -35,7 +35,7 @@ namespace UpWork.Infrastucture.Services
                 if (loginData == null || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password))
                     return false;
 
-                var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email).Include(x => x.Permissions).FirstOrDefault();
+                var userModel = _dbContext.Users.Where(x => x.Email == loginData.Email && x.IsActive).Include(x => x.Permissions).FirstOrDefault();
 
                 if (userModel is null)
                     return false;
