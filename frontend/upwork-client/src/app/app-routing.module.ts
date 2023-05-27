@@ -10,6 +10,9 @@ import { adminGuard } from './shared/data-access/guard/admin.guard';
 import { PageNotFoundComponent } from './home/feature/page-not-found/page-not-found.component';
 import { organizationGuard } from './shared/data-access/guard/organization.guard';
 import { RequestTimeOffsComponent } from './org/feature/request-time-offs/request-time-offs.component';
+import { ProfileComponent } from './home/feature/profile/profile.component';
+
+import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,6 +26,10 @@ const routes: Routes = [
         canActivate: [adminGuard],
       },
       {
+        path:'profile',
+        component: ProfileComponent
+      },
+      {
         path: 'org/:org-url',
         canActivate: [organizationGuard],
         children: [
@@ -33,10 +40,12 @@ const routes: Routes = [
             component: OrganizationControlComponent,
           },
           { path: 'requests', component: RequestTimeOffsComponent },
+          { path: 'dashboard', component: DashboardComponent },
         ],
       },
     ],
   },
+
   { path: '**', component: PageNotFoundComponent },
 ];
 

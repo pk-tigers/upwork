@@ -12,7 +12,7 @@ export class SharedTableComponent {
   @Input() data!: SharedTableData[];
   @Input() currentPage!: number;
   @Input() totalNumberOfPages!: number;
-  rowsPerPage: number = 10;
+  rowsPerPage = 10;
 
   @Output() prevPageEvent = new EventEmitter<number>();
   @Output() nextPageEvent = new EventEmitter<number>();
@@ -29,5 +29,4 @@ export class SharedTableComponent {
   getStartRowIndex(): number {
     return this.currentPage * this.rowsPerPage + 1;
   }
-
 }

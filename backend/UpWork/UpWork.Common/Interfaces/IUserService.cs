@@ -9,6 +9,7 @@ namespace UpWork.Common.Interfaces
         UserModel CreateUser(RegisterDto registerDto, Role role = Role.User);
         UserModel GetUser(Guid Id);
         bool DeleteUser(Guid Id);
+        UserModel UpdateUser(UserModel existingUser, UpdateUserDto updateUserDto);
         bool UpdateUserSupervisor(UpdateUserSupervisorDto updateUserSupervisor);
     }
 }

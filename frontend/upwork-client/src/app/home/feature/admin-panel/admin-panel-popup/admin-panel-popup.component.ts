@@ -5,6 +5,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Dictionary } from 'cypress/types/lodash';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';

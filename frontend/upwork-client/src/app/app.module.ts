@@ -9,7 +9,11 @@ import { PopupWithInputsComponent } from './shared/ui/popup-with-inputs/popup-wi
 import { JwtModule } from '@auth0/angular-jwt';
 import { NavigationComponent } from './home/feature/navigation/navigation.component';
 import { MatIconModule } from '@angular/material/icon';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
@@ -40,6 +44,13 @@ import { AdminPanelPopupComponent } from './home/feature/admin-panel/admin-panel
 import { MatCommonModule } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { ProfileComponent } from './home/feature/profile/profile.component';
+import { ProfilePopupComponent } from './home/feature/profile/profile-popup/profile-popup.component';
+
+import { DashboardComponent } from './home/feature/dashboard/dashboard.component';
+import { AvatarComponent } from './home/feature/avatar/avatar.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -61,6 +72,10 @@ export function tokenGetter() {
     RequestTimeOffsComponent,
     AdminPanelPopupComponent,
     TimeOffComponent,
+    ProfileComponent,
+    DashboardComponent,
+    AvatarComponent,
+    ProfilePopupComponent,
   ],
   imports: [
     NgbTooltipModule,
@@ -102,13 +117,25 @@ export function tokenGetter() {
         disallowedRoutes: [],
       },
     }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   entryComponents: [PopupWithInputsComponent],
 
   providers: [
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}

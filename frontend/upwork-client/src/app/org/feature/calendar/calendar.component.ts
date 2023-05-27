@@ -15,6 +15,7 @@ import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
 import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { colors } from 'src/app/models/colors/color';
 import { Absence } from 'src/app/models/absence.model';
+import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 
 @Component({
   selector: 'app-calendar',
@@ -85,16 +86,9 @@ export class CalendarComponent {
   }
 
   private loadAbsences(): Observable<CalendarEvent[]> {
-    return this.organizationService.organization$.pipe(
-      switchMap(organization =>
-        this.absenceService.getAbsencesMonthly(
-          organization?.id,
-          this.from,
-          this.to
-        )
-      ),
-      map(res => this.mapData(res))
-    );
+    return this.absenceService
+      .getAbsencesMonthly(this.from, this.to)
+      .pipe(map(res => this.mapData(res)));
   }
 
   private mapData(data: Absence[]): CalendarEvent[] {
@@ -105,9 +99,12 @@ export class CalendarComponent {
         end: new Date(absence.toDate),
         title: `${absence.userFirstName} ${
           absence.userLastName
-        } - ${this.getAbsenceTypeTitle(absence.absenceType)}`,
+        } - ${this.getAbsenceTypeTitle(
+          absence.absenceType
+        )} - ${this.getApprovalStateString(absence)}`,
         color: this.getAbsenceTypeColor(absence.absenceType),
         meta: this.getInitials(absence),
+        cssClass: this.getCssStyle(absence),
       };
       events.push(event);
     });
@@ -137,5 +134,17 @@ export class CalendarComponent {
       res += absence.userLastName[0];
 
     return res;
+  }
+
+  private getApprovalStateString(absence: Absence): string {
+    const absenceStateString = ['Pending', 'Approved', 'Rejected'];
+    return absenceStateString[absence.approvalState];
+  }
+
+  private getCssStyle(absence: Absence): string | undefined {
+    if (absence.approvalState === ApprovalState.Approved) return 'approved';
+    else if (absence.approvalState === ApprovalState.Rejected)
+      return 'rejected';
+    return undefined;
   }
 }
