@@ -18,8 +18,9 @@ import { UpdateSupervisor } from 'src/app/models/update-supervisor.model';
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { SupervisorService } from 'src/app/shared/data-access/service/supervisor.service';
 import { RegisterModel } from 'src/app/models/register.model';
-import { User } from 'src/app/models/user.model';
 import { OrganizationModel } from 'src/app/models/organization.model';
+import { User } from 'src/app/models/user.model';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 
 @Component({
   selector: 'app-organization-control',
@@ -165,31 +166,35 @@ export class OrganizationControlComponent implements OnInit {
         actions: [
           {
             icon: 'password',
-            func: (arg: string) => {
+            func: () => {
               this.openResetPasswordPopup();
             },
             arg: user?.id,
+            tooltip: TooltipTexts.resetPassword,
           },
           {
             icon: 'lock',
-            func: (arg: string) => {
+            func: () => {
               this.openBlockUserPopup();
             },
             arg: user?.id,
+            tooltip: TooltipTexts.blockUser,
           },
           {
             icon: 'supervisor_account',
-            func: (arg: string) => {
+            func: () => {
               this.openSetSupervisorPopup(user);
             },
             arg: user?.id,
+            tooltip: TooltipTexts.setSupervisor,
           },
           {
             icon: 'delete',
-            func: (arg: string) => {
+            func: () => {
               this.openDeleteUserPopup(user);
             },
             arg: user?.id,
+            tooltip: TooltipTexts.deleteUser,
           },
         ],
       };
@@ -314,8 +319,12 @@ export class OrganizationControlComponent implements OnInit {
   }
 
   //TODO: Logika otwierania popupa dla "Block User"
-  openBlockUserPopup() {}
+  openBlockUserPopup() {
+    return;
+  }
 
   //TODO: Logika otwierania popupa dla "Reset User's Password"
-  openResetPasswordPopup() {}
+  openResetPasswordPopup() {
+    return;
+  }
 }

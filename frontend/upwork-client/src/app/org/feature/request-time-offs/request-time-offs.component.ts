@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { Absence } from 'src/app/models/absence.model';
 import { Dictionary } from 'src/app/models/dictionary.model';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -196,6 +197,7 @@ export class RequestTimeOffsComponent {
               this.openRequestApprovalPopup(arg);
             },
             arg: request.id,
+            tooltip: TooltipTexts.acceptRequest,
           },
           {
             icon: 'close',
@@ -203,6 +205,7 @@ export class RequestTimeOffsComponent {
               this.openRequestDisapprovalPopup(arg);
             },
             arg: request.id,
+            tooltip: TooltipTexts.cancelRequest,
           },
         ],
       };

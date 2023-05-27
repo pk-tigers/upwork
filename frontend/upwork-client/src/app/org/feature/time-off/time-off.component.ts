@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TimeUtilities } from 'src/app/shared/web-utilities/time-utilities';
 import { ApprovalState } from 'src/app/models/enums/approval-state.enum';
 import { AbsenceService } from 'src/app/shared/data-access/service/absence.service';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 
 @Component({
   selector: 'app-time-off',
@@ -191,6 +192,7 @@ export class TimeOffComponent {
             this.openCancelRequestPopup(arg);
           },
           arg: userRequest.id,
+          tooltip: TooltipTexts.cancelRequest,
         });
       }
       if (

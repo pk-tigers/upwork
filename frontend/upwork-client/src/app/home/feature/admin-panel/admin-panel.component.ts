@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Dictionary } from 'cypress/types/lodash';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 import {
   ButtonPopupModel,
   ButtonTypes,
@@ -151,6 +152,7 @@ export class AdminPanelComponent {
               this.openManageOrganizationPopup(arg);
             },
             arg: organization,
+            tooltip: TooltipTexts.organizationSettings,
           },
           {
             icon: 'delete',
@@ -158,6 +160,7 @@ export class AdminPanelComponent {
               this.openDeleteOrganizationPopup(arg);
             },
             arg: organization?.id,
+            tooltip: TooltipTexts.deleteOrganization,
           },
           {
             icon: 'launch',
@@ -165,6 +168,7 @@ export class AdminPanelComponent {
               await this.goTo(arg);
             },
             arg: organization.urlName,
+            tooltip: TooltipTexts.organizationCalendar,
           },
         ],
       };
