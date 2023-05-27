@@ -63,7 +63,7 @@ namespace UpWork.Infrastucture.Services
 #if DEBUG
                 expires: DateTime.UtcNow.AddHours(3),
 #else
-                expires: DateTime.UtcNow.AddMinutes(30),
+                expires: DateTime.UtcNow.AddHours(1),
 #endif
                 signingCredentials: signinCredentials
             );
