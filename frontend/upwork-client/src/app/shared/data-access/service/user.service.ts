@@ -96,13 +96,9 @@ export class UserService {
     this.organizationService.clearOrganization();
   }
 
-  public updateUser(
-    id: string,
-    organizationId: string,
-    updateUserDto: UpdateUserDto
-  ) {
+  public updateUser(updateUserDto: UpdateUserDto) {
     return this.http.put<boolean>(
-      `${environment.apiUrl}/User/${id}?organizationId=${organizationId}`,
+      `${environment.apiUrl}/User/UpdateUserForUser`,
       updateUserDto
     );
   }

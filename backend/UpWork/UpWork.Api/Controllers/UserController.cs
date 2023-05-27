@@ -87,6 +87,19 @@ namespace UpWork.Api.Controllers
             }
             UserModel updatedUser = _userService.UpdateUser(existingUser, updateUserDto);
             return Ok(updatedUser);
-       }
+        }
+
+        [HttpPut("UpdateUserForUser")]
+        public ActionResult<UserModel> UpdateUserForUser([FromBody] UpdateUserDto updateUserDto)
+        {
+            UserModel existingUser = _userService.GetUser(User.Identity.GetUserId());
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+            UserModel updatedUser = _userService.UpdateUser(existingUser, updateUserDto);
+            return Ok(updatedUser);
+        }
     }
 }
