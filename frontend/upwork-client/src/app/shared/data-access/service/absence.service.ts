@@ -2,20 +2,26 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Absence } from 'src/app/models/absence.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
 import { User } from 'src/app/models/user.model';
+import { AbsenceWithSupervisor } from 'src/app/models/absence-with-supervisor.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AbsenceService {
+  private absence = new BehaviorSubject<AbsenceWithSupervisor | null>(null);
+  public absence$ = this.absence.asObservable();
   env = environment;
+
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
-  public createAbsenceRequest(absence: Absence): Observable<Absence> {
-    return this.http.post<Absence>(
+  public createAbsenceRequest(
+    absence: AbsenceWithSupervisor
+  ): Observable<AbsenceWithSupervisor> {
+    return this.http.post<AbsenceWithSupervisor>(
       `${environment.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
     );
@@ -30,8 +36,8 @@ export class AbsenceService {
   public getAbsencesForUser(
     pageNumber = 0,
     pageSize = 10
-  ): Observable<PaginatedResult<Absence>> {
-    return this.http.get<PaginatedResult<Absence>>(
+  ): Observable<PaginatedResult<AbsenceWithSupervisor>> {
+    return this.http.get<PaginatedResult<AbsenceWithSupervisor>>(
       `${environment.apiUrl}/Absences/GetAbsencesForUser?skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
@@ -52,6 +58,15 @@ export class AbsenceService {
   public getYearAbsenceCountForUser(): Observable<number> {
     return this.http.get<number>(
       `${environment.apiUrl}/Absences/getYearAbsenceCountForUser`
+    );
+  }
+
+  public updateAbsence(
+    updateAbsence: AbsenceWithSupervisor
+  ): Observable<AbsenceWithSupervisor> {
+    return this.http.put<AbsenceWithSupervisor>(
+      `${this.env.apiUrl}/absence/updateAbsenceForUser`,
+      updateAbsence
     );
   }
 }

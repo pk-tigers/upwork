@@ -10,7 +10,6 @@ import {
 } from 'src/app/models/input-popup-data.model';
 import { SharedTableData } from 'src/app/models/shared-table-data.model';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
-import { Absence } from 'src/app/models/absence.model';
 import { AbsenceType } from 'src/app/models/enums/absence-type.enum';
 import { PopupWithInputsComponent } from 'src/app/shared/ui/popup-with-inputs/popup-with-inputs.component';
 import { formatDate } from '@angular/common';
@@ -24,6 +23,9 @@ import { SupervisorService } from 'src/app/shared/data-access/service/supervisor
 import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
 import { OrganizationAdminService } from '../../../shared/data-access/service/organization-admin.service';
 import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
+import { AbsenceWithSupervisor } from '../../../models/absence-with-supervisor.model';
+import { UpdateSupervisor } from 'src/app/models/update-supervisor.model';
+import { UpdateAbsence } from 'src/app/models/update-absence.model';
 
 @Component({
   selector: 'app-time-off',
@@ -37,6 +39,7 @@ export class TimeOffComponent implements OnInit {
   totalNumberOfPages = 1;
   absencesYearCount$ = this.getAbsencesYearCount();
   listOfSupervisors: User[] = [];
+  absenceWithSupervisor: AbsenceWithSupervisor | undefined;
 
   constructor(
     private dialog: MatDialog,
@@ -48,7 +51,7 @@ export class TimeOffComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getSupervisorsForOrganization();
+    this.getSupervisors();
   }
 
   openCancelRequestPopup(requestId: string): void {
@@ -143,7 +146,7 @@ export class TimeOffComponent implements OnInit {
     });
   }
 
-  public getSupervisorsForOrganization(): void {
+  public getSupervisors(): void {
     this.organizationService.organization$
       .pipe(
         switchMap(org => this.supervisorService.getSupervisors(org?.id)),
@@ -151,6 +154,7 @@ export class TimeOffComponent implements OnInit {
       )
       .subscribe((result: PaginatedResult<User>) => {
         this.listOfSupervisors = result.data;
+        console.log(result.data);
       });
     SupervisorsSort.sortAlphabeticallyFirtnameAndLastName(
       this.listOfSupervisors
@@ -158,7 +162,7 @@ export class TimeOffComponent implements OnInit {
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
-    const userRequest: Absence = {
+    const userRequest: AbsenceWithSupervisor = {
       fromDate: TimeUtilities.createDateAsUTC(
         new Date(String(inputs['TimeOffBeginningDate'].value))
       ),
@@ -168,6 +172,7 @@ export class TimeOffComponent implements OnInit {
       absenceType:
         AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
       approvalState: ApprovalState.Pending,
+      timeOffSupervisorId: String(inputs['SupervisorsOptions'].value),
     };
 
     this.absenceService
@@ -195,112 +200,165 @@ export class TimeOffComponent implements OnInit {
       switchMap(currentPage =>
         this.absenceService.getAbsencesForUser(currentPage)
       ),
-      map((res: PaginatedResult<Absence>) => {
+      map((res: PaginatedResult<AbsenceWithSupervisor>) => {
         this.totalNumberOfPages = res.page ?? 1;
         if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
+        console.log(res);
         return this.mapData(res);
       })
     );
   }
 
-  private mapData(data: PaginatedResult<Absence>): SharedTableData[] {
+  private mapData(
+    data: PaginatedResult<AbsenceWithSupervisor>
+  ): SharedTableData[] {
     const userRequests = data.data;
     const results: SharedTableData[] = [];
     userRequests.forEach(userRequest => {
-      const result: SharedTableData = {
-        cols: [
-          formatDate(userRequest.fromDate, 'dd/MM/yyyy', 'en-US'),
-          formatDate(userRequest.toDate, 'dd/MM/yyyy', 'en-US'),
-          AbsenceType[Number(userRequest.absenceType.toString())].replace(
-            /([A-Z])/g,
-            ' $1'
-          ),
-          ApprovalState[Number(userRequest.approvalState?.toString())],
-        ],
-        actions: [],
-      };
-
-      if (new Date(userRequest.fromDate) > new Date()) {
-        result.actions?.push({
-          icon: 'delete',
-          func: (arg: string) => {
-            this.openCancelRequestPopup(arg);
-          },
-          arg: userRequest.id,
-          tooltip: TooltipTexts.cancelRequest,
-        });
-      }
       if (
-        ApprovalState[Number(userRequest.approvalState?.toString())] ==
-        'Pending'
+        typeof userRequest.fromDate !== 'undefined' &&
+        typeof userRequest.toDate !== 'undefined' &&
+        typeof userRequest.absenceType !== 'undefined'
       ) {
-        result.actions?.push({
-          icon: 'launch',
-          func: (arg: Absence) => {
-            this.openUpdateAbsencePopup(arg);
-          },
-          arg: userRequest,
-        });
+        const result: SharedTableData = {
+          cols: [
+            formatDate(userRequest.fromDate, 'dd/MM/yyyy', 'en-US'),
+            formatDate(userRequest.toDate, 'dd/MM/yyyy', 'en-US'),
+            AbsenceType[Number(userRequest.absenceType.toString())].replace(
+              /([A-Z])/g,
+              ' $1'
+            ),
+            ApprovalState[Number(userRequest.approvalState?.toString())],
+          ],
+          actions: [],
+        };
+
+        if (new Date(userRequest.fromDate) > new Date()) {
+          result.actions?.push({
+            icon: 'delete',
+            func: (arg: string) => {
+              this.openCancelRequestPopup(arg);
+            },
+            arg: userRequest.id,
+            tooltip: TooltipTexts.cancelRequest,
+          });
+        }
+        if (
+          ApprovalState[Number(userRequest.approvalState?.toString())] ==
+          'Pending'
+        ) {
+          result.actions?.push({
+            icon: 'launch',
+            func: (arg: AbsenceWithSupervisor) => {
+              this.openUpdateAbsencePopup(arg);
+            },
+            arg: userRequest,
+          });
+        }
+        results.push(result);
       }
-      results.push(result);
     });
     return results;
   }
 
-  private openUpdateAbsencePopup(userRequest: Absence): void {
-    const inputs: Dictionary<InputPopupModel> = {
-      ['TimeOffBeginningDate']: {
-        value: userRequest.fromDate,
-        type: 'date',
-        placeholder: 'Current beginning date:',
-      },
-      ['TimeOffEndDate']: {
-        value: userRequest.toDate,
-        type: 'date',
-        placeholder: 'Current end date:',
-      },
-      ['TimeOffOptions']: {
-        value: '',
-        type: 'select',
-        placeholder: AbsenceType[userRequest.absenceType]
-          .replace(/([A-Z])/g, ' $1')
-          .trim(),
-        selectOptions: Object.keys(AbsenceType)
-          .filter(key => isNaN(Number(key)))
-          .map(key => ({
-            value: key,
-            displayValue: key.replace(/([A-Z])/g, ' $1').trim(),
+  private openUpdateAbsencePopup(userRequest: AbsenceWithSupervisor): void {
+    if (typeof userRequest.absenceType !== 'undefined') {
+      const inputs: Dictionary<InputPopupModel> = {
+        ['TimeOffBeginningDate']: {
+          value: userRequest.fromDate,
+          type: 'date',
+          placeholder: 'Current beginning date:',
+        },
+        ['TimeOffEndDate']: {
+          value: userRequest.toDate,
+          type: 'date',
+          placeholder: 'Current end date:',
+        },
+        ['TimeOffOptions']: {
+          value: AbsenceType[userRequest.absenceType],
+          type: 'select',
+          placeholder: AbsenceType[userRequest.absenceType]
+            .replace(/([A-Z])/g, ' $1')
+            .trim(),
+          selectOptions: Object.keys(AbsenceType)
+            .filter(key => isNaN(Number(key)))
+            .map(key => ({
+              value: key,
+              displayValue: key.replace(/([A-Z])/g, ' $1').trim(),
+            })),
+        },
+        ['SupervisorsOptions']: {
+          value: userRequest.timeOffSupervisorId,
+          type: 'select',
+          placeholder: `${userRequest.supervisorFirstName} ${userRequest.supervisorLastName}`,
+          selectOptions: this.listOfSupervisors.map(supervisor => ({
+            value: supervisor.id || '',
+            displayValue: `${supervisor.firstName} ${supervisor.lastName}`,
           })),
-      },
-    };
+        },
+      };
 
-    const buttons: ButtonPopupModel[] = [
-      {
-        type: ButtonTypes.PRIMARY,
-        text: 'Update',
-        onClick: () => console.log('dupa'), ///this.setSupervisor(inputs, user),
-      },
-    ];
+      const buttons: ButtonPopupModel[] = [
+        {
+          type: ButtonTypes.PRIMARY,
+          text: 'Update',
+          onClick: () => this.updateAbsence(inputs, userRequest),
+        },
+      ];
 
-    const data: InputPopupDataModel = {
-      title: 'Update your Pending Time off details',
-      description:
-        'Your request supervisor is: ' +
-        this.listOfSupervisors.find(
-          supervisor => supervisor.id === userRequest.timeOffSupervisorId
-        )?.firstName +
-        ' ' +
-        this.listOfSupervisors.find(
-          supervisor => supervisor.id === userRequest.timeOffSupervisorId
-        )?.lastName,
-      inputs: inputs,
-      buttons: buttons,
-    };
+      const data: InputPopupDataModel = {
+        title: 'Update your Pending Time off details',
+        description:
+          "Update fields if you want to change your time off's details: ",
+        inputs: inputs,
+        buttons: buttons,
+      };
 
-    this.dialog.open(PopupWithInputsComponent, {
-      data: data,
-      panelClass: 'upwork-popup',
-    });
+      this.dialog.open(PopupWithInputsComponent, {
+        data: data,
+        panelClass: 'upwork-popup',
+      });
+    }
+  }
+
+  private updateAbsence(
+    inputs: Dictionary<InputPopupModel>,
+    absence: AbsenceWithSupervisor
+  ) {
+    const updatedAbsence: UpdateAbsence = {};
+
+    this.absenceService.absence$
+      .pipe(
+        map(absence => absence?.id),
+        switchMap(id => {
+          updatedAbsence.absenceId = absence.id;
+          updatedAbsence.newFromDate = TimeUtilities.createDateAsUTC(
+            new Date(String(inputs['TimeOffBeginningDate'].value))
+          );
+          updatedAbsence.newToDate = TimeUtilities.createDateAsUTC(
+            new Date(String(inputs['TimeOffEndDate'].value))
+          );
+          updatedAbsence.absenceType =
+            AbsenceType[
+              inputs['TimeOffOptions'].value as keyof typeof AbsenceType
+            ];
+          updatedAbsence.timeOffSupervisorId =
+            inputs['SupervisorsOptions'].value?.toString();
+          console.log(absence);
+          console.log(updatedAbsence);
+          return this.absenceService.updateAbsence(updatedAbsence);
+        }),
+        take(1)
+      )
+      .subscribe(updatedAbsence => {
+        console.log(updatedAbsence);
+        if (updatedAbsence) {
+          this.tostr.success('Absence successfully updated');
+        } else {
+          this.tostr.warning('Something went wrong');
+        }
+        this.listOfUserRequests$ = this.loadUserRequests();
+      });
   }
 }

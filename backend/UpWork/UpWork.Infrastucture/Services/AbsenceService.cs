@@ -54,9 +54,6 @@ namespace UpWork.Infrastucture.Services
 
         public AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto)
         {
-            var superVisiorId = _context.Users?.First(u => u.Id == userId).CurrentTimeOffSupervisorId;
-
-
             AbsenceModel newAbsence = new AbsenceModel
             {
                 Id = Guid.NewGuid(),
@@ -65,7 +62,7 @@ namespace UpWork.Infrastucture.Services
                 IsActive = true,
                 AbsenceType = requestDto.AbsenceType,
                 UserId = userId,
-                TimeOffSupervisorId = superVisiorId
+                TimeOffSupervisorId = requestDto.TimeOffSupervisorId
             };
 
             _context.Add(newAbsence);
@@ -79,6 +76,7 @@ namespace UpWork.Infrastucture.Services
                 .Where(x => x.UserId == userId && x.Id == updateAbsenceDto.Id)
                 .Include(x => x.User)
                 .Include(x => x.TimeOffSupervisor)
+                .Include(x => x.AbsenceType)
                 .First();
 
             if (updateAbsenceDto.FromDate.HasValue && updateAbsenceDto.FromDate.Value >= DateTime.Today)
@@ -98,6 +96,7 @@ namespace UpWork.Infrastucture.Services
 
                 absence.TimeOffSupervisorId = supervisor.Id;
             }
+            absence.AbsenceType = updateAbsenceDto.AbsenceType;
 
             _context.SaveChanges();
 
