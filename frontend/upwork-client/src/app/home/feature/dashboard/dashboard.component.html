@@ -14,7 +14,9 @@
               <div
                 *ngIf="container.type === 'time'"
                 class="time-off d-flex justify-content-center flex-column">
-                <div class="time-off-header m-2">Today's time offs</div>
+                <div class="time-off-header m-2">
+                  {{ 'dashboard.today-time-offs-part' | translate }}
+                </div>
                 <ng-container
                   *ngIf="
                     container.items.today && container.items.today.length > 0;
@@ -30,7 +32,9 @@
               <div
                 *ngIf="container.type === 'time'"
                 class="time-off d-flex justify-content-center flex-column">
-                <div class="time-off-header m-2">This week's time offs</div>
+                <div class="time-off-header m-2">
+                  {{ 'dashboard.week-time-offs-part' | translate }}
+                </div>
                 <ng-container
                   *ngIf="
                     container.items.week && container.items.week.length > 0;
@@ -65,7 +69,7 @@
           <div
             (click)="container.buttonAction()"
             class="upwork-btn upwork-btn-primary show-all-btn">
-            Show all
+            {{ 'dashboard.show-all-button' | translate }}
           </div>
         </div>
       </div>

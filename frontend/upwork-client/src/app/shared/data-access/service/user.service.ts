@@ -8,6 +8,9 @@ import { AuthenticatedResponse } from '../../../models/authenticated-response.mo
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { OrganizationService } from './organization.service';
+import { UpdateUserDto } from 'src/app/models/update-user.model';
+import { PermissionTypes } from 'src/app/models/enums/permission-types.enum';
+import { Roles } from 'src/app/models/enums/roles.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +39,10 @@ export class UserService {
     return false;
   }
 
+  public getUser(id: string): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/User/${id}`);
+  }
+
   public login(loginModel: LoginModel): Observable<boolean> {
     return this.http
       .post<AuthenticatedResponse>(`${environment.apiUrl}/token`, loginModel)
@@ -60,22 +67,39 @@ export class UserService {
     const user: User = {
       id: decodeToken['userId'],
       organizationId: decodeToken['organizationId'],
-      roles: this.getRoles(decodeToken['permissions']),
+      permissions: this.getPermissions(decodeToken['permissions']),
+      role: this.getRole(decodeToken),
     };
     this.user.next(user);
     this.organizationService.initOrganization(user);
     if (decodeToken['admin']) this.isAdmin.next(true);
   }
 
-  private getRoles(roles: string | string[] | undefined): string[] {
+  private getPermissions(
+    roles: string | string[] | undefined
+  ): PermissionTypes[] {
     if (typeof roles === 'undefined') return [];
-    if (typeof roles === 'string') return [roles];
-    return roles;
+    if (typeof roles === 'string')
+      return [PermissionTypes[roles as keyof typeof PermissionTypes]];
+    return roles.map(x => PermissionTypes[x as keyof typeof PermissionTypes]);
+  }
+
+  private getRole(decodeToken: any): Roles {
+    if (decodeToken['admin'] == 'true') return Roles.PageAdmin;
+    if (decodeToken['owner'] == 'true') return Roles.OrganizationOwner;
+    return Roles.User;
   }
 
   private clearUser() {
     this.user.next(null);
     this.isAdmin.next(false);
     this.organizationService.clearOrganization();
+  }
+
+  public updateUser(updateUserDto: UpdateUserDto) {
+    return this.http.put<boolean>(
+      `${environment.apiUrl}/User/UpdateUserForUser`,
+      updateUserDto
+    );
   }
 }

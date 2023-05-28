@@ -46,7 +46,7 @@ export class NavigationComponent implements OnInit {
         text: 'Dashboard',
         router_link: `/org/${this.url}/dashboard`,
       },
-      { icon: 'person_outline', text: 'Profile', router_link: '' },
+      { icon: 'person_outline', text: 'Profile', router_link: `/profile` },
       {
         icon: 'beach_access',
         text: 'Time off',
@@ -57,7 +57,6 @@ export class NavigationComponent implements OnInit {
         text: 'Calendar',
         router_link: `/org/${this.url}/calendar`,
       },
-      { icon: 'settings', text: 'Settings', router_link: '' },
       {
         icon: 'event_note',
         text: 'Requests',
@@ -65,7 +64,7 @@ export class NavigationComponent implements OnInit {
       },
       {
         icon: 'business',
-        text: 'Organization Control',
+        text: 'Organization',
         router_link: `/org/${this.url}/organization-control`,
       },
     ];

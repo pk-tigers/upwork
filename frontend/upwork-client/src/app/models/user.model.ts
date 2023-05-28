@@ -1,3 +1,4 @@
+import { PermissionTypes } from './enums/permission-types.enum';
 import { Roles } from './enums/roles.enum';
 
 export interface User {
@@ -11,4 +12,5 @@ export interface User {
   organizationId?: string;
   currentTimeOffSupervisorId?: string;
   roles?: string[];
+  permissions?: PermissionTypes[];
 }

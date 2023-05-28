@@ -3,13 +3,15 @@
     <div class="upwork-popup-close-button" (click)="closePopup()">
       <mat-icon>close</mat-icon>
     </div>
-    <div class="upwork-default-content-heading">{{ data.name }}'s owners</div>
+    <div class="upwork-default-content-heading">
+      {{ data.name }}{{ 'admin-panel.popup.popup-header' | translate }}
+    </div>
     <div class="upwork-default-content-data" style="color: black">
       <div class="d-flex justify-content-end p-0">
         <button
           class="upwork-btn upwork-btn-primary"
           (click)="openCreateUserPopup()">
-          Add owner
+          {{ 'admin-panel.popup.add-owner-button' | translate }}
         </button>
       </div>
       <app-shared-table

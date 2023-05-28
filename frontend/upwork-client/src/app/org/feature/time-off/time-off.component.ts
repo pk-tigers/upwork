@@ -22,8 +22,8 @@ import { User } from 'src/app/models/user.model';
 import { OrganizationService } from 'src/app/shared/data-access/service/organization.service';
 import { SupervisorService } from 'src/app/shared/data-access/service/supervisor.service';
 import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
-import { UserWithSupervisor } from '../../../models/user-with-supervisor.model';
 import { OrganizationAdminService } from '../../../shared/data-access/service/organization-admin.service';
+import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 
 @Component({
   selector: 'app-time-off',
@@ -228,6 +228,7 @@ export class TimeOffComponent implements OnInit {
             this.openCancelRequestPopup(arg);
           },
           arg: userRequest.id,
+          tooltip: TooltipTexts.cancelRequest,
         });
       }
       if (

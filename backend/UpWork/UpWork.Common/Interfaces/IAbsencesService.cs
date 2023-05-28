@@ -12,7 +12,7 @@ namespace UpWork.Common.Interfaces
         PaginatedResult<AbsenceModelDto> GetPendingAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take);
         PaginatedResult<AbsenceModelDto> GetSupervisedAbsencesRequestsForSupervisor(Guid supervisorId, int skip, int take);
         int GetYearAbsenceCountForUser(Guid userId);
-        PaginatedResult<AbsenceModel> GetAbsencesForUser(Guid userId, int skip, int take);
+        PaginatedResult<AbsenceModelDto> GetAbsencesForUser(Guid userId, int skip, int take);
 
     }
 }

@@ -16,12 +16,14 @@
         <td>{{ getStartRowIndex() + i }}.</td>
         <td *ngFor="let col of row?.cols">{{ col }}</td>
         <td>
-          <mat-icon
-            class="upwork-icon mx-1"
-            *ngFor="let action of row?.actions"
-            (click)="action.func(action.arg)"
-            >{{ action.icon }}</mat-icon
-          >
+          <ng-container *ngFor="let action of row?.actions">
+            <mat-icon
+              class="upwork-icon mx-1 tooltip-message"
+              [ngbTooltip]="action.tooltip"
+              (click)="action.func(action.arg)">
+              {{ action.icon }}
+            </mat-icon>
+          </ng-container>
         </td>
       </tr>
     </tbody>

@@ -9,5 +9,6 @@ namespace UpWork.Common.Interfaces
         AbsenceModel SetAbsenceApprovalState(AbsenceApprovalStateDto absenceApprovalState, Guid supervisorId);
         bool CancelRequestForUser(Guid requestId, Guid userId);
         AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto);
+        AbsenceModelDto UpdateAbsence(Guid userId, UpdateAbsenceDto updateAbsenceDto);
     }
 }

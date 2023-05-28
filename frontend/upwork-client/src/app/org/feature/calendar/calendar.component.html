@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <div class="upwork-default-container">
   <div class="upwork-default-content-container">
-    <div class="upwork-default-content-heading">Your calendar</div>
+    <div class="upwork-default-content-heading">{{ 'calendar.header' | translate }}</div>
     <div class="upwork-default-content-data">
       <div class="calendar-container">
         <div class="row text-center">
@@ -18,14 +18,14 @@
                 [(viewDate)]="viewDate"
                 (viewDateChange)="closeOpenMonthViewDay()"
                 (click)="prevMonth()">
-                Previous
+                {{ 'calendar.previous' | translate }}
               </div>
               <div
                 class="upwork-btn upwork-btn-secondary"
                 mwlCalendarToday
                 [(viewDate)]="viewDate"
                 (click)="presentMonth()">
-                Today
+                {{ 'calendar.today' | translate }}
               </div>
               <div
                 class="upwork-btn upwork-btn-primary"
@@ -34,7 +34,7 @@
                 [(viewDate)]="viewDate"
                 (viewDateChange)="closeOpenMonthViewDay()"
                 (click)="nextMonth()">
-                Next
+                {{ 'calendar.next' | translate }}
               </div>
             </div>
           </div>

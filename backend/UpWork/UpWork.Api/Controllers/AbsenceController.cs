@@ -58,5 +58,14 @@ namespace UpWork.Api.Controllers
                 return NotFound();
         }
 
+        [HttpPost]
+        public ActionResult<AbsenceModelDto> UpdateAbsenceForUser([FromBody] UpdateAbsenceDto updateAbsenceDto)
+        {
+            var userId = User.Identity.GetUserId();
+            var absence = _absenceService.UpdateAbsence(userId, updateAbsenceDto);
+
+            return Ok(absence);
+        }
+
     }
 }
