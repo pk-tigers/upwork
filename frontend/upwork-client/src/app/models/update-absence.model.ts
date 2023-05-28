@@ -4,6 +4,6 @@ export interface UpdateAbsence {
   absenceId?: string;
   newFromDate?: Date;
   newToDate?: Date;
-  newAbsemceType?: AbsenceType;
+  newAbsenceType?: AbsenceType;
   newTimeoffSupervisorId?: string;
 }

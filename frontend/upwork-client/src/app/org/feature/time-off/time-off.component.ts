@@ -154,7 +154,6 @@ export class TimeOffComponent implements OnInit {
       )
       .subscribe((result: PaginatedResult<User>) => {
         this.listOfSupervisors = result.data;
-        console.log(result.data);
       });
     SupervisorsSort.sortAlphabeticallyFirtnameAndLastName(
       this.listOfSupervisors
@@ -204,7 +203,6 @@ export class TimeOffComponent implements OnInit {
         this.totalNumberOfPages = res.page ?? 1;
         if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
-        console.log(res);
         return this.mapData(res);
       })
     );
@@ -254,6 +252,7 @@ export class TimeOffComponent implements OnInit {
               this.openUpdateAbsencePopup(arg);
             },
             arg: userRequest,
+            tooltip: TooltipTexts.requestDetails,
           });
         }
         results.push(result);
@@ -339,20 +338,17 @@ export class TimeOffComponent implements OnInit {
           updatedAbsence.newToDate = TimeUtilities.createDateAsUTC(
             new Date(String(inputs['TimeOffEndDate'].value))
           );
-          updatedAbsence.absenceType =
+          updatedAbsence.newAbsenceType =
             AbsenceType[
               inputs['TimeOffOptions'].value as keyof typeof AbsenceType
             ];
-          updatedAbsence.timeOffSupervisorId =
+          updatedAbsence.newTimeoffSupervisorId =
             inputs['SupervisorsOptions'].value?.toString();
-          console.log(absence);
-          console.log(updatedAbsence);
           return this.absenceService.updateAbsence(updatedAbsence);
         }),
         take(1)
       )
       .subscribe(updatedAbsence => {
-        console.log(updatedAbsence);
         if (updatedAbsence) {
           this.tostr.success('Absence successfully updated');
         } else {

@@ -10,4 +10,6 @@ export enum TooltipTexts {
   organizationCalendar = 'Organization calendar',
   deleteOwner = 'Delete Owner',
   userProfile = "User's profile",
+  deleteRTimeoffRequest = 'Delete Time off',
+  requestDetails = 'Show details',
 }

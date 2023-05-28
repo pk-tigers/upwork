@@ -4,10 +4,11 @@ namespace UpWork.Common.Dto
 {
     public class UpdateAbsenceDto
     {
-        public Guid Id { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
-        public Guid? TimeOffSupervisorId { get; set; }
-        public AbsenceTypes AbsenceType { get; set; }
+        public Guid AbsenceId { get; set; }
+        public DateTime? NewFromDate { get; set; }
+        public DateTime? NewToDate { get; set; }
+        public AbsenceTypes NewAbsenceType { get; set; }
+        public Guid? NewTimeOffSupervisorId { get; set; }
+        
     }
 }

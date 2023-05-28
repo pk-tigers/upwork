@@ -7,6 +7,7 @@ import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
 import { User } from 'src/app/models/user.model';
 import { AbsenceWithSupervisor } from 'src/app/models/absence-with-supervisor.model';
+import { UpdateAbsence } from 'src/app/models/update-absence.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,7 @@ export class AbsenceService {
   }
 
   public updateAbsence(
-    updateAbsence: AbsenceWithSupervisor
+    updateAbsence: UpdateAbsence
   ): Observable<AbsenceWithSupervisor> {
     return this.http.put<AbsenceWithSupervisor>(
       `${this.env.apiUrl}/absence/updateAbsenceForUser`,
