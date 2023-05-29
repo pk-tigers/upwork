@@ -23,8 +23,8 @@ import { SupervisorService } from 'src/app/shared/data-access/service/supervisor
 import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort';
 import { OrganizationAdminService } from '../../../shared/data-access/service/organization-admin.service';
 import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
-import { AbsenceWithSupervisor } from '../../../models/absence-with-supervisor.model';
 import { UpdateAbsence } from 'src/app/models/update-absence.model';
+import { Absence } from 'src/app/models/absence.model';
 
 @Component({
   selector: 'app-time-off',
@@ -38,7 +38,7 @@ export class TimeOffComponent implements OnInit {
   totalNumberOfPages = 1;
   absencesYearCount$ = this.getAbsencesYearCount();
   listOfSupervisors: User[] = [];
-  absenceWithSupervisor: AbsenceWithSupervisor | undefined;
+  Absence: Absence | undefined;
 
   constructor(
     private dialog: MatDialog,
@@ -160,7 +160,7 @@ export class TimeOffComponent implements OnInit {
   }
 
   createTimeOffRequest(inputs: Dictionary<InputPopupModel>): void {
-    const userRequest: AbsenceWithSupervisor = {
+    const userRequest: Absence = {
       fromDate: TimeUtilities.createDateAsUTC(
         new Date(String(inputs['TimeOffBeginningDate'].value))
       ),
@@ -198,7 +198,7 @@ export class TimeOffComponent implements OnInit {
       switchMap(currentPage =>
         this.absenceService.getAbsencesForUser(currentPage)
       ),
-      map((res: PaginatedResult<AbsenceWithSupervisor>) => {
+      map((res: PaginatedResult<Absence>) => {
         this.totalNumberOfPages = res.page ?? 1;
         if (res.data.length === 0 && this.currentPage$.value - 1 >= 0)
           this.currentPage$.next(this.currentPage$.value - 1);
@@ -207,9 +207,7 @@ export class TimeOffComponent implements OnInit {
     );
   }
 
-  private mapData(
-    data: PaginatedResult<AbsenceWithSupervisor>
-  ): SharedTableData[] {
+  private mapData(data: PaginatedResult<Absence>): SharedTableData[] {
     const userRequests = data.data;
     const results: SharedTableData[] = [];
     userRequests.forEach(userRequest => {
@@ -250,7 +248,7 @@ export class TimeOffComponent implements OnInit {
         ) {
           result.actions?.push({
             icon: 'launch',
-            func: (arg: AbsenceWithSupervisor) => {
+            func: (arg: Absence) => {
               this.openUpdateAbsencePopup(arg);
             },
             arg: userRequest,
@@ -263,7 +261,7 @@ export class TimeOffComponent implements OnInit {
     return results;
   }
 
-  private openUpdateAbsencePopup(userRequest: AbsenceWithSupervisor): void {
+  private openUpdateAbsencePopup(userRequest: Absence): void {
     if (typeof userRequest.absenceType !== 'undefined') {
       const inputs: Dictionary<InputPopupModel> = {
         ['TimeOffBeginningDate']: {
@@ -323,10 +321,7 @@ export class TimeOffComponent implements OnInit {
     }
   }
 
-  private updateAbsence(
-    inputs: Dictionary<InputPopupModel>,
-    absence: AbsenceWithSupervisor
-  ) {
+  private updateAbsence(inputs: Dictionary<InputPopupModel>, absence: Absence) {
     const updatedAbsence: UpdateAbsence = {};
 
     this.absenceService.absence$

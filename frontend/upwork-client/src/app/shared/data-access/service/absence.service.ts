@@ -5,23 +5,20 @@ import { Absence } from 'src/app/models/absence.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
-import { AbsenceWithSupervisor } from 'src/app/models/absence-with-supervisor.model';
 import { UpdateAbsence } from 'src/app/models/update-absence.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AbsenceService {
-  private absence = new BehaviorSubject<AbsenceWithSupervisor | null>(null);
+  private absence = new BehaviorSubject<Absence | null>(null);
   public absence$ = this.absence.asObservable();
   env = environment;
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
-  public createAbsenceRequest(
-    absence: AbsenceWithSupervisor
-  ): Observable<AbsenceWithSupervisor> {
-    return this.http.post<AbsenceWithSupervisor>(
+  public createAbsenceRequest(absence: Absence): Observable<Absence> {
+    return this.http.post<Absence>(
       `${environment.apiUrl}/Absence/CreateAbsenceRequestForUser`,
       absence
     );
@@ -36,8 +33,8 @@ export class AbsenceService {
   public getAbsencesForUser(
     pageNumber = 0,
     pageSize = 10
-  ): Observable<PaginatedResult<AbsenceWithSupervisor>> {
-    return this.http.get<PaginatedResult<AbsenceWithSupervisor>>(
+  ): Observable<PaginatedResult<Absence>> {
+    return this.http.get<PaginatedResult<Absence>>(
       `${environment.apiUrl}/Absences/GetAbsencesForUser?skip=${
         pageNumber * pageSize
       }&take=${pageSize}`
@@ -61,10 +58,8 @@ export class AbsenceService {
     );
   }
 
-  public updateAbsence(
-    updateAbsence: UpdateAbsence
-  ): Observable<AbsenceWithSupervisor> {
-    return this.http.put<AbsenceWithSupervisor>(
+  public updateAbsence(updateAbsence: UpdateAbsence): Observable<Absence> {
+    return this.http.put<Absence>(
       `${this.env.apiUrl}/absence/updateAbsenceForUser`,
       updateAbsence
     );
