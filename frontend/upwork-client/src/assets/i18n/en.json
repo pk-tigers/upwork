@@ -51,7 +51,8 @@
     },
     "time-off": {
         "header": "Time off",
-        "year-days-counter": " time off days already taken this year",
+        "year-days-counter1": "You have used ",
+        "year-days-counter2": "days off this year",
         "new-request-button": "New request"
     }
 }
