@@ -35,16 +35,17 @@ mwl-calendar-month-view {
   color: $white;
   font-weight: 500;
   margin: 1px;
+  opacity: 0.3;
+  border-width: 2px;
+  border-style: solid;
+  border-color: orange;
 }
 
 .approved {
-  border-width: 2px;
-  border-style: solid;
-  border-color: green;
+  border-style: none;
+  opacity: 1;
 }
 
 .rejected {
-  border-width: 2px;
-  border-style: solid;
   border-color: red;
 }
