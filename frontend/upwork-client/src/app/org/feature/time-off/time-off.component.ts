@@ -225,9 +225,9 @@ export class TimeOffComponent implements OnInit {
               ' $1'
             ),
             ApprovalState[Number(userRequest.approvalState?.toString())],
-            userRequest?.supervisorFirstName +
-              ' ' +
-              userRequest?.supervisorLastName,
+            userRequest?.supervisorFirstName ??
+              '' + ' ' + userRequest?.supervisorLastName ??
+              '',
           ],
           actions: [],
         };
