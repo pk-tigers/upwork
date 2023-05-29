@@ -5,7 +5,6 @@ import { Absence } from 'src/app/models/absence.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
-import { User } from 'src/app/models/user.model';
 import { AbsenceWithSupervisor } from 'src/app/models/absence-with-supervisor.model';
 import { UpdateAbsence } from 'src/app/models/update-absence.model';
 

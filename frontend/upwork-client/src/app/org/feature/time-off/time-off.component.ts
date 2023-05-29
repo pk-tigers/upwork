@@ -24,7 +24,6 @@ import { SupervisorsSort } from '../../../shared/web-utilities/supervisors-sort'
 import { OrganizationAdminService } from '../../../shared/data-access/service/organization-admin.service';
 import { TooltipTexts } from 'src/app/models/enums/tooltips-types.enum';
 import { AbsenceWithSupervisor } from '../../../models/absence-with-supervisor.model';
-import { UpdateSupervisor } from 'src/app/models/update-supervisor.model';
 import { UpdateAbsence } from 'src/app/models/update-absence.model';
 
 @Component({
@@ -119,7 +118,7 @@ export class TimeOffComponent implements OnInit {
         type: 'select',
         placeholder: 'Select approver',
         selectOptions: this.listOfSupervisors.map(supervisor => ({
-          value: supervisor.id || '',
+          value: supervisor.id ?? '',
           displayValue: `${supervisor.firstName} ${supervisor.lastName}`,
         })),
       },
@@ -292,7 +291,7 @@ export class TimeOffComponent implements OnInit {
           type: 'select',
           placeholder: `${userRequest.supervisorFirstName} ${userRequest.supervisorLastName}`,
           selectOptions: this.listOfSupervisors.map(supervisor => ({
-            value: supervisor.id || '',
+            value: supervisor.id ?? '',
             displayValue: `${supervisor.firstName} ${supervisor.lastName}`,
           })),
         },
