@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Dictionary } from 'cypress/types/lodash';
+import { Dictionary, last } from 'cypress/types/lodash';
 import { Observable, BehaviorSubject, switchMap, map, take } from 'rxjs';
 import {
   ButtonPopupModel,
@@ -170,7 +170,10 @@ export class TimeOffComponent implements OnInit {
       absenceType:
         AbsenceType[inputs['TimeOffOptions'].value as keyof typeof AbsenceType],
       approvalState: ApprovalState.Pending,
-      timeOffSupervisorId: String(inputs['SupervisorsOptions'].value),
+      timeOffSupervisorId:
+        String(inputs['SupervisorsOptions'].value).length > 0
+          ? String(inputs['SupervisorsOptions'].value)
+          : undefined,
     };
 
     this.absenceService
@@ -225,9 +228,7 @@ export class TimeOffComponent implements OnInit {
               ' $1'
             ),
             ApprovalState[Number(userRequest.approvalState?.toString())],
-            userRequest?.supervisorFirstName ??
-              '' + ' ' + userRequest?.supervisorLastName ??
-              '',
+            this.getSupervisorName(userRequest),
           ],
           actions: [],
         };
@@ -259,6 +260,13 @@ export class TimeOffComponent implements OnInit {
       }
     });
     return results;
+  }
+
+  private getSupervisorName(userRequest: Absence): string {
+    const name = userRequest?.supervisorFirstName ?? '';
+    const lastName = userRequest?.supervisorLastName ?? '';
+    const fullName = name + ' ' + lastName;
+    return fullName;
   }
 
   private openUpdateAbsencePopup(userRequest: Absence): void {

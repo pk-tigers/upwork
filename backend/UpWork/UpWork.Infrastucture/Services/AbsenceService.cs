@@ -55,6 +55,7 @@ namespace UpWork.Infrastucture.Services
 
         public AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto)
         {
+            var user = _context.Users.Where(x => x.Id == userId).First();
             AbsenceModel newAbsence = new AbsenceModel
             {
                 Id = Guid.NewGuid(),
@@ -63,7 +64,7 @@ namespace UpWork.Infrastucture.Services
                 IsActive = true,
                 AbsenceType = requestDto.AbsenceType,
                 UserId = userId,
-                TimeOffSupervisorId = requestDto.TimeOffSupervisorId
+                TimeOffSupervisorId = requestDto.TimeOffSupervisorId ?? user.CurrentTimeOffSupervisorId
             };
 
             _context.Add(newAbsence);
