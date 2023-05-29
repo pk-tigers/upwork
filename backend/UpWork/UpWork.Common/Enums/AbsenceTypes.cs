@@ -3,7 +3,8 @@
     public enum AbsenceTypes
     {
         PaidTimeOff = 0,
-        UnpaidLeave,
-        SickLeave,
+        UnpaidLeave = 1,
+        SickLeave = 2,
+        MaternityLeave = 3,
     }
 }

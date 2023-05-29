@@ -11,4 +11,6 @@ export interface Absence {
   userLastName?: string;
   approvalState: ApprovalState;
   timeOffSupervisorId?: string;
+  supervisorFirstName?: string;
+  supervisorLastName?: string;
 }

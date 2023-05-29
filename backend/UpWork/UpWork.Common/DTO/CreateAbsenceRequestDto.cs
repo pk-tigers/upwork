@@ -8,6 +8,8 @@ namespace UpWork.Common.DTO
         public DateTime ToDate { get; set; }
         public bool IsActive { get; set; }
         public AbsenceTypes AbsenceType { get; set; }
+        public Guid? TimeOffSupervisorId { get; set; }
+
     }
 
 }

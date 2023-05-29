@@ -2,14 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Absence } from 'src/app/models/absence.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PaginatedResult } from 'src/app/models/paginatedResult.model';
 import { DatePipe } from '@angular/common';
+import { UpdateAbsence } from 'src/app/models/update-absence.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AbsenceService {
+  private absence = new BehaviorSubject<Absence | null>(null);
+  public absence$ = this.absence.asObservable();
+  env = environment;
+
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   public createAbsenceRequest(absence: Absence): Observable<Absence> {
@@ -50,6 +55,13 @@ export class AbsenceService {
   public getYearAbsenceCountForUser(): Observable<number> {
     return this.http.get<number>(
       `${environment.apiUrl}/Absences/getYearAbsenceCountForUser`
+    );
+  }
+
+  public updateAbsence(updateAbsence: UpdateAbsence): Observable<Absence> {
+    return this.http.put<Absence>(
+      `${this.env.apiUrl}/absence/updateAbsenceForUser`,
+      updateAbsence
     );
   }
 }

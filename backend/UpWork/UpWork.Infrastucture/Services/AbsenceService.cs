@@ -55,9 +55,6 @@ namespace UpWork.Infrastucture.Services
 
         public AbsenceModel CreateAbsenceRequestForUser(Guid userId, CreateAbsenceRequestDto requestDto)
         {
-            var superVisiorId = _context.Users?.First(u => u.Id == userId).CurrentTimeOffSupervisorId;
-
-
             AbsenceModel newAbsence = new AbsenceModel
             {
                 Id = Guid.NewGuid(),
@@ -66,7 +63,7 @@ namespace UpWork.Infrastucture.Services
                 IsActive = true,
                 AbsenceType = requestDto.AbsenceType,
                 UserId = userId,
-                TimeOffSupervisorId = superVisiorId
+                TimeOffSupervisorId = requestDto.TimeOffSupervisorId
             };
 
             _context.Add(newAbsence);
@@ -77,21 +74,21 @@ namespace UpWork.Infrastucture.Services
         public AbsenceModelDto UpdateAbsence(Guid userId, UpdateAbsenceDto updateAbsenceDto)
         {
             var absence = _context.Absences
-                .Where(x => x.UserId == userId && x.Id == updateAbsenceDto.Id)
+                .Where(x => x.UserId == userId && x.Id == updateAbsenceDto.AbsenceId)
                 .Include(x => x.User)
                 .Include(x => x.TimeOffSupervisor)
                 .First();
 
-            if (updateAbsenceDto.FromDate.HasValue && updateAbsenceDto.FromDate.Value >= DateTime.Today)
-                absence.FromDate = updateAbsenceDto.FromDate.Value;
+            if (updateAbsenceDto.NewFromDate.HasValue && updateAbsenceDto.NewFromDate.Value >= DateTime.Today)
+                absence.FromDate = updateAbsenceDto.NewFromDate.Value;
 
-            if (updateAbsenceDto.ToDate.HasValue && updateAbsenceDto.ToDate.Value >= absence.FromDate)
-                absence.ToDate = updateAbsenceDto.ToDate.Value;
+            if (updateAbsenceDto.NewToDate.HasValue && updateAbsenceDto.NewToDate.Value >= absence.FromDate)
+                absence.ToDate = updateAbsenceDto.NewToDate.Value;
 
-            if (updateAbsenceDto.TimeOffSupervisorId.HasValue)
+            if (updateAbsenceDto.NewTimeOffSupervisorId.HasValue)
             {
                 var supervisor = _context.Users
-                    .Where(x => x.IsActive && x.Id == updateAbsenceDto.TimeOffSupervisorId)
+                    .Where(x => x.IsActive && x.Id == updateAbsenceDto.NewTimeOffSupervisorId)
                     .Where(x => x.OrganizationId == absence.User.OrganizationId)
                     .Include(x => x.Permissions)
                     .Where(x => x.Role == Role.OrganizationOwner || x.Permissions.Any(z => z.PermissionType == PermissionType.CanSupervise
@@ -99,6 +96,7 @@ namespace UpWork.Infrastucture.Services
 
                 absence.TimeOffSupervisorId = supervisor.Id;
             }
+            absence.AbsenceType = updateAbsenceDto.NewAbsenceType;
 
             _context.SaveChanges();
 

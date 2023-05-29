@@ -7,6 +7,7 @@ using UpWork.Common.Models.DatabaseModels;
 using UpWork.Common.Dto;
 using UpWork.Api.Attributes;
 using UpWork.Common.Enums;
+using UpWork.Api.Extensions;
 
 namespace UpWork.Api.Controllers
 {

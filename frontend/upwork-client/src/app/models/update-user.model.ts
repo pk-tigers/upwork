@@ -1,5 +1,5 @@
 export interface UpdateUserDto {
-    firstName?: string;
-    lastName?: string;
-    password?: string;
-  }
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+}
