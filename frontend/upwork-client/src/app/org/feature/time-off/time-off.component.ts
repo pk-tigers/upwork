@@ -32,7 +32,7 @@ import { UpdateAbsence } from 'src/app/models/update-absence.model';
   styleUrls: ['./time-off.component.scss'],
 })
 export class TimeOffComponent implements OnInit {
-  header = ['From date', 'To date', 'Type', 'Status', 'Actions'];
+  header = ['From date', 'To date', 'Type', 'Status', 'Supervisor', 'Actions'];
   currentPage$ = new BehaviorSubject<number>(0);
   listOfUserRequests$: Observable<SharedTableData[]> = this.loadUserRequests();
   totalNumberOfPages = 1;
@@ -227,6 +227,9 @@ export class TimeOffComponent implements OnInit {
               ' $1'
             ),
             ApprovalState[Number(userRequest.approvalState?.toString())],
+            userRequest?.supervisorFirstName +
+              ' ' +
+              userRequest?.supervisorLastName,
           ],
           actions: [],
         };
